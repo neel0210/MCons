@@ -16,6 +16,8 @@ jobs:
   build:
     name: Build macOS App
     runs-on: macos-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout Code
