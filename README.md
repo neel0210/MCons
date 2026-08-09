@@ -37,6 +37,7 @@
 |:---|:---|:---:|
 | 🌙 **Dark Mode Pro** | Matte black with neon accents | 12 |
 | 🍎 **macOS Native+** | Enhanced Apple system colors | 12 |
+| ⚔️ **Demon Slayer** | Kimetsu no Yaiba Hashira & Demon icons | 10 |
 | ⚡ **Pokémon** | Legendary & iconic Pokémon custom folder icons | 10 |
 
 ## Adding Custom Icon Packs & Icons
@@ -58,8 +59,6 @@ MCons/Resources/IconPacks/my-pack/
 ├── Icon2.png
 └── Icon3.png
 ```
-
-*(Note: You can also place custom folders in `Custom_ICONS/<pack-name>/` at the project root for automatic detection).*
 
 ### 3. Add `metadata.json`
 Inside your pack folder, add a `metadata.json` file:

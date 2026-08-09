@@ -24,7 +24,6 @@ final class IconPackLoader: Sendable {
         // Development path fallback
         let currentDirURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         possiblePackURLs.append(currentDirURL.appendingPathComponent("MCons/Resources/IconPacks"))
-        possiblePackURLs.append(currentDirURL.appendingPathComponent("Custom_ICONS"))
         
         var loadedPacks: [String: IconPack] = [:]
         
