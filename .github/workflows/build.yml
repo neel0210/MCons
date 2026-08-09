@@ -30,9 +30,15 @@ jobs:
 
       - name: Create Zip Archive
         run: |
+          if [ ! -d "output/MCons.app" ]; then
+            echo "❌ output/MCons.app directory does not exist!"
+            exit 1
+          fi
           cd output
           zip -r MCons.app.zip MCons.app
           cd ..
+          echo "Output directory listing:"
+          ls -lh output/
 
       - name: Extract Build Metadata
         id: meta
@@ -50,9 +56,15 @@ jobs:
           CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
         run: |
           CAPTION="Beta Build ⚡"$'\n'"Date: ${{ steps.meta.outputs.date }}"$'\n'"Last Commit: ${{ steps.meta.outputs.last_commit }}"
+          FILE_PATH="${GITHUB_WORKSPACE}/output/MCons.app.zip"
+          
+          if [ ! -f "${FILE_PATH}" ]; then
+            echo "❌ Zip file not found at ${FILE_PATH}"
+            exit 1
+          fi
           
           RESPONSE=$(curl -s -F chat_id="${CHANNEL_ID}" \
-               -F document=@"output/MCons.app.zip" \
+               -F "document=@${FILE_PATH}" \
                -F caption="${CAPTION}" \
                "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument")
           echo "Telegram Response: ${RESPONSE}"
@@ -82,9 +94,15 @@ jobs:
           RELEASE_URL: ${{ steps.create_release.outputs.url }}
         run: |
           CAPTION="🚀 Production Build v1.0.${{ github.run_number }}"$'\n'"Date: ${{ steps.meta.outputs.date }}"$'\n'"Last Commit: ${{ steps.meta.outputs.last_commit }}"$'\n\n'"Release Notes: ${RELEASE_URL}"
+          FILE_PATH="${GITHUB_WORKSPACE}/output/MCons.app.zip"
+          
+          if [ ! -f "${FILE_PATH}" ]; then
+            echo "❌ Zip file not found at ${FILE_PATH}"
+            exit 1
+          fi
           
           RESPONSE=$(curl -s -F chat_id="${CHANNEL_ID}" \
-               -F document=@"output/MCons.app.zip" \
+               -F "document=@${FILE_PATH}" \
                -F caption="${CAPTION}" \
                "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument")
           echo "Telegram Response: ${RESPONSE}"
