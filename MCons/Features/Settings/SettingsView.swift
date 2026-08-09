@@ -1,0 +1,168 @@
+import SwiftUI
+
+/// App settings / preferences view
+struct SettingsView: View {
+    @EnvironmentObject var appState: AppState
+    @AppStorage("defaultIconSize") private var defaultIconSize: Double = 512
+    @AppStorage("showIconNames") private var showIconNames: Bool = true
+    @AppStorage("autoRefreshFinder") private var autoRefreshFinder: Bool = true
+    @AppStorage("recentFolderLimit") private var recentFolderLimit: Int = 10
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: AppTheme.Spacing.xxl) {
+                // Header (only show in main window, not Settings scene)
+                VStack(alignment: .leading, spacing: AppTheme.Spacing.sm) {
+                    Text("Settings")
+                        .font(AppTheme.Typography.largeTitle)
+                        .foregroundStyle(.primary)
+                    
+                    Text("Configure MCons preferences")
+                        .font(AppTheme.Typography.body)
+                        .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                // Icon Settings
+                settingsSection(title: "Icons", icon: "photo.fill") {
+                    VStack(spacing: AppTheme.Spacing.lg) {
+                        // Icon size
+                        HStack {
+                            Label("Default Icon Size", systemImage: "arrow.up.left.and.arrow.down.right")
+                                .font(AppTheme.Typography.body)
+                            Spacer()
+                            Picker("", selection: Binding(
+                                get: { Int(defaultIconSize) },
+                                set: { defaultIconSize = Double($0) }
+                            )) {
+                                Text("256×256").tag(256)
+                                Text("512×512").tag(512)
+                                Text("1024×1024").tag(1024)
+                            }
+                            .pickerStyle(.segmented)
+                            .frame(width: 240)
+                        }
+                        
+                        Divider()
+                        
+                        // Show icon names
+                        Toggle(isOn: $showIconNames) {
+                            Label("Show icon names in grid", systemImage: "textformat")
+                                .font(AppTheme.Typography.body)
+                        }
+                        .toggleStyle(.switch)
+                    }
+                }
+                
+                // Behavior Settings
+                settingsSection(title: "Behavior", icon: "gearshape.fill") {
+                    VStack(spacing: AppTheme.Spacing.lg) {
+                        Toggle(isOn: $autoRefreshFinder) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Label("Auto-refresh Finder", systemImage: "arrow.clockwise")
+                                    .font(AppTheme.Typography.body)
+                                Text("Automatically nudge Finder to show updated icons")
+                                    .font(AppTheme.Typography.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .toggleStyle(.switch)
+                        
+                        Divider()
+                        
+                        HStack {
+                            Label("Recent folders limit", systemImage: "clock")
+                                .font(AppTheme.Typography.body)
+                            Spacer()
+                            Stepper("\(recentFolderLimit)", value: $recentFolderLimit, in: 5...25, step: 5)
+                                .frame(width: 120)
+                        }
+                    }
+                }
+                
+                // Data Management
+                settingsSection(title: "Data", icon: "externaldrive.fill") {
+                    VStack(spacing: AppTheme.Spacing.lg) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Label("Clear Recent Folders", systemImage: "trash")
+                                    .font(AppTheme.Typography.body)
+                                Text("\(appState.recentFolders.count) folders in history")
+                                    .font(AppTheme.Typography.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Button("Clear") {
+                                appState.recentFolders.removeAll()
+                                appState.statusMessage = "Recent folders cleared"
+                            }
+                            .buttonStyle(.bordered)
+                            .disabled(appState.recentFolders.isEmpty)
+                        }
+                    }
+                }
+                
+                // About
+                settingsSection(title: "About", icon: "info.circle.fill") {
+                    VStack(spacing: AppTheme.Spacing.md) {
+                        HStack {
+                            Image(systemName: "folder.fill.badge.gearshape")
+                                .font(.system(size: 36))
+                                .foregroundStyle(AppTheme.Colors.accentGradient)
+                            
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("MCons")
+                                    .font(AppTheme.Typography.title2)
+                                Text("Icons for MacOS")
+                                    .font(AppTheme.Typography.callout)
+                                    .foregroundStyle(AppTheme.Colors.accentGradient)
+                                Text("Version 1.0.0 • Developed by Neel0210")
+                                    .font(AppTheme.Typography.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            
+                            Spacer()
+                        }
+                        
+                        Divider()
+                        
+                        Text("Customize your macOS folders with stunning icon packs. Built with SwiftUI.")
+                            .font(AppTheme.Typography.callout)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+                
+                Spacer(minLength: AppTheme.Spacing.xxl)
+            }
+            .padding(AppTheme.Spacing.xxl)
+        }
+        .frame(minWidth: 500)
+        .background(Color(nsColor: .windowBackgroundColor))
+    }
+    
+    // MARK: - Settings Section Builder
+    
+    private func settingsSection<Content: View>(
+        title: String,
+        icon: String,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading, spacing: AppTheme.Spacing.md) {
+            Label(title, systemImage: icon)
+                .font(AppTheme.Typography.headline)
+                .foregroundStyle(.primary)
+            
+            content()
+                .padding(AppTheme.Spacing.lg)
+                .background(
+                    RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
+                        .fill(AppTheme.Colors.cardBackground)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
+                        .stroke(Color(nsColor: .separatorColor).opacity(0.3), lineWidth: 1)
+                )
+        }
+    }
+}
