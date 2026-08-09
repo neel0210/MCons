@@ -51,10 +51,15 @@ jobs:
         run: |
           CAPTION="Beta Build ⚡"$'\n'"Date: ${{ steps.meta.outputs.date }}"$'\n'"Last Commit: ${{ steps.meta.outputs.last_commit }}"
           
-          curl -s -F chat_id="${CHANNEL_ID}" \
+          RESPONSE=$(curl -s -F chat_id="${CHANNEL_ID}" \
                -F document=@"output/MCons.app.zip" \
                -F caption="${CAPTION}" \
-               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument"
+               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument")
+          echo "Telegram Response: ${RESPONSE}"
+          if [[ "$RESPONSE" != *"\"ok\":true"* ]]; then
+            echo "❌ Failed to send Beta Build to Telegram!"
+            exit 1
+          fi
 
       # --- PRODUCTION BUILD ---
       - name: Create GitHub Release
@@ -78,10 +83,15 @@ jobs:
         run: |
           CAPTION="🚀 Production Build v1.0.${{ github.run_number }}"$'\n'"Date: ${{ steps.meta.outputs.date }}"$'\n'"Last Commit: ${{ steps.meta.outputs.last_commit }}"$'\n\n'"Release Notes: ${RELEASE_URL}"
           
-          curl -s -F chat_id="${CHANNEL_ID}" \
+          RESPONSE=$(curl -s -F chat_id="${CHANNEL_ID}" \
                -F document=@"output/MCons.app.zip" \
                -F caption="${CAPTION}" \
-               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument"
+               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument")
+          echo "Telegram Response: ${RESPONSE}"
+          if [[ "$RESPONSE" != *"\"ok\":true"* ]]; then
+            echo "❌ Failed to send Production Build to Telegram!"
+            exit 1
+          fi
 
       # --- FAILURE NOTIFICATION ---
       - name: Send Error Notification to Telegram Group
@@ -92,6 +102,7 @@ jobs:
         run: |
           TEXT="⚠️ MCons Build Failed!"$'\n'"Build Type: ${{ inputs.build_type }}"$'\n'"Triggered by: ${{ github.actor }}"$'\n'"Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           
-          curl -s -F chat_id="${CHAT_ID}" \
+          RESPONSE=$(curl -s -F chat_id="${CHAT_ID}" \
                -F text="${TEXT}" \
-               "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage"
+               "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage")
+          echo "Telegram Response: ${RESPONSE}"
