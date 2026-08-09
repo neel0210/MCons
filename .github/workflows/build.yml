@@ -58,20 +58,18 @@ jobs:
           FILE_PATH="output/MCons.app.zip"
           ls -lh "${FILE_PATH}" || { echo "❌ Zip file not found!"; exit 1; }
 
-          # Write caption to a temp file to avoid newline issues in curl multipart
-          cat > /tmp/caption.txt << 'CAPTION_END'
-          Beta Build ⚡
-          CAPTION_END
           printf "Beta Build ⚡\nDate: %s\nLast Commit: %s" \
             "${{ steps.meta.outputs.date }}" \
             "${{ steps.meta.outputs.last_commit }}" > /tmp/caption.txt
 
-          RESPONSE=$(curl -s --max-time 120 \
-               -F chat_id="${CHANNEL_ID}" \
+          echo "Sending file to Telegram..."
+          RESPONSE=$(curl -sS --max-time 120 \
+               --form-string "chat_id=${CHANNEL_ID}" \
                -F "document=@${FILE_PATH}" \
-               -F "caption=</tmp/caption.txt" \
-               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument") || true
-          echo "Telegram Response: ${RESPONSE}"
+               --form-string "caption=$(cat /tmp/caption.txt)" \
+               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" 2>&1)
+          
+          echo "Telegram Raw Output: ${RESPONSE}"
           if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
             echo "✅ Beta Build sent to Telegram!"
           else
@@ -107,12 +105,14 @@ jobs:
             "${{ steps.meta.outputs.last_commit }}" \
             "${RELEASE_URL}" > /tmp/caption.txt
 
-          RESPONSE=$(curl -s --max-time 120 \
-               -F chat_id="${CHANNEL_ID}" \
+          echo "Sending file to Telegram..."
+          RESPONSE=$(curl -sS --max-time 120 \
+               --form-string "chat_id=${CHANNEL_ID}" \
                -F "document=@${FILE_PATH}" \
-               -F "caption=</tmp/caption.txt" \
-               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument") || true
-          echo "Telegram Response: ${RESPONSE}"
+               --form-string "caption=$(cat /tmp/caption.txt)" \
+               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" 2>&1)
+          
+          echo "Telegram Raw Output: ${RESPONSE}"
           if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
             echo "✅ Production Build sent to Telegram!"
           else
@@ -134,7 +134,8 @@ jobs:
             "${{ github.repository }}" \
             "${{ github.run_id }}" > /tmp/error_text.txt
 
-          curl -s --max-time 30 \
-            -F chat_id="${CHAT_ID}" \
-            -F "text=</tmp/error_text.txt" \
-            "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" || true
+          RESPONSE=$(curl -sS --max-time 30 \
+            --form-string "chat_id=${CHAT_ID}" \
+            --form-string "text=$(cat /tmp/error_text.txt)" \
+            "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" 2>&1)
+          echo "Telegram Raw Output: ${RESPONSE}"
