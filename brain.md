@@ -118,7 +118,7 @@ Mac_ICOns/
   1. `Bundle.main.resourceURL/MCons_MCons.bundle/IconPacks`
   2. `Bundle.main.resourceURL/IconPacks`
   3. `Bundle.module.resourceURL/IconPacks`
-  4. Local project `MCons/Resources/IconPacks` & `Custom_ICONS`
+  4. Local project `MCons/Resources/IconPacks`
 - Parses `metadata.json` (`id`, `name`, `description`, `emoji`, `accentColorHex`).
 - Maps images into `FolderIcon` objects with `fileURL` or programmatically generated color fallbacks.
 
