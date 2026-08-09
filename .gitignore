@@ -1,0 +1,34 @@
+# macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon\r
+._*
+.Spotlight-V100
+.Trashes
+.VolumeIcon.icns
+
+# Swift Package Manager & Build Artifacts
+.build/
+Packages/
+xcuserdata/
+DerivedData/
+
+# Xcode User Data (Keep shared config/project files)
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.pbxuser
+*.xcuserdatad
+*.xcworkspace
+!/*.xcodeproj/project.xcworkspace
+!/*.xcodeproj/xcshareddata
+
+# Build Output Directory
+output/
+
+# Logs & Temporary Files
+*.log
+*.tmp
+.swiftpm/
+EOF

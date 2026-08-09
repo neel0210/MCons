@@ -1,0 +1,97 @@
+name: Build & Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Select Build Type'
+        required: true
+        default: 'Test Build (Beta)'
+        type: choice
+        options:
+          - 'Test Build (Beta)'
+          - 'Production Build'
+
+jobs:
+  build:
+    name: Build macOS App
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build MCons App Bundle
+        run: |
+          chmod +x build_app.sh
+          ./build_app.sh
+
+      - name: Create Zip Archive
+        run: |
+          cd output
+          zip -r MCons.app.zip MCons.app
+          cd ..
+
+      - name: Extract Build Metadata
+        id: meta
+        run: |
+          BUILD_DATE=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          LAST_COMMIT=$(git log -1 --pretty=format:"%h - %s (%an)")
+          echo "date=${BUILD_DATE}" >> $GITHUB_OUTPUT
+          echo "last_commit=${LAST_COMMIT}" >> $GITHUB_OUTPUT
+
+      # --- TEST BUILD (BETA) ---
+      - name: Send Beta Build to Telegram Channel
+        if: ${{ inputs.build_type == 'Test Build (Beta)' }}
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+        run: |
+          CAPTION="Beta Build ⚡"$'\n'"Date: ${{ steps.meta.outputs.date }}"$'\n'"Last Commit: ${{ steps.meta.outputs.last_commit }}"
+          
+          curl -s -F chat_id="${CHANNEL_ID}" \
+               -F document=@"output/MCons.app.zip" \
+               -F caption="${CAPTION}" \
+               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument"
+
+      # --- PRODUCTION BUILD ---
+      - name: Create GitHub Release
+        if: ${{ inputs.build_type == 'Production Build' }}
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: MCons Production Release v1.0.${{ github.run_number }}
+          generate_release_notes: true
+          files: output/MCons.app.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send Production Build to Telegram Channel
+        if: ${{ inputs.build_type == 'Production Build' }}
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          RELEASE_URL: ${{ steps.create_release.outputs.url }}
+        run: |
+          CAPTION="🚀 Production Build v1.0.${{ github.run_number }}"$'\n'"Date: ${{ steps.meta.outputs.date }}"$'\n'"Last Commit: ${{ steps.meta.outputs.last_commit }}"$'\n\n'"Release Notes: ${RELEASE_URL}"
+          
+          curl -s -F chat_id="${CHANNEL_ID}" \
+               -F document=@"output/MCons.app.zip" \
+               -F caption="${CAPTION}" \
+               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument"
+
+      # --- FAILURE NOTIFICATION ---
+      - name: Send Error Notification to Telegram Group
+        if: failure()
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          TEXT="⚠️ MCons Build Failed!"$'\n'"Build Type: ${{ inputs.build_type }}"$'\n'"Triggered by: ${{ github.actor }}"$'\n'"Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          
+          curl -s -F chat_id="${CHAT_ID}" \
+               -F text="${TEXT}" \
+               "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage"
