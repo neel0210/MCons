@@ -9,7 +9,7 @@ set -euo pipefail
 APP_NAME="MCons"
 BUNDLE_ID="com.neel0210.mcons"
 EXECUTABLE_NAME="MCons"
-VERSION="1.0.0"
+VERSION="1.0.1"
 BUILD_DIR=".build/release"
 OUTPUT_DIR="output"
 APP_DIR="${OUTPUT_DIR}/${APP_NAME}.app"

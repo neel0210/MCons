@@ -116,7 +116,7 @@ struct SettingsView: View {
                                 Text("Icons for MacOS")
                                     .font(AppTheme.Typography.callout)
                                     .foregroundStyle(AppTheme.Colors.accentGradient)
-                                Text("Version 1.0.0 • Developed by Neel0210")
+                                Text("Version 1.0.1 • Developed by Neel0210")
                                     .font(AppTheme.Typography.caption)
                                     .foregroundStyle(.secondary)
                             }

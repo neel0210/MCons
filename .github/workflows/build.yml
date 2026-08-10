@@ -85,8 +85,8 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: MCons Production Release v1.0.${{ github.run_number }}
+          tag_name: v1.0.1.${{ github.run_number }}
+          name: MCons Production Release v1.0.1.${{ github.run_number }}
           generate_release_notes: true
           files: output/MCons.app.zip
         env:
@@ -102,7 +102,7 @@ jobs:
           FILE_PATH="output/MCons.app.zip"
           ls -lh "${FILE_PATH}" || { echo "❌ Zip file not found!"; exit 1; }
 
-          printf "🚀 Production Build v1.0.${{ github.run_number }}\nDate: %s\nLast Commit: %s\n\nRelease Notes: %s" \
+          printf "🚀 Production Build v1.0.1.${{ github.run_number }}\nDate: %s\nLast Commit: %s\n\nRelease Notes: %s" \
             "${{ steps.meta.outputs.date }}" \
             "${{ steps.meta.outputs.last_commit }}" \
             "${RELEASE_URL}" > /tmp/caption.txt
