@@ -194,15 +194,32 @@ final class IconService: Sendable {
             return cachedImage
         }
         
-        // Lazy computation: scale to 512x512
+        // Lazy computation: scale to 512x512 preserving transparency and aspect ratio
         let newImage = NSImage(size: targetSize)
         newImage.lockFocus()
         
+        if let context = NSGraphicsContext.current?.cgContext {
+            context.clear(CGRect(origin: .zero, size: targetSize))
+        }
         NSGraphicsContext.current?.imageInterpolation = .high
+        
+        let srcSize = image.size
+        let srcAspect = srcSize.width / max(srcSize.height, 1)
+        let destRect: NSRect
+        if srcAspect > 1 {
+            let h = targetSize.width / srcAspect
+            destRect = NSRect(x: 0, y: (targetSize.height - h) / 2, width: targetSize.width, height: h)
+        } else if srcAspect < 1 {
+            let w = targetSize.height * srcAspect
+            destRect = NSRect(x: (targetSize.width - w) / 2, y: 0, width: w, height: targetSize.height)
+        } else {
+            destRect = NSRect(origin: .zero, size: targetSize)
+        }
+        
         image.draw(
-            in: NSRect(origin: .zero, size: targetSize),
+            in: destRect,
             from: NSRect(origin: .zero, size: image.size),
-            operation: .copy,
+            operation: .sourceOver,
             fraction: 1.0
         )
         
