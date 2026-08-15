@@ -77,6 +77,7 @@ Mac_ICOns/
             ├── macos-native-plus/
             ├── demon-slayer/
             ├── one-piece/
+            ├── solo-leveling/
             └── pokemon/
 ```
 
@@ -151,7 +152,9 @@ Mac_ICOns/
    - Akaza, Douma, Gyomei, Kokushibo, Muichiro, Muzan, Rengoku, Sanemi, Tanjiro, Yoriichi.
 4. 🏴‍☠️ **One Piece** (10 custom 1024×1024 SVG icons):
    - Ace, Chopper, Law, Luffy, Nami, Robin, Sanji, Shanks, Whitebeard, Zoro.
-5. ⚡ **Pokémon** (10 custom 1024×1024 SVG icons):
+5. 🗡️ **Solo Leveling** (3 custom 1024×1024 SVG icons):
+   - Beru, Igris, Sung Jinwoo.
+6. ⚡ **Pokémon** (10 custom 1024×1024 SVG icons):
    - Pikachu, Charizard, Charizard X, Charizard Y, Greninja, Mewtwo, Rayquaza, Salamence, Snorlax, Tyranitar.
 
 ---
