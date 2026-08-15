@@ -267,11 +267,13 @@ struct PackPreviewCard: View {
                         Image(nsImage: nsImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 40, height: 40)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 60)
+                            .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
                     }
-                    Spacer()
                 }
-                .padding(AppTheme.Spacing.md)
+                .padding(.horizontal, AppTheme.Spacing.sm)
+                .padding(.vertical, AppTheme.Spacing.md)
                 .background(
                     RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                         .fill(AppTheme.Colors.packGradient(hex: pack.accentColorHex))

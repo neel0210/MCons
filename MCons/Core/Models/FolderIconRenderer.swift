@@ -42,19 +42,19 @@ enum FolderIconRenderer {
     private static func drawFolderShape(in context: CGContext, rect: CGRect, color: NSColor) {
         let w = rect.width
         let h = rect.height
-        let padding = w * 0.06
+        let padding = w * 0.025
         
-        // Folder body dimensions
+        // Folder body dimensions matching native macOS folder proportions (95% width)
         let bodyX = padding
-        let bodyY = padding + h * 0.05
+        let bodyY = h * 0.08
         let bodyW = w - padding * 2
-        let bodyH = h * 0.65
-        let cornerRadius = w * 0.04
+        let bodyH = h * 0.68
+        let cornerRadius = w * 0.045
         
         // Tab dimensions
         let tabW = bodyW * 0.38
         let tabH = h * 0.12
-        let tabCornerRadius = w * 0.03
+        let tabCornerRadius = w * 0.035
         
         context.saveGState()
         

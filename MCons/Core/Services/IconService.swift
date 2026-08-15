@@ -179,22 +179,17 @@ final class IconService: Sendable {
     private static let scaledImageCache = NSCache<NSString, NSImage>()
     
     /// Prepares an image for use as a folder icon (512x512)
-    /// Uses lazy/cached computation, only recomputing when the source image changes
+    /// Trims transparent margins and scales the icon to fill ~96% of the canvas, matching standard macOS folder visual size
     private func prepareIconImage(_ image: NSImage) -> NSImage {
         let targetSize = NSSize(width: 512, height: 512)
         
-        // Fast path 1: If image is already 512x512, no scaling needed
-        if image.size == targetSize {
-            return image
-        }
-        
-        // Fast path 2: Check cache using image identity and dimensions
+        // Check cache using image identity and dimensions
         let cacheKey = NSString(string: "\(ObjectIdentifier(image).hashValue)_\(Int(image.size.width))x\(Int(image.size.height))")
         if let cachedImage = Self.scaledImageCache.object(forKey: cacheKey) {
             return cachedImage
         }
         
-        // Lazy computation: scale to 512x512 preserving transparency and aspect ratio
+        let contentRect = nonTransparentBounds(for: image)
         let newImage = NSImage(size: targetSize)
         newImage.lockFocus()
         
@@ -203,22 +198,21 @@ final class IconService: Sendable {
         }
         NSGraphicsContext.current?.imageInterpolation = .high
         
-        let srcSize = image.size
-        let srcAspect = srcSize.width / max(srcSize.height, 1)
-        let destRect: NSRect
-        if srcAspect > 1 {
-            let h = targetSize.width / srcAspect
-            destRect = NSRect(x: 0, y: (targetSize.height - h) / 2, width: targetSize.width, height: h)
-        } else if srcAspect < 1 {
-            let w = targetSize.height * srcAspect
-            destRect = NSRect(x: (targetSize.width - w) / 2, y: 0, width: w, height: targetSize.height)
-        } else {
-            destRect = NSRect(origin: .zero, size: targetSize)
-        }
+        let fillRatio: CGFloat = 0.96
+        let maxCanvasDim = targetSize.width * fillRatio
+        let srcAspect = contentRect.width / max(contentRect.height, 1)
+        let destW: CGFloat = srcAspect > 1 ? maxCanvasDim : maxCanvasDim * srcAspect
+        let destH: CGFloat = srcAspect > 1 ? maxCanvasDim / srcAspect : maxCanvasDim
+        let destRect = NSRect(
+            x: (targetSize.width - destW) / 2,
+            y: (targetSize.height - destH) / 2,
+            width: destW,
+            height: destH
+        )
         
         image.draw(
             in: destRect,
-            from: NSRect(origin: .zero, size: image.size),
+            from: contentRect,
             operation: .sourceOver,
             fraction: 1.0
         )
@@ -229,6 +223,49 @@ final class IconService: Sendable {
         Self.scaledImageCache.setObject(newImage, forKey: cacheKey)
         
         return newImage
+    }
+    
+    /// Finds the non-transparent bounding box of an image, or returns full bounds if not available
+    private func nonTransparentBounds(for image: NSImage) -> NSRect {
+        guard let tiff = image.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: tiff) else {
+            return NSRect(origin: .zero, size: image.size)
+        }
+        
+        let width = bitmap.pixelsWide
+        let height = bitmap.pixelsHigh
+        guard width > 0, height > 0, bitmap.hasAlpha else {
+            return NSRect(origin: .zero, size: image.size)
+        }
+        
+        var minX = width, maxX = 0, minY = height, maxY = 0
+        var foundAny = false
+        
+        for y in 0..<height {
+            for x in 0..<width {
+                if let color = bitmap.colorAt(x: x, y: y), color.alphaComponent > 0.05 {
+                    minX = min(minX, x)
+                    maxX = max(maxX, x)
+                    minY = min(minY, y)
+                    maxY = max(maxY, y)
+                    foundAny = true
+                }
+            }
+        }
+        
+        guard foundAny && maxX >= minX && maxY >= minY else {
+            return NSRect(origin: .zero, size: image.size)
+        }
+        
+        let scaleX = image.size.width / CGFloat(width)
+        let scaleY = image.size.height / CGFloat(height)
+        
+        let cropX = CGFloat(minX) * scaleX
+        let cropY = CGFloat(height - 1 - maxY) * scaleY
+        let cropW = CGFloat(maxX - minX + 1) * scaleX
+        let cropH = CGFloat(maxY - minY + 1) * scaleY
+        
+        return NSRect(x: cropX, y: cropY, width: cropW, height: cropH)
     }
     
     /// Nudges Finder to refresh the folder's icon

@@ -111,19 +111,21 @@ struct IconPackCard: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
                         .fill(AppTheme.Colors.packGradient(hex: pack.accentColorHex))
-                        .frame(height: 140)
+                        .frame(height: 150)
                     
-                    // Icon samples
-                    HStack(spacing: AppTheme.Spacing.lg) {
+                    // Icon samples filling 90% of banner space
+                    HStack(spacing: AppTheme.Spacing.md) {
                         ForEach(pack.previewIcons.prefix(4)) { icon in
                             let nsImage = icon.previewImage()
                             Image(nsImage: nsImage)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 52, height: 52)
-                                .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 108)
+                                .shadow(color: .black.opacity(0.28), radius: 6, y: 3)
                         }
                     }
+                    .padding(.horizontal, AppTheme.Spacing.lg)
                 }
                 .clipShape(
                     UnevenRoundedRectangle(
