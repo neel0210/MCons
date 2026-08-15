@@ -27,8 +27,13 @@ struct IconPacksView: View {
                         selectedPack = nil
                     }
                 })
+                .transition(.asymmetric(
+                    insertion: .opacity.combined(with: .scale(scale: 0.97)),
+                    removal: .opacity
+                ))
             } else {
                 packsGrid
+                    .transition(.opacity)
             }
         }
         .background(Color(nsColor: .windowBackgroundColor))
@@ -58,36 +63,43 @@ struct IconPacksView: View {
                         .font(AppTheme.Typography.body)
                         .foregroundStyle(.secondary)
                 }
-                .fadeInUp()
                 
                 // Search
-                HStack {
+                HStack(spacing: AppTheme.Spacing.sm) {
                     Image(systemName: "magnifyingglass")
                         .foregroundStyle(.secondary)
                     TextField("Search packs...", text: $searchText)
                         .textFieldStyle(.plain)
                         .font(AppTheme.Typography.body)
+                    
+                    if !searchText.isEmpty {
+                        Button {
+                            searchText = ""
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(.secondary)
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
                 .padding(AppTheme.Spacing.md)
                 .background(
                     RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                         .fill(AppTheme.Colors.cardBackground)
                 )
-                .fadeInUp(delay: 0.05)
                 
                 // Pack Cards Grid
                 LazyVGrid(columns: [
                     GridItem(.flexible(), spacing: AppTheme.Spacing.lg),
                     GridItem(.flexible(), spacing: AppTheme.Spacing.lg),
                 ], spacing: AppTheme.Spacing.lg) {
-                    ForEach(Array(filteredPacks.enumerated()), id: \.element.id) { index, pack in
+                    ForEach(filteredPacks) { pack in
                         IconPackCard(pack: pack) {
                             withAnimation(AppAnimations.smooth) {
                                 selectedPack = pack
                                 showPackDetail = true
                             }
                         }
-                        .fadeInUp(delay: Double(index) * 0.05 + 0.1)
                     }
                 }
             }
@@ -101,8 +113,6 @@ struct IconPacksView: View {
 struct IconPackCard: View {
     let pack: IconPack
     let action: () -> Void
-    
-    @State private var isHovering = false
     
     var body: some View {
         Button(action: action) {
@@ -164,22 +174,8 @@ struct IconPackCard: View {
                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
                     .fill(AppTheme.Colors.cardBackground)
             )
-            .overlay(
-                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
-                    .stroke(
-                        isHovering
-                            ? Color(hex: pack.accentColorHex).opacity(0.6)
-                            : Color(nsColor: .separatorColor).opacity(0.3),
-                        lineWidth: isHovering ? 2 : 1
-                    )
-            )
-            .scaleEffect(isHovering ? 1.02 : 1.0)
-            .cardShadow()
-            .animation(AppAnimations.quick, value: isHovering)
+            .cardLift(accentHex: pack.accentColorHex)
         }
         .buttonStyle(.plain)
-        .onHover { hovering in
-            isHovering = hovering
-        }
     }
 }

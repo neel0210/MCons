@@ -24,16 +24,19 @@ struct ContentView: View {
     
     @ViewBuilder
     private var detailView: some View {
-        switch appState.selectedSidebarItem {
-        case .home:
-            HomeView()
-        case .iconPacks:
-            IconPacksView()
-        case .applyIcon:
-            IconApplyView()
-        case .settings:
-            SettingsView()
+        Group {
+            switch appState.selectedSidebarItem {
+            case .home:
+                HomeView()
+            case .iconPacks:
+                IconPacksView()
+            case .applyIcon:
+                IconApplyView()
+            case .settings:
+                SettingsView()
+            }
         }
+        .animation(AppAnimations.quick, value: appState.selectedSidebarItem)
     }
 }
 

@@ -18,22 +18,28 @@ struct FolderIcon: Identifiable, Hashable, Codable {
         lhs.id == rhs.id
     }
     
-    /// Loads the NSImage for this icon
+    /// Loads the NSImage for this icon with instant in-memory caching
     func loadImage() -> NSImage? {
-        // If we have a file URL, load from disk
+        // If we have a file URL, retrieve from cache or load and cache
         if let url = fileURL {
-            return NSImage(contentsOf: url)
+            return IconImageCache.shared.image(for: url)
         }
         
-        // Otherwise generate a colored folder icon programmatically
+        // Otherwise generate/retrieve colored folder icon programmatically with caching
         if let hex = colorHex {
-            return FolderIconRenderer.renderFolderIcon(colorHex: hex, size: 512)
+            let key = "\(hex)_512"
+            if let cached = IconImageCache.shared.image(forKey: key) {
+                return cached
+            }
+            let rendered = FolderIconRenderer.renderFolderIcon(colorHex: hex, size: 512)
+            IconImageCache.shared.setImage(rendered, forKey: key)
+            return rendered
         }
         
         return nil
     }
     
-    /// Returns a SwiftUI Image for preview
+    /// Returns a SwiftUI Image for preview (instant cache hit)
     func previewImage() -> NSImage {
         if let image = loadImage() {
             return image

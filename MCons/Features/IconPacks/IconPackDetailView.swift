@@ -32,12 +32,22 @@ struct IconPackDetailView: View {
             ScrollView {
                 VStack(spacing: AppTheme.Spacing.xl) {
                     // Search bar
-                    HStack {
+                    HStack(spacing: AppTheme.Spacing.sm) {
                         Image(systemName: "magnifyingglass")
                             .foregroundStyle(.secondary)
-                        TextField("Search icons...", text: $searchText)
+                        TextField("Search icons in \(pack.name)...", text: $searchText)
                             .textFieldStyle(.plain)
                             .font(AppTheme.Typography.body)
+                        
+                        if !searchText.isEmpty {
+                            Button {
+                                searchText = ""
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundStyle(.secondary)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                     .padding(AppTheme.Spacing.md)
                     .background(
@@ -47,7 +57,7 @@ struct IconPackDetailView: View {
                     
                     // Icons grid
                     LazyVGrid(columns: [
-                        GridItem(.adaptive(minimum: 100, maximum: 130), spacing: AppTheme.Spacing.lg)
+                        GridItem(.adaptive(minimum: 110, maximum: 140), spacing: AppTheme.Spacing.lg)
                     ], spacing: AppTheme.Spacing.lg) {
                         ForEach(filteredIcons) { icon in
                             IconCell(
@@ -95,6 +105,7 @@ struct IconPackDetailView: View {
                 .foregroundStyle(Color(hex: pack.accentColorHex))
             }
             .buttonStyle(.plain)
+            .hoverScale(1.05)
             
             Divider()
                 .frame(height: 20)
@@ -131,15 +142,17 @@ struct IconPackDetailView: View {
                 let nsImage = icon.previewImage()
                 Image(nsImage: nsImage)
                     .resizable()
-                    .frame(width: 40, height: 40)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 44, height: 44)
+                    .shadow(color: Color(hex: pack.accentColorHex).opacity(0.4), radius: 6, y: 2)
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(icon.name)
                         .font(AppTheme.Typography.headline)
                         .foregroundStyle(.primary)
-                    Text("Selected")
+                    Text("Selected Icon")
                         .font(AppTheme.Typography.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color(hex: pack.accentColorHex))
                 }
             }
             
@@ -175,10 +188,11 @@ struct IconCell: View {
                 Image(nsImage: nsImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 64, height: 64)
+                    .frame(width: 76, height: 76)
                     .shadow(
-                        color: isSelected ? Color(hex: accentHex).opacity(0.4) : .clear,
-                        radius: isSelected ? 8 : 0
+                        color: isSelected ? Color(hex: accentHex).opacity(0.45) : (isHovered ? .black.opacity(0.25) : .black.opacity(0.12)),
+                        radius: isSelected ? 8 : (isHovered ? 6 : 3),
+                        y: isSelected ? 4 : 2
                     )
                 
                 Text(icon.name)
@@ -193,20 +207,24 @@ struct IconCell: View {
                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                     .fill(
                         isSelected
-                            ? Color(hex: accentHex).opacity(0.12)
+                            ? Color(hex: accentHex).opacity(0.15)
                             : isHovered
                                 ? AppTheme.Colors.cardBackground
-                                : .clear
+                                : Color.clear
                     )
             )
             .overlay(
                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                     .stroke(
-                        isSelected ? Color(hex: accentHex).opacity(0.6) : .clear,
-                        lineWidth: 2
+                        isSelected
+                            ? Color(hex: accentHex).opacity(0.8)
+                            : isHovered
+                                ? Color(hex: accentHex).opacity(0.3)
+                                : Color.clear,
+                        lineWidth: isSelected ? 2 : 1
                     )
             )
-            .scaleEffect(isHovered && !isSelected ? 1.05 : 1.0)
+            .scaleEffect(isHovered && !isSelected ? 1.04 : 1.0)
             .animation(AppAnimations.quick, value: isHovered)
             .animation(AppAnimations.bouncy, value: isSelected)
         }

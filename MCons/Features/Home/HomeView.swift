@@ -201,8 +201,6 @@ struct QuickActionCard: View {
     let gradient: LinearGradient
     let action: () -> Void
     
-    @State private var isHovering = false
-    
     var body: some View {
         Button(action: action) {
             VStack(spacing: AppTheme.Spacing.md) {
@@ -214,6 +212,7 @@ struct QuickActionCard: View {
                         RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                             .fill(gradient)
                     )
+                    .shadow(color: .black.opacity(0.15), radius: 6, y: 3)
                 
                 VStack(spacing: AppTheme.Spacing.xxs) {
                     Text(title)
@@ -231,21 +230,9 @@ struct QuickActionCard: View {
                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
                     .fill(AppTheme.Colors.cardBackground)
             )
-            .overlay(
-                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
-                    .stroke(
-                        isHovering ? Color(hex: "#6C5CE7").opacity(0.5) : Color.clear,
-                        lineWidth: 1.5
-                    )
-            )
-            .scaleEffect(isHovering ? 1.03 : 1.0)
-            .cardShadow()
-            .animation(AppAnimations.quick, value: isHovering)
+            .cardLift(accentHex: "#6C5CE7")
         }
         .buttonStyle(.plain)
-        .onHover { hovering in
-            isHovering = hovering
-        }
     }
 }
 
@@ -254,8 +241,6 @@ struct QuickActionCard: View {
 struct PackPreviewCard: View {
     let pack: IconPack
     let action: () -> Void
-    
-    @State private var isHovering = false
     
     var body: some View {
         Button(action: action) {
@@ -269,7 +254,7 @@ struct PackPreviewCard: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: .infinity)
                             .frame(height: 60)
-                            .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
+                            .shadow(color: .black.opacity(0.25), radius: 4, y: 2)
                     }
                 }
                 .padding(.horizontal, AppTheme.Spacing.sm)
@@ -297,21 +282,9 @@ struct PackPreviewCard: View {
                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
                     .fill(AppTheme.Colors.cardBackground)
             )
-            .overlay(
-                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
-                    .stroke(
-                        isHovering ? Color(hex: pack.accentColorHex).opacity(0.5) : Color.clear,
-                        lineWidth: 1.5
-                    )
-            )
-            .scaleEffect(isHovering ? 1.03 : 1.0)
-            .cardShadow()
-            .animation(AppAnimations.quick, value: isHovering)
+            .cardLift(accentHex: pack.accentColorHex)
         }
         .buttonStyle(.plain)
-        .onHover { hovering in
-            isHovering = hovering
-        }
     }
 }
 

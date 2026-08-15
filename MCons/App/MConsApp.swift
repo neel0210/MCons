@@ -65,13 +65,36 @@ final class AppState: ObservableObject {
     @Published var statusMessage: String = ""
     @Published var currentError: IconServiceError?
     @Published var showErrorAlert: Bool = false
+    @Published var cachedIconPacks: [IconPack] = []
     
     let iconService = IconService()
     let folderService = FolderService()
     let iconPackLoader = IconPackLoader()
     
+    init() {
+        // Instant synchronous first-pass pack metadata loading
+        let packs = iconPackLoader.loadAllPacks()
+        self.cachedIconPacks = packs
+        // Background async preheating of all icon bitmaps for silky smooth 120fps UI
+        IconImageCache.shared.preheat(packs: packs)
+    }
+    
+    /// Returns cached icon packs instantly without disk re-scanning
     func loadIconPacks() -> [IconPack] {
-        return iconPackLoader.loadAllPacks()
+        if !cachedIconPacks.isEmpty {
+            return cachedIconPacks
+        }
+        let packs = iconPackLoader.loadAllPacks()
+        cachedIconPacks = packs
+        IconImageCache.shared.preheat(packs: packs)
+        return packs
+    }
+    
+    /// Force refreshes packs and updates the image cache
+    func refreshIconPacks() {
+        let packs = iconPackLoader.loadAllPacks()
+        cachedIconPacks = packs
+        IconImageCache.shared.preheat(packs: packs)
     }
     
     /// Executes folder rename and icon application as an atomic operation with UndoManager support (Cmd+Z)
