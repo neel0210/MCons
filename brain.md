@@ -76,6 +76,7 @@ Mac_ICOns/
             ├── dark-mode-pro/
             ├── macos-native-plus/
             ├── demon-slayer/
+            ├── one-piece/
             └── pokemon/
 ```
 
@@ -148,7 +149,9 @@ Mac_ICOns/
 2. 🍎 **macOS Native+** (12 icons) — Enhanced Apple system folder colors.
 3. ⚔️ **Demon Slayer** (10 custom 1024×1024 SVG icons):
    - Akaza, Douma, Gyomei, Kokushibo, Muichiro, Muzan, Rengoku, Sanemi, Tanjiro, Yoriichi.
-4. ⚡ **Pokémon** (10 custom 1024×1024 SVG icons):
+4. 🏴‍☠️ **One Piece** (10 custom 1024×1024 SVG icons):
+   - Ace, Chopper, Law, Luffy, Nami, Robin, Sanji, Shanks, Whitebeard, Zoro.
+5. ⚡ **Pokémon** (10 custom 1024×1024 SVG icons):
    - Pikachu, Charizard, Charizard X, Charizard Y, Greninja, Mewtwo, Rayquaza, Salamence, Snorlax, Tyranitar.
 
 ---

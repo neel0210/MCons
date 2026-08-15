@@ -38,6 +38,7 @@
 | 🌙 **Dark Mode Pro** | Matte black with neon accents | 12 | Vector (CoreGraphics) |
 | 🍎 **macOS Native+** | Enhanced Apple system colors | 12 | Vector (CoreGraphics) |
 | ⚔️ **Demon Slayer** | Kimetsu no Yaiba Hashira & Demon icons | 10 | 1024×1024 SVG |
+| 🏴‍☠️ **One Piece** | Straw Hat Pirates & legendary pirate icons | 10 | 1024×1024 SVG |
 | ⚡ **Pokémon** | Legendary & iconic Pokémon custom folder icons | 10 | 1024×1024 SVG |
 
 ## Adding Custom Icon Packs & Icons
@@ -137,6 +138,16 @@ MCons/
 
 The app renders folder icons programmatically using Core Graphics when bundled images aren't available, creating beautiful colored folder shapes with proper shadows and highlights.
 
+## Credits & Disclaimers
+
+All custom icon packs and character artwork featured in MCons remain the intellectual property of their respective creators and copyright owners:
+
+- **⚡ Pokémon**: Characters, names, and related indicia are trademarks and copyright of **© Nintendo / Creatures Inc. / GAME FREAK inc. / The Pokémon Company**.
+- **⚔️ Demon Slayer (*Kimetsu no Yaiba*)**: Characters, names, and artwork are copyright of **© Koyoharu Gotouge / SHUEISHA / Aniplex / ufotable**.
+- **🏴‍☠️ One Piece**: Characters, names, and artwork are copyright of **© Eiichiro Oda / SHUEISHA / Toei Animation**.
+
+> **Disclaimer:** MCons is a free, non-commercial open-source utility designed for personal desktop customization. All themed icon assets are provided for personal aesthetic enhancement.
+
 ## License
 
 MIT License — see [LICENSE](LICENSE) for details.
@@ -144,3 +155,4 @@ MIT License — see [LICENSE](LICENSE) for details.
 ## Author
 
 Developed by **Neel0210** ❤️
+
