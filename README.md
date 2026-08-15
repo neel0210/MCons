@@ -39,7 +39,7 @@
 | 🍎 **macOS Native+** | Enhanced Apple system colors | 12 | Vector (CoreGraphics) |
 | ⚔️ **Demon Slayer** | Kimetsu no Yaiba Hashira & Demon icons | 10 | 1024×1024 SVG |
 | 🏴‍☠️ **One Piece** | Straw Hat Pirates & legendary pirate icons | 10 | 1024×1024 SVG |
-| 🗡️ **Solo Leveling** | Shadow Monarch & shadow army icons | 3 | 1024×1024 SVG |
+| 🗡️ **Solo Leveling** | Shadow Monarch & shadow army icons | 10 | 1024×1024 SVG |
 | ⚡ **Pokémon** | Legendary & iconic Pokémon custom folder icons | 10 | 1024×1024 SVG |
 
 ## Adding Custom Icon Packs & Icons

@@ -152,8 +152,8 @@ Mac_ICOns/
    - Akaza, Douma, Gyomei, Kokushibo, Muichiro, Muzan, Rengoku, Sanemi, Tanjiro, Yoriichi.
 4. 🏴‍☠️ **One Piece** (10 custom 1024×1024 SVG icons):
    - Ace, Chopper, Law, Luffy, Nami, Robin, Sanji, Shanks, Whitebeard, Zoro.
-5. 🗡️ **Solo Leveling** (3 custom 1024×1024 SVG icons):
-   - Beru, Igris, Sung Jinwoo.
+5. 🗡️ **Solo Leveling** (10 custom 1024×1024 SVG icons):
+   - Baek Yoonho, Beru, Cha Hae In, Choi Jong In, Go Gunhee, Igris, Iron, Sung Jinwoo, Tank, Thomas Andre.
 6. ⚡ **Pokémon** (10 custom 1024×1024 SVG icons):
    - Pikachu, Charizard, Charizard X, Charizard Y, Greninja, Mewtwo, Rayquaza, Salamence, Snorlax, Tyranitar.
 
