@@ -19,51 +19,58 @@
   </p>
 </div>
 
-## Features
+---
 
-- 🎨 **Premium Icon Packs** — Beautifully rendered folder icons across custom themes
-- 📁 **Create & Style** — Create new folders and apply icons in one flow
-- 🖱️ **Drag & Drop** — Drop folders directly onto the app to customize them
-- ✏️ **Folder Renaming** — Option to rename target folder or keep original name
-- ↩️ **Cmd+Z Undo** — Full undo/redo support for folder renames and icon changes
-- 🖼️ **Custom Import** — Use your own SVG, PNG, JPG, or ICNS files as folder icons
-- 🔄 **Reset to Default** — One-click restore to macOS default folder icon
-- 🌙 **Dark Mode** — Full dark and light mode support
-- ⚡ **Native Performance** — Built with SwiftUI for instant, fluid interactions
+## ✨ Features
 
-## Icon Packs
+- 🎨 **Curated Vector & Anime Icon Packs** — High-resolution (1024×1024) SVG vector icons across popular series and modern desktop themes.
+- 📁 **Create & Style** — Create new directories and apply icons in a single atomic workflow.
+- 🖱️ **Drag & Drop** — Drop folders or image files directly into the window to apply instantly.
+- ✏️ **Smart Folder Renaming** — Option to rename target folder, use icon name, or keep original name with real-time preview.
+- ↩️ **Full Undo / Redo (Cmd+Z / Shift+Cmd+Z)** — Complete macOS `UndoManager` integration with automatic rollback if operations fail.
+- 🖼️ **Multi-Format Custom Import** — Import `.svg`, `.png`, `.jpg`, `.icns`, and `.tiff` files to use as custom folder icons.
+- 🔙 **Seamless Navigation** — Back button support across views with automatic state and pack detail restoration.
+- 🔄 **Reset to Default** — One-click restore to native macOS folder icon.
+- ⚡ **Silky Performance** — Dynamic icon loading, asynchronous cache preheating, and 120fps ProMotion animations.
+- 🌙 **Dark & Light Mode** — Sleek macOS design with Glassmorphism, card elevation, and responsive design tokens.
 
-| Pack | Theme | Icons | Format |
-|:---|:---|:---:|:---:|
-| 🌙 **Dark Mode Pro** | Matte black with neon accents | 12 | Vector (CoreGraphics) |
-| 🍎 **macOS Native+** | Enhanced Apple system colors | 12 | Vector (CoreGraphics) |
-| ⚔️ **Demon Slayer** | Kimetsu no Yaiba Hashira & Demon icons | 10 | 1024×1024 SVG |
-| 🏴‍☠️ **One Piece** | Straw Hat Pirates & legendary pirate icons | 10 | 1024×1024 SVG |
-| 🗡️ **Solo Leveling** | Shadow Monarch & shadow army icons | 10 | 1024×1024 SVG |
-| ⚡ **Pokémon** | Legendary & iconic Pokémon custom folder icons | 10 | 1024×1024 SVG |
+---
 
-## Adding Custom Icon Packs & Icons
+## 📦 Bundled Icon Packs
+
+| Pack | Theme | Icons | Format | Featured Characters / Styles |
+|:---|:---|:---:|:---:|:---|
+| ⚔️ **Demon Slayer** | *Kimetsu no Yaiba* Hashira & Demons | 10 | 1024×1024 SVG | Tanjiro, Rengoku, Akaza, Douma, Gyomei, Kokushibo, Muichiro, Muzan, Sanemi, Yoriichi |
+| 🏴‍☠️ **One Piece** | Straw Hat Pirates & Legends | 10 | 1024×1024 SVG | Luffy, Zoro, Sanji, Nami, Robin, Chopper, Ace, Law, Shanks, Whitebeard |
+| ⚡ **Pokémon** | Iconic & Legendary Pokémon | 10 | 1024×1024 SVG | Pikachu, Mewtwo, Rayquaza, Charizard, Charizard X, Charizard Y, Greninja, Snorlax, Tyranitar, Salamence |
+| 🗡️ **Solo Leveling** | *Na Honjaman Rebeleob* Hunters & Shadows | 10 | 1024×1024 SVG | Sung Jinwoo, Igris, Beru, Iron, Tank, Cha Hae-In, Baek Yoonho, Choi Jong-In, Go Gunhee, Thomas Andre |
+| 🌙 **Dark Mode Pro** | Matte black with vibrant neon edges | 12 | CoreGraphics Vector | Neon Cyan, Neon Purple, Neon Green, Neon Pink, Neon Amber, Electric Blue, etc. |
+| 🍎 **macOS Native+** | Enhanced Apple system colors | 12 | CoreGraphics Vector | Cupertino Blue, Deep Purple, Rose Pink, Crimson Red, Sunset Orange, Emerald Green, etc. |
+
+---
+
+## 🛠️ Adding Custom Icon Packs & Icons
 
 Want to add your own custom icon packs to MCons? Follow this simple guide:
 
 ### 1. Icon Specifications
-- **Recommended Size**: **512×512** or **1024×1024** pixels (1:1 square ratio)
+- **Recommended Resolution**: **1024×1024** or **512×512** pixels (1:1 square ratio)
 - **Supported Formats**: `.svg` (recommended vector format), `.png` (transparent background), `.jpg`, `.icns`, or `.tiff`
-- **Color Profile**: sRGB or Display P3 with alpha channel
+- **Color Profile**: sRGB or Display P3 with alpha channel transparency
 
-### 2. File Location
+### 2. File Structure
 Create a subfolder for your pack inside `MCons/Resources/IconPacks/`:
 
-```
+```text
 MCons/Resources/IconPacks/my-pack/
 ├── metadata.json
-├── Icon1.png
-├── Icon2.png
-└── Icon3.png
+├── Icon1.svg
+├── Icon2.svg
+└── Icon3.svg
 ```
 
 ### 3. Add `metadata.json`
-Inside your pack folder, add a `metadata.json` file:
+Inside your pack folder, create a `metadata.json` file:
 
 ```json
 {
@@ -75,23 +82,30 @@ Inside your pack folder, add a `metadata.json` file:
 }
 ```
 
-### 4. How to Wire Them Up
-No Swift code changes are needed! The dynamic `IconPackLoader` scans all pack folders automatically:
+### 4. Automatic Discovery
+No Swift code changes are needed! The dynamic `IconPackLoader` automatically scans and registers all pack folders:
 1. Run `./build_app.sh` (or `swift build`)
 2. Launch MCons — your new icon pack will automatically appear in the **Icon Packs** tab!
 
-- macOS 14.0 (Sonoma) or later
-- Apple Silicon or Intel Mac
+---
 
-## Build & Run
+## 💻 Requirements
 
-### Quick Start (Debug)
+- **macOS**: 14.0 (Sonoma) or later (compatible with macOS 15 Sequoia)
+- **Architecture**: Apple Silicon (M1/M2/M3/M4) or Intel Mac
+- **Xcode**: 15.0+ / Swift 6.0+ (for building from source)
+
+---
+
+## 🚀 Build & Run
+
+### Quick Start (Debug via Swift CLI)
 ```bash
 swift build
 .build/debug/MCons
 ```
 
-### Release Build (App Bundle)
+### Release Build (.app Bundle)
 ```bash
 chmod +x build_app.sh
 ./build_app.sh
@@ -99,7 +113,7 @@ open "output/MCons.app"
 ```
 
 ### Open in Xcode
-The project includes both a `Package.swift` (for SPM) and an `.xcodeproj` (generated with XcodeGen):
+The project includes both a `Package.swift` (SPM) and an `.xcodeproj` (generated via XcodeGen):
 ```bash
 # Regenerate the Xcode project
 xcodegen generate
@@ -108,53 +122,65 @@ xcodegen generate
 open MCons.xcodeproj
 ```
 
-## Project Structure
+---
 
-```
+## 📂 Project Structure
+
+```text
 MCons/
-├── App/                        # Entry point & AppState (MConsApp.swift)
+├── App/                        # Application lifecycle & AppState (MConsApp.swift)
 ├── Features/
-│   ├── Home/                   # Dashboard & ContentView
-│   ├── IconPacks/              # Browse & select icons
-│   ├── IconApply/              # Apply workflow
-│   └── Settings/               # Preferences
+│   ├── Home/                   # Dashboard, quick actions, recent folders (HomeView.swift)
+│   ├── IconPacks/              # Pack browsing, search, and detail grid (IconPacksView.swift)
+│   ├── IconApply/              # Icon selection, folder drop zone, atomic apply (IconApplyView.swift)
+│   └── Settings/               # Preferences, cache controls, and about info (SettingsView.swift)
 ├── Core/
-│   ├── Services/               # IconService, FolderService, IconPackLoader
-│   ├── Models/                 # IconPack, FolderIcon, AppFolder
-│   ├── Extensions/             # Color hex, NSImage, View modifiers
-│   └── Theme/                  # Design tokens & animations
+│   ├── Services/               # IconService, FolderService, IconPackLoader, IconImageCache, SecurityBookmarkManager
+│   ├── Models/                 # IconPack, FolderIcon, AppFolder, FolderIconRenderer
+│   ├── Extensions/             # Color hex helpers, NSImage utilities, View modifiers
+│   └── Theme/                  # Design tokens, typography, gradients, and animations
 └── Resources/
-    ├── Assets.xcassets/        # App icon & colors
-    └── IconPacks/              # Bundled icon pack images
+    ├── Assets.xcassets/        # App icons & asset catalogs
+    └── IconPacks/              # Bundled icon pack SVG vectors & metadata
 ```
 
-## How It Works
+---
 
-**MCons - Icons for MacOS** uses Apple's native `NSWorkspace.setIcon(_:forFile:options:)` API to set custom icons on folders. This is the official, Apple-sanctioned method that:
+## ⚙️ How It Works
 
-- Works reliably across all macOS versions
-- Persists across reboots
-- Shows in Finder, Dock, and Spotlight
-- Can be reset cleanly
+**MCons** uses Apple's native `NSWorkspace.setIcon(_:forFile:options:)` API to apply custom folder icons. This is the official macOS method that:
 
-The app renders folder icons programmatically using Core Graphics when bundled images aren't available, creating beautiful colored folder shapes with proper shadows and highlights.
+- ✅ Persists across system reboots and Finder restarts
+- ✅ Renders smoothly across Finder, Dock, Quick Look, and Spotlight
+- ✅ Supports clean one-click restoration to default macOS folder icons
+- ✅ Handles atomic folder rename and icon application with complete `UndoManager` rollback support (Cmd+Z)
+- ✅ Employs `SecurityBookmarkManager` to preserve sandboxed folder access permissions
 
-## Credits & Disclaimers
+---
 
-All custom icon packs and character artwork featured in MCons remain the intellectual property of their respective creators and copyright owners:
+## 📜 Credits & Intellectual Property Disclaimers
+
+All custom icon packs and themed artwork featured in MCons remain the intellectual property of their respective creators and copyright owners:
 
 - **⚡ Pokémon**: Characters, names, and related indicia are trademarks and copyright of **© Nintendo / Creatures Inc. / GAME FREAK inc. / The Pokémon Company**.
 - **⚔️ Demon Slayer (*Kimetsu no Yaiba*)**: Characters, names, and artwork are copyright of **© Koyoharu Gotouge / SHUEISHA / Aniplex / ufotable**.
 - **🏴‍☠️ One Piece**: Characters, names, and artwork are copyright of **© Eiichiro Oda / SHUEISHA / Toei Animation**.
 - **🗡️ Solo Leveling (*Na Honjaman Rebeleob*)**: Story by **Chugong**, Art by **DUBU (REDICE STUDIO)**, Published by **D&C Media / KakaoPage / A-1 Pictures**.
+- **Apple & macOS**: macOS, SF Symbols, Finder, and Dock are trademarks of **Apple Inc.**
 
-> **Disclaimer:** MCons is a free, non-commercial open-source utility designed for personal desktop customization. All themed icon assets are provided for personal aesthetic enhancement.
+> **Disclaimer:** MCons is a free, non-commercial open-source utility designed exclusively for personal desktop customization and aesthetic enhancement. All copyrighted characters and logos belong to their respective rights holders.
 
-## License
+---
 
-MIT License — see [LICENSE](LICENSE) for details.
+## 📄 License
 
-## Author
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for more information.
 
-Developed by **Neel0210** ❤️
+---
 
+## 👨‍💻 Author
+
+Made with ❤️ by **Neel0210** while vibe coding.
+
+- Telegram Channel: [@MConsOfficial](https://t.me/MConsOfficial)
+- Telegram Support: [@MConsupport](https://t.me/MConsupport)
