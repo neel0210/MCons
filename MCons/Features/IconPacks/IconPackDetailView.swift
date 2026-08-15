@@ -161,6 +161,7 @@ struct IconPackDetailView: View {
             Button("Apply to Folder") {
                 if let icon = selectedIcon {
                     appState.selectedIcon = icon
+                    appState.selectedIconPack = pack
                     appState.selectedSidebarItem = .applyIcon
                 }
             }

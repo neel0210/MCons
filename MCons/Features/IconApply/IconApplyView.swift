@@ -22,17 +22,8 @@ struct IconApplyView: View {
         ScrollView {
             VStack(spacing: AppTheme.Spacing.xxl) {
                 // Header
-                VStack(alignment: .leading, spacing: AppTheme.Spacing.sm) {
-                    Text("Apply Icon")
-                        .font(AppTheme.Typography.largeTitle)
-                        .foregroundStyle(.primary)
-                    
-                    Text("Select an icon and a target folder, option to rename folder, then apply")
-                        .font(AppTheme.Typography.body)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .fadeInUp()
+                header
+                    .fadeInUp()
                 
                 // Two-column layout
                 HStack(alignment: .top, spacing: AppTheme.Spacing.xxl) {
@@ -49,6 +40,10 @@ struct IconApplyView: View {
                             .fadeInUp(delay: 0.2)
                     }
                 }
+                
+                // Footer
+                footer
+                    .fadeInUp(delay: 0.25)
                 
                 Spacer(minLength: AppTheme.Spacing.xxl)
             }
@@ -78,6 +73,48 @@ struct IconApplyView: View {
                 successOverlay
             }
         }
+    }
+    
+    // MARK: - Header
+    
+    private var header: some View {
+        HStack(spacing: AppTheme.Spacing.lg) {
+            Button {
+                withAnimation(AppAnimations.smooth) {
+                    if let prev = appState.previousSidebarItem {
+                        appState.selectedSidebarItem = prev
+                    } else {
+                        appState.selectedSidebarItem = .iconPacks
+                    }
+                }
+            } label: {
+                HStack(spacing: AppTheme.Spacing.xs) {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 14, weight: .semibold))
+                    Text("Back")
+                        .font(AppTheme.Typography.body)
+                }
+                .foregroundStyle(Color(hex: "#6C5CE7"))
+            }
+            .buttonStyle(.plain)
+            .hoverScale(1.05)
+            
+            Divider()
+                .frame(height: 24)
+            
+            VStack(alignment: .leading, spacing: AppTheme.Spacing.xxs) {
+                Text("Apply Icon")
+                    .font(AppTheme.Typography.largeTitle)
+                    .foregroundStyle(.primary)
+                
+                Text("Select an icon and a target folder, option to rename folder, then apply")
+                    .font(AppTheme.Typography.body)
+                    .foregroundStyle(.secondary)
+            }
+            
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     // MARK: - Icon Selection Panel
@@ -649,5 +686,14 @@ struct IconApplyView: View {
             }
         }
         return true
+    }
+    
+    // MARK: - Footer
+    
+    private var footer: some View {
+        Text("Made with Love by Neel0210 while vibe coding")
+            .font(AppTheme.Typography.caption)
+            .foregroundStyle(.secondary)
+            .padding(.top, AppTheme.Spacing.md)
     }
 }

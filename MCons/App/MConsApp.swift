@@ -50,7 +50,14 @@ struct MConsApp: App {
 
 @MainActor
 final class AppState: ObservableObject {
-    @Published var selectedSidebarItem: SidebarItem = .home
+    @Published var previousSidebarItem: SidebarItem?
+    @Published var selectedSidebarItem: SidebarItem = .home {
+        didSet {
+            if oldValue != selectedSidebarItem {
+                previousSidebarItem = oldValue
+            }
+        }
+    }
     @Published var selectedIconPack: IconPack?
     @Published var selectedIcon: FolderIcon?
     @Published var targetFolderURL: URL? {
