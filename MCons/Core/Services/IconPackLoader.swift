@@ -95,11 +95,28 @@ final class IconPackLoader: Sendable {
             return []
         }
         
-        let imageExtensions = ["png", "jpg", "jpeg", "icns", "tiff"]
+        let imageExtensions = ["svg", "png", "jpg", "jpeg", "icns", "tiff"]
+        let validFiles = files.filter { imageExtensions.contains($0.pathExtension.lowercased()) }
         
-        return files
-            .filter { imageExtensions.contains($0.pathExtension.lowercased()) }
-            .sorted { $0.lastPathComponent < $1.lastPathComponent }
+        // Group by base name and prioritize svg > png > icns > jpg > jpeg > tiff
+        var iconsByBaseName: [String: URL] = [:]
+        let extPriority = ["svg", "png", "icns", "jpg", "jpeg", "tiff"]
+        
+        for file in validFiles {
+            let baseName = file.deletingPathExtension().lastPathComponent
+            if let existing = iconsByBaseName[baseName] {
+                let currentRank = extPriority.firstIndex(of: file.pathExtension.lowercased()) ?? 99
+                let existingRank = extPriority.firstIndex(of: existing.pathExtension.lowercased()) ?? 99
+                if currentRank < existingRank {
+                    iconsByBaseName[baseName] = file
+                }
+            } else {
+                iconsByBaseName[baseName] = file
+            }
+        }
+        
+        return iconsByBaseName.values
+            .sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
             .map { fileURL in
                 FolderIcon(
                     id: "\(packId)_\(fileURL.deletingPathExtension().lastPathComponent)",

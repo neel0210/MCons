@@ -26,19 +26,19 @@
 - 🖱️ **Drag & Drop** — Drop folders directly onto the app to customize them
 - ✏️ **Folder Renaming** — Option to rename target folder or keep original name
 - ↩️ **Cmd+Z Undo** — Full undo/redo support for folder renames and icon changes
-- 🖼️ **Custom Import** — Use your own PNG, JPG, or ICNS files as folder icons
+- 🖼️ **Custom Import** — Use your own SVG, PNG, JPG, or ICNS files as folder icons
 - 🔄 **Reset to Default** — One-click restore to macOS default folder icon
 - 🌙 **Dark Mode** — Full dark and light mode support
 - ⚡ **Native Performance** — Built with SwiftUI for instant, fluid interactions
 
 ## Icon Packs
 
-| Pack | Theme | Icons |
-|:---|:---|:---:|
-| 🌙 **Dark Mode Pro** | Matte black with neon accents | 12 |
-| 🍎 **macOS Native+** | Enhanced Apple system colors | 12 |
-| ⚔️ **Demon Slayer** | Kimetsu no Yaiba Hashira & Demon icons | 10 |
-| ⚡ **Pokémon** | Legendary & iconic Pokémon custom folder icons | 10 |
+| Pack | Theme | Icons | Format |
+|:---|:---|:---:|:---:|
+| 🌙 **Dark Mode Pro** | Matte black with neon accents | 12 | Vector (CoreGraphics) |
+| 🍎 **macOS Native+** | Enhanced Apple system colors | 12 | Vector (CoreGraphics) |
+| ⚔️ **Demon Slayer** | Kimetsu no Yaiba Hashira & Demon icons | 10 | 1024×1024 SVG |
+| ⚡ **Pokémon** | Legendary & iconic Pokémon custom folder icons | 10 | 1024×1024 SVG |
 
 ## Adding Custom Icon Packs & Icons
 
@@ -46,7 +46,7 @@ Want to add your own custom icon packs to MCons? Follow this simple guide:
 
 ### 1. Icon Specifications
 - **Recommended Size**: **512×512** or **1024×1024** pixels (1:1 square ratio)
-- **Supported Formats**: `.png` (recommended with transparent background), `.jpg`, `.icns`, or `.tiff`
+- **Supported Formats**: `.svg` (recommended vector format), `.png` (transparent background), `.jpg`, `.icns`, or `.tiff`
 - **Color Profile**: sRGB or Display P3 with alpha channel
 
 ### 2. File Location

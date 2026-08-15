@@ -156,7 +156,7 @@ struct IconApplyView: View {
                     )
                     .fileImporter(
                         isPresented: $showImagePicker,
-                        allowedContentTypes: [.png, .jpeg, .icns, .tiff],
+                        allowedContentTypes: [.png, .jpeg, .icns, .tiff, .svg],
                         allowsMultipleSelection: false
                     ) { result in
                         if case .success(let urls) = result, let url = urls.first {

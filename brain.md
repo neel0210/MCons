@@ -26,9 +26,8 @@ Mac_ICOns/
 │   └── MCons.app                        # Standalone macOS app bundle
 │
 ├── assets/                              # Brand assets & master images (losslessly compressed)
-│   └── icon.png                         # Master 2048x2048 App Icon image (losslessly compressed)
-├── Custom_ICONS/                        # User-added custom icon source folders (audited & compressed)
-│   └── Pokemon/                         # Pokémon PNG source icons
+│   ├── icon.png                         # Master 2048x2048 App Icon image (losslessly compressed)
+│   └── icon.svg                         # High-res 1024x1024 vector SVG master
 │
 └── MCons/                               # Main source directory
     ├── App/
@@ -44,7 +43,7 @@ Mac_ICOns/
     │   ├── Services/
     │   │   ├── IconService.swift        # NSWorkspace.setIcon() wrapper & Finder refresh
     │   │   ├── FolderService.swift      # FileManager operations & folder rename logic
-    │   │   └── IconPackLoader.swift     # Multi-path resource loader & metadata parser
+    │   │   └── IconPackLoader.swift     # Multi-path resource loader & metadata parser (SVG/PNG)
     │   │
     │   ├── Theme/
     │   │   ├── AppTheme.swift           # Design tokens (colors, typography, spacing)
@@ -76,6 +75,7 @@ Mac_ICOns/
         └── IconPacks/                   # Bundled icon packs & metadata.json files
             ├── dark-mode-pro/
             ├── macos-native-plus/
+            ├── demon-slayer/
             └── pokemon/
 ```
 
@@ -146,7 +146,9 @@ Mac_ICOns/
 
 1. 🌙 **Dark Mode Pro** (12 icons) — Sleek matte black folders with neon accent edges.
 2. 🍎 **macOS Native+** (12 icons) — Enhanced Apple system folder colors.
-3. ⚡ **Pokémon** (10 custom PNG icons):
+3. ⚔️ **Demon Slayer** (10 custom 1024×1024 SVG icons):
+   - Akaza, Douma, Gyomei, Kokushibo, Muichiro, Muzan, Rengoku, Sanemi, Tanjiro, Yoriichi.
+4. ⚡ **Pokémon** (10 custom 1024×1024 SVG icons):
    - Pikachu, Charizard, Charizard X, Charizard Y, Greninja, Mewtwo, Rayquaza, Salamence, Snorlax, Tyranitar.
 
 ---
