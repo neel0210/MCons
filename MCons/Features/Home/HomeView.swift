@@ -169,7 +169,6 @@ struct HomeView: View {
                     }
                 }
             }
-            .drawingGroup()
         }
     }
     
@@ -249,9 +248,10 @@ struct PackPreviewCard: View {
                 // Icon grid preview
                 HStack(spacing: AppTheme.Spacing.sm) {
                     ForEach(pack.previewIcons.prefix(3)) { icon in
-                        let nsImage = icon.previewImage()
+                        let nsImage = icon.thumbnailImage()
                         Image(nsImage: nsImage)
                             .resizable()
+                            .interpolation(.high)
                             .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: .infinity)
                             .frame(height: 60)

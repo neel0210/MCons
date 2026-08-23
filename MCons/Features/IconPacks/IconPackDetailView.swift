@@ -76,7 +76,6 @@ struct IconPackDetailView: View {
                             }
                         }
                     }
-                    .drawingGroup()
                     
                     Spacer(minLength: AppTheme.Spacing.xxxl)
                 }
@@ -186,9 +185,10 @@ struct IconCell: View {
     var body: some View {
         Button(action: action) {
             VStack(spacing: AppTheme.Spacing.sm) {
-                let nsImage = icon.previewImage()
+                let nsImage = icon.thumbnailImage()
                 Image(nsImage: nsImage)
                     .resizable()
+                    .interpolation(.high)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 76, height: 76)
                     .shadow(

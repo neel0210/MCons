@@ -102,7 +102,6 @@ struct IconPacksView: View {
                         }
                     }
                 }
-                .drawingGroup()
             }
             .padding(AppTheme.Spacing.xxl)
         }
@@ -127,9 +126,10 @@ struct IconPackCard: View {
                     // Icon samples filling 90% of banner space
                     HStack(spacing: AppTheme.Spacing.md) {
                         ForEach(pack.previewIcons.prefix(4)) { icon in
-                            let nsImage = icon.previewImage()
+                            let nsImage = icon.thumbnailImage(size: 128)
                             Image(nsImage: nsImage)
                                 .resizable()
+                                .interpolation(.high)
                                 .aspectRatio(contentMode: .fit)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 108)

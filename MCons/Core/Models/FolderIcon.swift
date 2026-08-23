@@ -47,4 +47,29 @@ struct FolderIcon: Identifiable, Hashable, Codable {
         // Fallback to system folder icon
         return NSWorkspace.shared.icon(for: .folder)
     }
+    
+    /// Returns a pre-cached small thumbnail for grid cells (76×76)
+    /// Avoids SwiftUI downscaling full-size images on every frame
+    func thumbnailImage(size: Int = 76) -> NSImage {
+        let targetSize = NSSize(width: size, height: size)
+        
+        if let url = fileURL {
+            if let cached = IconImageCache.shared.image(for: url, targetSize: targetSize) {
+                return cached
+            }
+        }
+        
+        if let hex = colorHex {
+            let key = "\(hex)_\(size)"
+            if let cached = IconImageCache.shared.image(forKey: key) {
+                return cached
+            }
+            let rendered = FolderIconRenderer.renderFolderIcon(colorHex: hex, size: CGFloat(size))
+            IconImageCache.shared.setImage(rendered, forKey: key)
+            return rendered
+        }
+        
+        // Fallback
+        return previewImage()
+    }
 }

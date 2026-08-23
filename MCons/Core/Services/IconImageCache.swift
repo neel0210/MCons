@@ -9,9 +9,9 @@ final class IconImageCache: @unchecked Sendable {
     private let queue = DispatchQueue(label: "com.mcons.iconcache", qos: .userInitiated, attributes: .concurrent)
     
     private init() {
-        // Configure cache limits: retain up to 250 images or 200MB memory
-        cache.countLimit = 250
-        cache.totalCostLimit = 200 * 1024 * 1024
+        // Configure cache limits: retain up to 500 images or 300MB memory
+        cache.countLimit = 500
+        cache.totalCostLimit = 300 * 1024 * 1024
     }
     
     /// Retrieves an image from cache by key
@@ -65,7 +65,8 @@ final class IconImageCache: @unchecked Sendable {
     
     /// Pre-warms/caches icons on a background queue so all UI renders at 60/120 FPS
     func preheat(packs: [IconPack]) {
-        let thumbnailSize = NSSize(width: 76, height: 76)
+        let thumb76 = NSSize(width: 76, height: 76)
+        let thumb128 = NSSize(width: 128, height: 128)
         queue.async { [weak self] in
             guard let self = self else { return }
             for pack in packs {
@@ -73,19 +74,21 @@ final class IconImageCache: @unchecked Sendable {
                     if let url = icon.fileURL {
                         // Cache full-size
                         _ = self.image(for: url)
-                        // Cache grid thumbnail
-                        _ = self.image(for: url, targetSize: thumbnailSize)
+                        // Cache grid thumbnails
+                        _ = self.image(for: url, targetSize: thumb76)
+                        _ = self.image(for: url, targetSize: thumb128)
                     } else if let hex = icon.colorHex {
                         let key = "\(hex)_512"
                         if self.image(forKey: key) == nil {
                             let img = FolderIconRenderer.renderFolderIcon(colorHex: hex, size: 512)
                             self.setImage(img, forKey: key)
                         }
-                        // Also cache 76×76 programmatic thumbnail
-                        let thumbKey = "\(hex)_76"
-                        if self.image(forKey: thumbKey) == nil {
-                            let img = FolderIconRenderer.renderFolderIcon(colorHex: hex, size: 76)
-                            self.setImage(img, forKey: thumbKey)
+                        for size: CGFloat in [76, 128] {
+                            let thumbKey = "\(hex)_\(Int(size))"
+                            if self.image(forKey: thumbKey) == nil {
+                                let img = FolderIconRenderer.renderFolderIcon(colorHex: hex, size: size)
+                                self.setImage(img, forKey: thumbKey)
+                            }
                         }
                     }
                 }
