@@ -9,6 +9,9 @@ struct AboutView: View {
     private let telegramChannelURL = URL(string: "https://t.me/MConsOfficial")!
     private let telegramSupportURL = URL(string: "https://t.me/MConsupport")!
 
+    @StateObject private var updateService = UpdateService.shared
+    @State private var selectedReleaseForChangelog: ReleaseInfo?
+
     var body: some View {
         ScrollView {
             VStack(spacing: AppTheme.Spacing.xxl) {
@@ -37,6 +40,14 @@ struct AboutView: View {
             .padding(AppTheme.Spacing.xxl)
         }
         .background(AppTheme.Colors.background)
+        .sheet(item: $selectedReleaseForChangelog) { release in
+            ChangelogView(release: release, isUpdateAvailable: true)
+        }
+        .sheet(isPresented: $updateService.showChangelogSheet) {
+            if let release = updateService.latestRelease {
+                ChangelogView(release: release, isUpdateAvailable: true)
+            }
+        }
     }
 
     // MARK: - App Header
@@ -58,9 +69,29 @@ struct AboutView: View {
                     .font(AppTheme.Typography.title2)
                     .foregroundStyle(AppTheme.Colors.accentGradient)
 
-                Text("Version \(appVersion)")
-                    .font(AppTheme.Typography.caption)
-                    .foregroundStyle(.secondary)
+                HStack(spacing: AppTheme.Spacing.sm) {
+                    Text("Version \(updateService.currentFullVersion)")
+                        .font(AppTheme.Typography.caption)
+                        .foregroundStyle(.secondary)
+                    
+                    if case .updateAvailable(let release) = updateService.status {
+                        Button {
+                            selectedReleaseForChangelog = release
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: "sparkles")
+                                Text("Update Available")
+                            }
+                            .font(.system(size: 10, weight: .bold))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 3)
+                            .background(AppTheme.Colors.accentGradient)
+                            .foregroundStyle(.white)
+                            .clipShape(Capsule())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
             }
         }
         .frame(maxWidth: .infinity)
@@ -234,28 +265,54 @@ struct AboutView: View {
 
     private var developerSection: some View {
         aboutSection(title: "Developer", icon: "person.fill") {
-            HStack(spacing: AppTheme.Spacing.md) {
-                Image(systemName: "hammer.fill")
-                    .font(.system(size: 24))
-                    .foregroundStyle(AppTheme.Colors.accentGradient)
-                    .frame(width: 40, height: 40)
-                    .background(
-                        RoundedRectangle(cornerRadius: AppTheme.CornerRadius.sm)
-                            .fill(Color(hex: "#6C5CE7").opacity(0.1))
+            Button {
+                NSWorkspace.shared.open(URL(string: "https://github.com/neel0210")!)
+            } label: {
+                HStack(spacing: AppTheme.Spacing.md) {
+                    AsyncImage(url: URL(string: "https://github.com/neel0210.png")) { phase in
+                        if let image = phase.image {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } else if phase.error != nil {
+                            Image(systemName: "person.crop.circle.fill")
+                                .resizable()
+                                .foregroundStyle(AppTheme.Colors.accentGradient)
+                        } else {
+                            ProgressView()
+                                .scaleEffect(0.6)
+                        }
+                    }
+                    .frame(width: 46, height: 46)
+                    .clipShape(Circle())
+                    .overlay(
+                        Circle()
+                            .stroke(AppTheme.Colors.border, lineWidth: 1.5)
                     )
+                    .shadow(color: Color.black.opacity(0.15), radius: 4, y: 2)
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Neel0210")
-                        .font(AppTheme.Typography.headline)
-                        .foregroundStyle(.primary)
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: AppTheme.Spacing.xs) {
+                            Text("Neel0210")
+                                .font(AppTheme.Typography.headline)
+                                .foregroundStyle(.primary)
+                            
+                            Image(systemName: "arrow.up.right")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
 
-                    Text("Made with ❤️ while vibe coding")
-                        .font(AppTheme.Typography.caption)
-                        .foregroundStyle(.secondary)
+                        Text("Creator & Maintainer • Made with ❤️ while vibe coding")
+                            .font(AppTheme.Typography.caption)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Spacer()
                 }
-
-                Spacer()
+                .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+            .hoverScale(1.01)
         }
     }
 

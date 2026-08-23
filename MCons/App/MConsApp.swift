@@ -84,6 +84,11 @@ final class AppState: ObservableObject {
         self.cachedIconPacks = packs
         // Background async preheating of all icon bitmaps for silky smooth 120fps UI
         IconImageCache.shared.preheat(packs: packs)
+        
+        // Background silent check for updates
+        Task {
+            await UpdateService.shared.checkForUpdates(silent: true)
+        }
     }
     
     /// Returns cached icon packs instantly without disk re-scanning

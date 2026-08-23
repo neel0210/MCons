@@ -8,10 +8,13 @@ struct SettingsView: View {
     @AppStorage("autoRefreshFinder") private var autoRefreshFinder: Bool = true
     @AppStorage("recentFolderLimit") private var recentFolderLimit: Int = 10
     
+    @StateObject private var updateService = UpdateService.shared
+    @State private var selectedReleaseForChangelog: ReleaseInfo?
+    
     var body: some View {
         ScrollView {
             VStack(spacing: AppTheme.Spacing.xxl) {
-                // Header (only show in main window, not Settings scene)
+                // Header
                 VStack(alignment: .leading, spacing: AppTheme.Spacing.sm) {
                     Text("Settings")
                         .font(AppTheme.Typography.largeTitle)
@@ -102,6 +105,81 @@ struct SettingsView: View {
                     }
                 }
                 
+                // Updates Section
+                settingsSection(title: "Updates", icon: "arrow.triangle.2.circlepath") {
+                    VStack(spacing: AppTheme.Spacing.lg) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("MCons \(updateService.currentFullVersion)")
+                                    .font(AppTheme.Typography.bodyBold)
+                                
+                                updateStatusSubtitle
+                            }
+                            
+                            Spacer()
+                            
+                            HStack(spacing: AppTheme.Spacing.sm) {
+                                if case .updateAvailable(let release) = updateService.status {
+                                    Button("View Changelog") {
+                                        selectedReleaseForChangelog = release
+                                    }
+                                    .buttonStyle(.bordered)
+                                    
+                                    Button {
+                                        updateService.launchInstallerInTerminal()
+                                    } label: {
+                                        Label("Update", systemImage: "sparkles")
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                } else {
+                                    Button {
+                                        Task {
+                                            await updateService.checkForUpdates(silent: false)
+                                        }
+                                    } label: {
+                                        if updateService.status == .checking {
+                                            ProgressView()
+                                                .scaleEffect(0.6)
+                                                .frame(width: 16, height: 16)
+                                        } else {
+                                            Text("Check for Updates")
+                                        }
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .disabled(updateService.status == .checking)
+                                }
+                            }
+                        }
+                        
+                        if case .updateAvailable(let release) = updateService.status {
+                            Divider()
+                            
+                            HStack(alignment: .top, spacing: AppTheme.Spacing.md) {
+                                Image(systemName: "sparkles")
+                                    .font(.title3)
+                                    .foregroundStyle(Color(hex: "#6C5CE7"))
+                                
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("New Version Available: \(release.name)")
+                                        .font(AppTheme.Typography.headline)
+                                        .foregroundStyle(.primary)
+                                    
+                                    Text("Released on \(release.formattedDate). Install update to get the latest icon packs and performance enhancements.")
+                                        .font(AppTheme.Typography.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                                
+                                Spacer()
+                            }
+                            .padding(AppTheme.Spacing.md)
+                            .background(
+                                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
+                                    .fill(Color(hex: "#6C5CE7").opacity(0.08))
+                            )
+                        }
+                    }
+                }
+                
                 // About & Fair Use
                 settingsSection(title: "About", icon: "info.circle.fill") {
                     VStack(spacing: AppTheme.Spacing.md) {
@@ -115,7 +193,7 @@ struct SettingsView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("MCons — Icons for MacOS")
                                     .font(AppTheme.Typography.headline)
-                                Text("Version 1.0.2 • Neel0210")
+                                Text("Version \(updateService.currentFullVersion) • Neel0210")
                                     .font(AppTheme.Typography.caption)
                                     .foregroundStyle(.secondary)
                             }
@@ -148,6 +226,46 @@ struct SettingsView: View {
         }
         .frame(minWidth: 500)
         .background(AppTheme.Colors.background)
+        .sheet(item: $selectedReleaseForChangelog) { release in
+            ChangelogView(release: release, isUpdateAvailable: true)
+        }
+        .sheet(isPresented: $updateService.showChangelogSheet) {
+            if let release = updateService.latestRelease {
+                ChangelogView(release: release, isUpdateAvailable: true)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var updateStatusSubtitle: some View {
+        switch updateService.status {
+        case .idle:
+            if let date = updateService.lastCheckedDate {
+                Text("Last checked: \(date.formatted(date: .abbreviated, time: .shortened))")
+                    .font(AppTheme.Typography.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                Text("Automatic updates via GitHub Releases")
+                    .font(AppTheme.Typography.caption)
+                    .foregroundStyle(.secondary)
+            }
+        case .checking:
+            Text("Checking for updates...")
+                .font(AppTheme.Typography.caption)
+                .foregroundStyle(.secondary)
+        case .updateAvailable(let release):
+            Text("Update \(release.tagName) available!")
+                .font(AppTheme.Typography.caption)
+                .foregroundStyle(Color(hex: "#00B894"))
+        case .upToDate:
+            Text("You're on the latest version.")
+                .font(AppTheme.Typography.caption)
+                .foregroundStyle(.secondary)
+        case .error(let msg):
+            Text("Check failed: \(msg)")
+                .font(AppTheme.Typography.caption)
+                .foregroundStyle(.red)
+        }
     }
     
     // MARK: - Settings Section Builder
