@@ -49,31 +49,58 @@ jobs:
           echo "last_commit=${LAST_COMMIT}" >> $GITHUB_OUTPUT
 
       # --- TEST BUILD (BETA) ---
+      - name: Create GitHub Beta Pre-Release
+        if: ${{ inputs.build_type == 'Test Build (Beta)' }}
+        id: create_beta_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: beta-v1.0.2.${{ github.run_number }}
+          name: MCons Beta Build v1.0.2.${{ github.run_number }}
+          prerelease: true
+          generate_release_notes: true
+          files: output/MCons-v1.0.2-release.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Send Beta Build to Telegram Channel
         if: ${{ inputs.build_type == 'Test Build (Beta)' }}
         env:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          RELEASE_URL: ${{ steps.create_beta_release.outputs.url }}
         run: |
           FILE_PATH="output/MCons-v1.0.2-release.zip"
           ls -lh "${FILE_PATH}" || { echo "❌ Zip file not found!"; exit 1; }
+          FILE_SIZE=$(wc -c < "${FILE_PATH}" | tr -d ' ')
+          DOWNLOAD_URL="${{ steps.create_beta_release.outputs.url }}"
 
-          printf "Beta Build ⚡\nDate: %s\nLast Commit: %s" \
-            "${{ steps.meta.outputs.date }}" \
-            "${{ steps.meta.outputs.last_commit }}" > /tmp/caption.txt
+          if [ "$FILE_SIZE" -lt 50000000 ]; then
+            printf "Beta Build ⚡\nDate: %s\nLast Commit: %s" \
+              "${{ steps.meta.outputs.date }}" \
+              "${{ steps.meta.outputs.last_commit }}" > /tmp/caption.txt
 
-          echo "Sending file to Telegram..."
-          RESPONSE=$(curl -sS --max-time 120 \
-               --form-string "chat_id=${CHANNEL_ID}" \
-               -F "document=@${FILE_PATH}" \
-               --form-string "caption=$(cat /tmp/caption.txt)" \
-               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" 2>&1)
-          
-          echo "Telegram Raw Output: ${RESPONSE}"
-          if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
-            echo "✅ Beta Build sent to Telegram!"
+            echo "Sending file to Telegram..."
+            RESPONSE=$(curl -sS --max-time 120 \
+                 --form-string "chat_id=${CHANNEL_ID}" \
+                 -F "document=@${FILE_PATH}" \
+                 --form-string "caption=$(cat /tmp/caption.txt)" \
+                 "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" 2>&1)
+            echo "Telegram Raw Output: ${RESPONSE}"
           else
-            echo "❌ Failed to send Beta Build to Telegram!"
+            echo "File size (${FILE_SIZE} bytes) exceeds Telegram 50MB bot limit. Sending download link message..."
+            TEXT="⚡ *MCons Beta Build v1.0.2.${{ github.run_number }}* (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 *Date:* ${{ steps.meta.outputs.date }}\n🔖 *Last Commit:* ${{ steps.meta.outputs.last_commit }}\n\n📥 *Download Release:* [Click here to download](${DOWNLOAD_URL})"
+            RESPONSE=$(curl -sS --max-time 30 \
+                 --form-string "chat_id=${CHANNEL_ID}" \
+                 --form-string "parse_mode=Markdown" \
+                 --form-string "text=$(echo -e "${TEXT}")" \
+                 "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" 2>&1)
+            echo "Telegram Raw Output: ${RESPONSE}"
+          fi
+
+          if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
+            echo "✅ Beta notification sent to Telegram!"
+          else
+            echo "❌ Failed to send Beta notification to Telegram!"
             exit 1
           fi
 
@@ -99,24 +126,37 @@ jobs:
         run: |
           FILE_PATH="output/MCons-v1.0.2-release.zip"
           ls -lh "${FILE_PATH}" || { echo "❌ Zip file not found!"; exit 1; }
+          FILE_SIZE=$(wc -c < "${FILE_PATH}" | tr -d ' ')
+          DOWNLOAD_URL="${{ steps.create_release.outputs.url }}"
 
-          printf "🚀 Production Build v1.0.2.${{ github.run_number }}\nDate: %s\nLast Commit: %s\n\nRelease Notes: %s" \
-            "${{ steps.meta.outputs.date }}" \
-            "${{ steps.meta.outputs.last_commit }}" \
-            "${RELEASE_URL}" > /tmp/caption.txt
+          if [ "$FILE_SIZE" -lt 50000000 ]; then
+            printf "🚀 Production Build v1.0.2.${{ github.run_number }}\nDate: %s\nLast Commit: %s\n\nRelease Notes: %s" \
+              "${{ steps.meta.outputs.date }}" \
+              "${{ steps.meta.outputs.last_commit }}" \
+              "${RELEASE_URL}" > /tmp/caption.txt
 
-          echo "Sending file to Telegram..."
-          RESPONSE=$(curl -sS --max-time 120 \
-               --form-string "chat_id=${CHANNEL_ID}" \
-               -F "document=@${FILE_PATH}" \
-               --form-string "caption=$(cat /tmp/caption.txt)" \
-               "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" 2>&1)
-          
-          echo "Telegram Raw Output: ${RESPONSE}"
-          if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
-            echo "✅ Production Build sent to Telegram!"
+            echo "Sending file to Telegram..."
+            RESPONSE=$(curl -sS --max-time 120 \
+                 --form-string "chat_id=${CHANNEL_ID}" \
+                 -F "document=@${FILE_PATH}" \
+                 --form-string "caption=$(cat /tmp/caption.txt)" \
+                 "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" 2>&1)
+            echo "Telegram Raw Output: ${RESPONSE}"
           else
-            echo "❌ Failed to send Production Build to Telegram!"
+            echo "File size (${FILE_SIZE} bytes) exceeds Telegram 50MB bot limit. Sending download link message..."
+            TEXT="🚀 *MCons Production Release v1.0.2.${{ github.run_number }}* (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 *Date:* ${{ steps.meta.outputs.date }}\n🔖 *Last Commit:* ${{ steps.meta.outputs.last_commit }}\n\n🔗 *Release Page:* ${RELEASE_URL}\n📥 *Download Release:* [Click here to download](${DOWNLOAD_URL})"
+            RESPONSE=$(curl -sS --max-time 30 \
+                 --form-string "chat_id=${CHANNEL_ID}" \
+                 --form-string "parse_mode=Markdown" \
+                 --form-string "text=$(echo -e "${TEXT}")" \
+                 "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" 2>&1)
+            echo "Telegram Raw Output: ${RESPONSE}"
+          fi
+
+          if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
+            echo "✅ Production notification sent to Telegram!"
+          else
+            echo "❌ Failed to send Production notification to Telegram!"
             exit 1
           fi
 

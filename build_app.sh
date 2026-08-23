@@ -48,17 +48,21 @@ DO_CLEAN=false
 DO_STOP_ONLY=false
 DO_ZIP=false
 DO_INFO=false
+DO_CI_BETA=false
+DO_CI_PROD=false
 SHOW_HELP=false
 
 for arg in "$@"; do
     case "$arg" in
-        --debug)   BUILD_CONFIG="debug" ;;
-        --run)     DO_RUN=true ;;
-        --clean)   DO_CLEAN=true ;;
-        --stop)    DO_STOP_ONLY=true ;;
-        --zip)     DO_ZIP=true ;;
-        --info)    DO_INFO=true ;;
-        --help|-h) SHOW_HELP=true ;;
+        --debug)        BUILD_CONFIG="debug" ;;
+        --run)          DO_RUN=true ;;
+        --clean)        DO_CLEAN=true ;;
+        --stop)         DO_STOP_ONLY=true ;;
+        --zip)          DO_ZIP=true ;;
+        --info)         DO_INFO=true ;;
+        --ci|--ci-beta) DO_CI_BETA=true ;;
+        --ci-prod)      DO_CI_PROD=true ;;
+        --help|-h)      SHOW_HELP=true ;;
         *)
             echo "❌ Unknown flag: $arg"
             echo "   Run './build_app.sh --help' for usage."
@@ -93,17 +97,20 @@ if $SHOW_HELP; then
     echo "Usage: ./build_app.sh [flags]"
     echo ""
     echo "Flags:"
-    echo "  --debug     Build in debug mode (default: release)"
-    echo "  --run       Launch the app after building"
-    echo "  --clean     Nuke .build/ and output/ before building"
-    echo "  --stop      Stop running MCons instances (no build)"
-    echo "  --zip       Create output/MCons.app.zip after building"
-    echo "  --info      Print build metadata without building"
-    echo "  --help, -h  Show this help"
+    echo "  --debug      Build in debug mode (default: release)"
+    echo "  --run        Launch the app after building"
+    echo "  --clean      Nuke .build/ and output/ before building"
+    echo "  --stop       Stop running MCons instances (no build)"
+    echo "  --zip        Create output/MCons.app.zip after building"
+    echo "  --info       Print build metadata without building"
+    echo "  --ci-beta    Trigger GitHub Actions Beta workflow"
+    echo "  --ci-prod    Trigger GitHub Actions Production workflow"
+    echo "  --help, -h   Show this help"
     echo ""
     echo "Combine flags freely:"
     echo "  ./build_app.sh --debug --run --clean"
     echo "  ./build_app.sh --zip"
+    echo "  ./build_app.sh --ci-beta"
     echo ""
     exit 0
 fi
@@ -149,6 +156,51 @@ print_info() {
 
 if $DO_INFO; then
     print_info
+    exit 0
+fi
+
+# ─── Trigger GitHub Actions CI ───────────────────────────────────────────────
+trigger_ci() {
+    local build_type="$1"
+    header "GitHub Actions CI Dispatch"
+    log "Build Type: ${BOLD}${build_type}${RESET}"
+    log "Branch:     ${BOLD}${GIT_BRANCH}${RESET}"
+
+    if command -v gh &>/dev/null; then
+        log "Dispatching via GitHub CLI (gh)..."
+        gh workflow run build.yml --ref "${GIT_BRANCH}" -f build_type="${build_type}"
+        success "Dispatched! Monitor with: gh run list --workflow=build.yml"
+    else
+        local token="${GITHUB_TOKEN:-${GH_TOKEN:-}}"
+        if [ -z "$token" ]; then
+            fail "GitHub CLI (gh) not installed and GITHUB_TOKEN not set.\n   Option 1: brew install gh && gh auth login\n   Option 2: export GITHUB_TOKEN='ghp_xxx' and rerun."
+        fi
+        log "Dispatching via GitHub REST API..."
+        local repo="neel0210/MCons"
+        local response
+        response=$(curl -s -w "%{http_code}" -o /tmp/gh_dispatch_response.json \
+            -X POST \
+            -H "Authorization: token ${token}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${repo}/actions/workflows/build.yml/dispatches" \
+            -d "{\"ref\":\"${GIT_BRANCH}\",\"inputs\":{\"build_type\":\"${build_type}\"}}")
+
+        if [ "$response" = "204" ]; then
+            success "GitHub Actions workflow dispatched successfully!"
+        else
+            cat /tmp/gh_dispatch_response.json 2>/dev/null || true
+            fail "GitHub API returned HTTP ${response}"
+        fi
+    fi
+}
+
+if $DO_CI_BETA; then
+    trigger_ci "Test Build (Beta)"
+    exit 0
+fi
+
+if $DO_CI_PROD; then
+    trigger_ci "Production Build"
     exit 0
 fi
 
