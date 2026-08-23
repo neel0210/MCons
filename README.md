@@ -40,6 +40,7 @@
 
 | Pack | Theme | Icons | Format | Featured Characters / Styles |
 |:---|:---|:---:|:---:|:---|
+| ⚔️ **Attack on Titan** | *Shingeki no Kyojin* Scouts & Titans | 10 | 1024×1024 SVG | Eren Yeager, Mikasa, Armin, Levi, Erwin, Hange, Reiner, Annie, Attack Titan, Colossal Titan |
 | ⚔️ **Demon Slayer** | *Kimetsu no Yaiba* Hashira & Demons | 10 | 1024×1024 SVG | Tanjiro, Rengoku, Akaza, Douma, Gyomei, Kokushibo, Muichiro, Muzan, Sanemi, Yoriichi |
 | 🏴‍☠️ **One Piece** | Straw Hat Pirates & Legends | 10 | 1024×1024 SVG | Luffy, Zoro, Sanji, Nami, Robin, Chopper, Ace, Law, Shanks, Whitebeard |
 | ⚡ **Pokémon** | Iconic & Legendary Pokémon | 10 | 1024×1024 SVG | Pikachu, Mewtwo, Rayquaza, Charizard, Charizard X, Charizard Y, Greninja, Snorlax, Tyranitar, Salamence |
@@ -158,17 +159,24 @@ MCons/
 
 ---
 
-## 📜 Credits & Intellectual Property Disclaimers
+## ⚖️ Fair Use & Intellectual Property Notice
 
-All custom icon packs and themed artwork featured in MCons remain the intellectual property of their respective creators and copyright owners:
+All character designs, vector artwork, logos, and trademarks bundled or referenced in MCons remain the intellectual property and copyright of their respective owners and creators:
 
-- **⚡ Pokémon**: Characters, names, and related indicia are trademarks and copyright of **© Nintendo / Creatures Inc. / GAME FREAK inc. / The Pokémon Company**.
-- **⚔️ Demon Slayer (*Kimetsu no Yaiba*)**: Characters, names, and artwork are copyright of **© Koyoharu Gotouge / SHUEISHA / Aniplex / ufotable**.
-- **🏴‍☠️ One Piece**: Characters, names, and artwork are copyright of **© Eiichiro Oda / SHUEISHA / Toei Animation**.
-- **🗡️ Solo Leveling (*Na Honjaman Rebeleob*)**: Story by **Chugong**, Art by **DUBU (REDICE STUDIO)**, Published by **D&C Media / KakaoPage / A-1 Pictures**.
-- **Apple & macOS**: macOS, SF Symbols, Finder, and Dock are trademarks of **Apple Inc.**
+- **⚡ Pokémon**: © Nintendo / Creatures Inc. / GAME FREAK inc. / The Pokémon Company
+- **⚔️ Attack on Titan (*Shingeki no Kyojin*)**: © Hajime Isayama / Kodansha / "ATTACK ON TITAN" Production Committee / MAPPA / WIT Studio
+- **⚔️ Demon Slayer (*Kimetsu no Yaiba*)**: © Koyoharu Gotouge / SHUEISHA / Aniplex / ufotable
+- **🏴‍☠️ One Piece**: © Eiichiro Oda / SHUEISHA / Toei Animation
+- **🗡️ Solo Leveling (*Na Honjaman Rebeleob*)**: Story by Chugong, Art by DUBU (REDICE STUDIO), © D&C Media / KakaoPage / A-1 Pictures
+- **Apple & macOS**: macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.
 
-> **Disclaimer:** MCons is a free, non-commercial open-source utility designed exclusively for personal desktop customization and aesthetic enhancement. All copyrighted characters and logos belong to their respective rights holders.
+### Fair Use Statement
+> **Fair Use Notice:** MCons is a free, non-profit, open-source personal customization utility provided for personal desktop aesthetics, non-commercial commentary, fan tribute, and organizational use.
+>
+> In accordance with **Title 17 U.S.C. Section 107 (Fair Use Doctrine)** and international copyright exceptions:
+> - The software is distributed free of charge with **zero monetization, advertising, or commercial intent**.
+> - Icons and vector assets are included for **transformative desktop interface customization** by individual end-users.
+> - No copyright or trademark infringement is intended. If you are a copyright holder and wish to have specific material removed, please contact the author or open an issue on GitHub.
 
 ---
 
