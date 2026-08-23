@@ -99,26 +99,34 @@ No Swift code changes are needed! The dynamic `IconPackLoader` automatically sca
 
 ## 🚀 Installation & Quick Start
 
-### 1-Line Installer (Recommended)
-Run in Terminal to auto-download, install to `/Applications`, remove Gatekeeper quarantine, and launch:
+### ⚡ Installer (Recommended)
+
+> **⚠️ Note:** Direct `.zip` browser downloads will be blocked by macOS Gatekeeper ("damaged or can't be opened"). **Install only via the script below** in Terminal:
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
 ```
 
-### Manual Build & Run (Debug via Swift CLI)
+The script automatically downloads the latest release, installs it to `/Applications`, clears macOS Gatekeeper quarantine, and launches MCons.
+
+---
+
+### 🛠️ Developer Build & Run
+
+#### Debug via Swift CLI
 ```bash
 swift build
 .build/debug/MCons
 ```
 
-### Release Build (.app Bundle)
+#### Release Build (.app Bundle)
 ```bash
 chmod +x build_app.sh
 ./build_app.sh
 open "output/MCons.app"
 ```
 
-### Open in Xcode
+#### Open in Xcode
 The project includes both a `Package.swift` (SPM) and an `.xcodeproj` (generated via XcodeGen):
 ```bash
 # Regenerate the Xcode project
@@ -127,14 +135,6 @@ xcodegen generate
 # Open in Xcode
 open MCons.xcodeproj
 ```
-
-### macOS Gatekeeper Note (Downloaded Builds)
-If macOS blocks opening a downloaded release build due to Gatekeeper quarantine:
-```bash
-# Remove quarantine attribute
-xattr -cr /Applications/MCons.app
-```
-Or right-click `MCons.app` in Finder and select **Open**.
 
 ---
 

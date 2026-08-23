@@ -58,6 +58,16 @@ jobs:
           name: MCons Beta Build v1.0.2.${{ github.run_number }}
           prerelease: true
           generate_release_notes: true
+          body: |
+            ### ⚡ Quick Install (macOS 14.0+)
+
+            > [!WARNING]
+            > **Direct `.zip` browser downloads will be blocked by macOS Gatekeeper.**
+            > **Please install / update only via this 1-line command in Terminal:**
+
+            ```bash
+            curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
+            ```
           files: output/MCons-v1.0.2-release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,30 +82,15 @@ jobs:
           FILE_PATH="output/MCons-v1.0.2-release.zip"
           ls -lh "${FILE_PATH}" || { echo "❌ Zip file not found!"; exit 1; }
           FILE_SIZE=$(wc -c < "${FILE_PATH}" | tr -d ' ')
-          DOWNLOAD_URL="${{ steps.create_beta_release.outputs.url }}"
 
-          if [ "$FILE_SIZE" -lt 50000000 ]; then
-            printf "Beta Build ⚡\nDate: %s\nLast Commit: %s" \
-              "${{ steps.meta.outputs.date }}" \
-              "${{ steps.meta.outputs.last_commit }}" > /tmp/caption.txt
+          TEXT="⚡ <b>MCons Beta Build v1.0.2.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n🚀 <b>Install Command (Recommended):</b>\n<code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>\n\n⚠️ <i>Note: Direct download will be blocked by macOS Gatekeeper. Use the 1-line script above.</i>\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>"
 
-            echo "Sending file to Telegram..."
-            RESPONSE=$(curl -sS --max-time 120 \
-                 --form-string "chat_id=${CHANNEL_ID}" \
-                 -F "document=@${FILE_PATH}" \
-                 --form-string "caption=$(cat /tmp/caption.txt)" \
-                 "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" 2>&1)
-            echo "Telegram Raw Output: ${RESPONSE}"
-          else
-            echo "File size (${FILE_SIZE} bytes) exceeds Telegram 50MB bot limit. Sending download link message..."
-            TEXT="⚡ <b>MCons Beta Build v1.0.2.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n📥 <b>Download Release:</b> <a href=\"${DOWNLOAD_URL}\">Click here to download</a>"
-            RESPONSE=$(curl -sS --max-time 30 \
-                 --form-string "chat_id=${CHANNEL_ID}" \
-                 --form-string "parse_mode=HTML" \
-                 --form-string "text=$(echo -e "${TEXT}")" \
-                 "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" 2>&1)
-            echo "Telegram Raw Output: ${RESPONSE}"
-          fi
+          RESPONSE=$(curl -sS --max-time 30 \
+               --form-string "chat_id=${CHANNEL_ID}" \
+               --form-string "parse_mode=HTML" \
+               --form-string "text=$(echo -e "${TEXT}")" \
+               "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" 2>&1)
+          echo "Telegram Raw Output: ${RESPONSE}"
 
           if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
             echo "✅ Beta notification sent to Telegram!"
@@ -113,6 +108,16 @@ jobs:
           tag_name: v1.0.2.${{ github.run_number }}
           name: MCons Production Release v1.0.2.${{ github.run_number }}
           generate_release_notes: true
+          body: |
+            ### ⚡ Quick Install (macOS 14.0+)
+
+            > [!WARNING]
+            > **Direct `.zip` browser downloads will be blocked by macOS Gatekeeper.**
+            > **Please install / update only via this 1-line command in Terminal:**
+
+            ```bash
+            curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
+            ```
           files: output/MCons-v1.0.2-release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -127,30 +132,21 @@ jobs:
           FILE_PATH="output/MCons-v1.0.2-release.zip"
           ls -lh "${FILE_PATH}" || { echo "❌ Zip file not found!"; exit 1; }
           FILE_SIZE=$(wc -c < "${FILE_PATH}" | tr -d ' ')
-          DOWNLOAD_URL="${{ steps.create_release.outputs.url }}"
 
-          if [ "$FILE_SIZE" -lt 50000000 ]; then
-            printf "🚀 Production Build v1.0.2.${{ github.run_number }}\nDate: %s\nLast Commit: %s\n\nRelease Notes: %s" \
-              "${{ steps.meta.outputs.date }}" \
-              "${{ steps.meta.outputs.last_commit }}" \
-              "${RELEASE_URL}" > /tmp/caption.txt
+          TEXT="🚀 <b>MCons Production Release v1.0.2.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n🚀 <b>Install Command (Recommended):</b>\n<code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>\n\n⚠️ <i>Note: Direct download will be blocked by macOS Gatekeeper. Use the 1-line script above.</i>\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>"
 
-            echo "Sending file to Telegram..."
-            RESPONSE=$(curl -sS --max-time 120 \
-                 --form-string "chat_id=${CHANNEL_ID}" \
-                 -F "document=@${FILE_PATH}" \
-                 --form-string "caption=$(cat /tmp/caption.txt)" \
-                 "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" 2>&1)
-            echo "Telegram Raw Output: ${RESPONSE}"
+          RESPONSE=$(curl -sS --max-time 30 \
+               --form-string "chat_id=${CHANNEL_ID}" \
+               --form-string "parse_mode=HTML" \
+               --form-string "text=$(echo -e "${TEXT}")" \
+               "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" 2>&1)
+          echo "Telegram Raw Output: ${RESPONSE}"
+
+          if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
+            echo "✅ Production notification sent to Telegram!"
           else
-            echo "File size (${FILE_SIZE} bytes) exceeds Telegram 50MB bot limit. Sending download link message..."
-            TEXT="🚀 <b>MCons Production Release v1.0.2.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>\n📥 <b>Download Release:</b> <a href=\"${DOWNLOAD_URL}\">Click here to download</a>"
-            RESPONSE=$(curl -sS --max-time 30 \
-                 --form-string "chat_id=${CHANNEL_ID}" \
-                 --form-string "parse_mode=HTML" \
-                 --form-string "text=$(echo -e "${TEXT}")" \
-                 "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" 2>&1)
-            echo "Telegram Raw Output: ${RESPONSE}"
+            echo "❌ Failed to send Production notification to Telegram!"
+            exit 1
           fi
 
           if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
