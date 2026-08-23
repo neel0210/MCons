@@ -134,27 +134,6 @@ final class IconPackLoader: Sendable {
     func defaultPacks() -> [IconPack] {
         return [
             IconPack(
-                id: "dark-mode-pro",
-                name: "Dark Mode Pro",
-                description: "Sleek matte black folders with neon accent edges",
-                emoji: "🌙",
-                accentColorHex: "#00F5FF",
-                icons: generateDefaultIcons(packId: "dark-mode-pro", colors: [
-                    ("Neon Cyan", "#00F5FF"),
-                    ("Neon Green", "#00FF88"),
-                    ("Neon Purple", "#BF00FF"),
-                    ("Neon Pink", "#FF0080"),
-                    ("Neon Orange", "#FF6600"),
-                    ("Neon Yellow", "#FFE600"),
-                    ("Neon Red", "#FF0040"),
-                    ("Neon Blue", "#0066FF"),
-                    ("Neon Lime", "#AAFF00"),
-                    ("Neon Magenta", "#FF00FF"),
-                    ("Neon Teal", "#00FFCC"),
-                    ("Neon White", "#F0F0F0"),
-                ])
-            ),
-            IconPack(
                 id: "macos-native-plus",
                 name: "macOS Native+",
                 description: "Enhanced versions of Apple's native folder colors",

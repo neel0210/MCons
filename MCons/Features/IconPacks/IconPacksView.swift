@@ -150,8 +150,6 @@ struct IconPackCard: View {
                 // Info area
                 VStack(alignment: .leading, spacing: AppTheme.Spacing.sm) {
                     HStack {
-                        Text(pack.emoji)
-                            .font(.title2)
                         Text(pack.name)
                             .font(AppTheme.Typography.title2)
                             .foregroundStyle(.primary)

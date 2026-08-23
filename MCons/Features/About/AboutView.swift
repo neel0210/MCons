@@ -4,7 +4,7 @@ import SwiftUI
 struct AboutView: View {
     @EnvironmentObject var appState: AppState
 
-    private let appVersion = "1.0.1"
+    private let appVersion = "1.0.2"
     private let githubURL = URL(string: "https://github.com/neel0210/MCons")!
     private let telegramChannelURL = URL(string: "https://t.me/MConsOfficial")!
     private let telegramSupportURL = URL(string: "https://t.me/MConsupport")!
@@ -47,7 +47,7 @@ struct AboutView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 80, height: 80)
-                .shadow(color: Color(hex: "#6C5CE7").opacity(0.35), radius: 12, y: 6)
+                .shadow(color: Color.black.opacity(0.2), radius: 8, y: 4)
 
             VStack(spacing: AppTheme.Spacing.sm) {
                 Text("MCons")
@@ -72,45 +72,48 @@ struct AboutView: View {
     private var linksSection: some View {
         aboutSection(title: "Links", icon: "link") {
             VStack(spacing: AppTheme.Spacing.md) {
-                linkRow(
-                    icon: "chevron.left.forwardslash.chevron.right",
+                customLinkRow(
                     title: "GitHub Repository",
                     subtitle: "github.com/neel0210/MCons",
-                    color: "#6C5CE7",
                     url: githubURL
-                )
+                ) {
+                    GitHubLogo(size: 26)
+                }
 
                 Divider()
 
-                linkRow(
-                    icon: "megaphone.fill",
+                customLinkRow(
                     title: "Telegram Channel",
                     subtitle: "@MConsOfficial — Updates & releases",
-                    color: "#0088CC",
                     url: telegramChannelURL
-                )
+                ) {
+                    TelegramLogo(size: 26)
+                }
 
                 Divider()
 
-                linkRow(
-                    icon: "bubble.left.and.bubble.right.fill",
+                customLinkRow(
                     title: "Telegram Support",
                     subtitle: "@MConsupport — Help & feedback",
-                    color: "#00B894",
                     url: telegramSupportURL
-                )
+                ) {
+                    TelegramGroupLogo(size: 26)
+                }
             }
         }
     }
 
-    private func linkRow(icon: String, title: String, subtitle: String, color: String, url: URL) -> some View {
+    private func customLinkRow<Logo: View>(
+        title: String,
+        subtitle: String,
+        url: URL,
+        @ViewBuilder logo: () -> Logo
+    ) -> some View {
         Button {
             NSWorkspace.shared.open(url)
         } label: {
             HStack(spacing: AppTheme.Spacing.md) {
-                Image(systemName: icon)
-                    .font(.system(size: 18))
-                    .foregroundStyle(Color(hex: color))
+                logo()
                     .frame(width: 32, height: 32)
 
                 VStack(alignment: .leading, spacing: 2) {
@@ -279,5 +282,121 @@ struct AboutView: View {
                         .stroke(Color(nsColor: .separatorColor).opacity(0.3), lineWidth: 1)
                 )
         }
+    }
+}
+
+// MARK: - Brand Vector Logos
+
+struct GitHubShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let sx = rect.width / 24.0
+        let sy = rect.height / 24.0
+        
+        path.move(to: CGPoint(x: 12 * sx, y: 1.5 * sy))
+        path.addCurve(to: CGPoint(x: 1.5 * sx, y: 12.18 * sy), control1: CGPoint(x: 6.2 * sx, y: 1.5 * sy), control2: CGPoint(x: 1.5 * sx, y: 6.28 * sy))
+        path.addCurve(to: CGPoint(x: 8.68 * sx, y: 22.18 * sy), control1: CGPoint(x: 1.5 * sx, y: 16.91 * sy), control2: CGPoint(x: 4.54 * sx, y: 20.91 * sy))
+        path.addCurve(to: CGPoint(x: 9.21 * sx, y: 21.66 * sy), control1: CGPoint(x: 9.04 * sx, y: 22.25 * sy), control2: CGPoint(x: 9.21 * sx, y: 21.99 * sy))
+        path.addLine(to: CGPoint(x: 9.2 * sx, y: 19.82 * sy))
+        path.addCurve(to: CGPoint(x: 5.68 * sx, y: 18.36 * sy), control1: CGPoint(x: 6.23 * sx, y: 20.48 * sy), control2: CGPoint(x: 5.68 * sx, y: 18.36 * sy))
+        path.addCurve(to: CGPoint(x: 4.45 * sx, y: 16.78 * sy), control1: CGPoint(x: 5.18 * sx, y: 17.1 * sy), control2: CGPoint(x: 4.45 * sx, y: 16.78 * sy))
+        path.addCurve(to: CGPoint(x: 5.46 * sx, y: 16.71 * sy), control1: CGPoint(x: 3.47 * sx, y: 16.1 * sy), control2: CGPoint(x: 5.46 * sx, y: 16.71 * sy))
+        path.addCurve(to: CGPoint(x: 7.12 * sx, y: 18.36 * sy), control1: CGPoint(x: 6.55 * sx, y: 17.51 * sy), control2: CGPoint(x: 7.12 * sx, y: 18.36 * sy))
+        path.addCurve(to: CGPoint(x: 10.32 * sx, y: 17.44 * sy), control1: CGPoint(x: 8.09 * sx, y: 20.03 * sy), control2: CGPoint(x: 9.68 * sx, y: 19.5 * sy))
+        path.addCurve(to: CGPoint(x: 11.02 * sx, y: 15.98 * sy), control1: CGPoint(x: 10.42 * sx, y: 16.74 * sy), control2: CGPoint(x: 10.7 * sx, y: 16.26 * sy))
+        path.addCurve(to: CGPoint(x: 6.13 * sx, y: 10.6 * sy), control1: CGPoint(x: 8.57 * sx, y: 15.7 * sy), control2: CGPoint(x: 6.13 * sx, y: 14.75 * sy))
+        path.addCurve(to: CGPoint(x: 7.28 * sx, y: 7.64 * sy), control1: CGPoint(x: 6.13 * sx, y: 9.4 * sy), control2: CGPoint(x: 6.56 * sx, y: 8.42 * sy))
+        path.addCurve(to: CGPoint(x: 7.39 * sx, y: 4.74 * sy), control1: CGPoint(x: 7.17 * sx, y: 7.36 * sy), control2: CGPoint(x: 6.81 * sx, y: 6.24 * sy))
+        path.addCurve(to: CGPoint(x: 10.37 * sx, y: 5.86 * sy), control1: CGPoint(x: 8.31 * sx, y: 4.45 * sy), control2: CGPoint(x: 10.37 * sx, y: 5.86 * sy))
+        path.addCurve(to: CGPoint(x: 12 * sx, y: 5.64 * sy), control1: CGPoint(x: 10.89 * sx, y: 5.72 * sy), control2: CGPoint(x: 11.45 * sx, y: 5.64 * sy))
+        path.addCurve(to: CGPoint(x: 13.63 * sx, y: 5.86 * sy), control1: CGPoint(x: 12.55 * sx, y: 5.64 * sy), control2: CGPoint(x: 13.11 * sx, y: 5.72 * sy))
+        path.addCurve(to: CGPoint(x: 16.61 * sx, y: 4.74 * sy), control1: CGPoint(x: 13.63 * sx, y: 5.86 * sy), control2: CGPoint(x: 15.69 * sx, y: 4.45 * sy))
+        path.addCurve(to: CGPoint(x: 16.72 * sx, y: 7.64 * sy), control1: CGPoint(x: 17.19 * sx, y: 6.24 * sy), control2: CGPoint(x: 16.83 * sx, y: 7.36 * sy))
+        path.addCurve(to: CGPoint(x: 17.87 * sx, y: 10.6 * sy), control1: CGPoint(x: 17.44 * sx, y: 8.42 * sy), control2: CGPoint(x: 17.87 * sx, y: 9.4 * sy))
+        path.addCurve(to: CGPoint(x: 12.96 * sx, y: 15.99 * sy), control1: CGPoint(x: 17.87 * sx, y: 14.76 * sy), control2: CGPoint(x: 15.42 * sx, y: 15.71 * sy))
+        path.addCurve(to: CGPoint(x: 13.72 * sx, y: 18.04 * sy), control1: CGPoint(x: 13.36 * sx, y: 16.37 * sy), control2: CGPoint(x: 13.72 * sx, y: 17.06 * sy))
+        path.addLine(to: CGPoint(x: 13.72 * sx, y: 21.66 * sy))
+        path.addCurve(to: CGPoint(x: 14.26 * sx, y: 22.18 * sy), control1: CGPoint(x: 13.72 * sx, y: 22 * sy), control2: CGPoint(x: 13.9 * sx, y: 22.25 * sy))
+        path.addCurve(to: CGPoint(x: 22.5 * sx, y: 12.18 * sy), control1: CGPoint(x: 18.42 * sx, y: 20.89 * sy), control2: CGPoint(x: 22.5 * sx, y: 16.89 * sy))
+        path.addCurve(to: CGPoint(x: 12 * sx, y: 1.5 * sy), control1: CGPoint(x: 22.5 * sx, y: 6.28 * sy), control2: CGPoint(x: 17.8 * sx, y: 1.5 * sy))
+        path.closeSubpath()
+        
+        return path
+    }
+}
+
+struct GitHubLogo: View {
+    var size: CGFloat = 26
+    
+    var body: some View {
+        GitHubShape()
+            .fill(.primary)
+            .frame(width: size, height: size)
+    }
+}
+
+struct TelegramPaperPlaneShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let sx = rect.width / 24.0
+        let sy = rect.height / 24.0
+        
+        path.move(to: CGPoint(x: 17.8 * sx, y: 6.6 * sy))
+        path.addLine(to: CGPoint(x: 4.8 * sx, y: 11.6 * sy))
+        path.addCurve(to: CGPoint(x: 4.9 * sx, y: 12.6 * sy), control1: CGPoint(x: 4.1 * sx, y: 11.9 * sy), control2: CGPoint(x: 4.2 * sx, y: 12.5 * sy))
+        path.addLine(to: CGPoint(x: 8.2 * sx, y: 13.7 * sy))
+        path.addLine(to: CGPoint(x: 15.6 * sx, y: 9.1 * sy))
+        path.addCurve(to: CGPoint(x: 15.2 * sx, y: 9.8 * sy), control1: CGPoint(x: 16.0 * sx, y: 8.8 * sy), control2: CGPoint(x: 15.6 * sx, y: 9.4 * sy))
+        path.addLine(to: CGPoint(x: 9.6 * sx, y: 14.8 * sy))
+        path.addLine(to: CGPoint(x: 9.2 * sx, y: 18.2 * sy))
+        path.addCurve(to: CGPoint(x: 10.4 * sx, y: 17.8 * sy), control1: CGPoint(x: 9.5 * sx, y: 18.5 * sy), control2: CGPoint(x: 10.1 * sx, y: 18.2 * sy))
+        path.addLine(to: CGPoint(x: 12.4 * sx, y: 15.9 * sy))
+        path.addLine(to: CGPoint(x: 16.2 * sx, y: 18.7 * sy))
+        path.addCurve(to: CGPoint(x: 17.2 * sx, y: 18.2 * sy), control1: CGPoint(x: 16.8 * sx, y: 19.1 * sy), control2: CGPoint(x: 17.1 * sx, y: 18.7 * sy))
+        path.addLine(to: CGPoint(x: 19.2 * sx, y: 7.7 * sy))
+        path.addCurve(to: CGPoint(x: 17.8 * sx, y: 6.6 * sy), control1: CGPoint(x: 19.5 * sx, y: 6.6 * sy), control2: CGPoint(x: 18.8 * sx, y: 6.2 * sy))
+        path.closeSubpath()
+        
+        return path
+    }
+}
+
+struct TelegramLogo: View {
+    var size: CGFloat = 26
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(LinearGradient(
+                    colors: [Color(hex: "#2AABEE"), Color(hex: "#229ED9")],
+                    startPoint: .top,
+                    endPoint: .bottom
+                ))
+            
+            TelegramPaperPlaneShape()
+                .fill(.white)
+                .padding(size * 0.12)
+        }
+        .frame(width: size, height: size)
+    }
+}
+
+struct TelegramGroupLogo: View {
+    var size: CGFloat = 26
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(LinearGradient(
+                    colors: [Color(hex: "#00B894"), Color(hex: "#00A381")],
+                    startPoint: .top,
+                    endPoint: .bottom
+                ))
+            
+            Image(systemName: "bubble.left.and.bubble.right.fill")
+                .font(.system(size: size * 0.46))
+                .foregroundStyle(.white)
+        }
+        .frame(width: size, height: size)
     }
 }

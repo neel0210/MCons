@@ -110,9 +110,6 @@ struct IconPackDetailView: View {
             Divider()
                 .frame(height: 20)
             
-            Text(pack.emoji)
-                .font(.title2)
-            
             VStack(alignment: .leading, spacing: 2) {
                 Text(pack.name)
                     .font(AppTheme.Typography.title2)

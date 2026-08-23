@@ -66,7 +66,6 @@
 		B961366C474EFAFA30A2B3C7 /* Levi Ackerman.svg in Resources */ = {isa = PBXBuildFile; fileRef = 8F88C87A170DC34F7F2EFA30 /* Levi Ackerman.svg */; };
 		BAAC9851AC35B7DA9889D4B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0CB3A2C103322535AF82557 /* Assets.xcassets */; };
 		BDCA6E182CDDD6C1AFD0051E /* Chalizard X.svg in Resources */ = {isa = PBXBuildFile; fileRef = 65155FB3B6DE4BC599BCEFE3 /* Chalizard X.svg */; };
-		BEA4521A2D3A6F604BC4948B /* metadata.json in Resources */ = {isa = PBXBuildFile; fileRef = 7F5C1EEBCBFE4F8DACEA01F5 /* metadata.json */; };
 		BEE9869AF087BC99E2F33335 /* IconPackLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83E9C617CE4CC51000B04D /* IconPackLoader.swift */; };
 		C3D302140CCF12881B5AAA70 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FDCDAD0C9145C8DD989414 /* HomeView.swift */; };
 		CA30BEA5916E4D392F999A21 /* Chalizard Y.svg in Resources */ = {isa = PBXBuildFile; fileRef = 4113E233831D2814D82C7B3A /* Chalizard Y.svg */; };
@@ -128,7 +127,6 @@
 		7A49D631D1D2B2478D11AAE8 /* Chopper.svg */ = {isa = PBXFileReference; path = Chopper.svg; sourceTree = "<group>"; };
 		7C83E9C617CE4CC51000B04D /* IconPackLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconPackLoader.swift; sourceTree = "<group>"; };
 		7D61736E8D6596AE4488D926 /* Eren Yeager.svg */ = {isa = PBXFileReference; path = "Eren Yeager.svg"; sourceTree = "<group>"; };
-		7F5C1EEBCBFE4F8DACEA01F5 /* metadata.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = metadata.json; sourceTree = "<group>"; };
 		8BC90EC2D115B2D10B3B7FF2 /* Whitebeard.svg */ = {isa = PBXFileReference; path = Whitebeard.svg; sourceTree = "<group>"; };
 		8C664E9AD40CF96DD8091F2D /* MConsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MConsApp.swift; sourceTree = "<group>"; };
 		8F1728D5DA96149D06247DC7 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -262,14 +260,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		60622F40242408CBFAEC3C5E /* dark-mode-pro */ = {
-			isa = PBXGroup;
-			children = (
-				7F5C1EEBCBFE4F8DACEA01F5 /* metadata.json */,
-			);
-			path = "dark-mode-pro";
-			sourceTree = "<group>";
-		};
 		6E3F66FCB518F2C465CDC7CD /* IconApply */ = {
 			isa = PBXGroup;
 			children = (
@@ -373,7 +363,6 @@
 			isa = PBXGroup;
 			children = (
 				FEC10CD1C36AB83E3E2CD964 /* attack-on-titan */,
-				60622F40242408CBFAEC3C5E /* dark-mode-pro */,
 				FDBB029E2977AB4B331214EF /* demon-slayer */,
 				3B34C46A038BB4D831560D58 /* macos-native-plus */,
 				F23440F307807E9844BE59E4 /* one-piece */,
@@ -559,7 +548,6 @@
 				A61DB3A759AB58D15687A072 /* Yoriichi.svg in Resources */,
 				B9002139B61F23D56BE35040 /* Zoro.svg in Resources */,
 				A560D61015871F0BC933C091 /* metadata.json in Resources */,
-				BEA4521A2D3A6F604BC4948B /* metadata.json in Resources */,
 				A878901B38481F1A764679A0 /* metadata.json in Resources */,
 				CF78F39069973A88B4EA997F /* metadata.json in Resources */,
 				FF1D3BC3A786BCF890779960 /* metadata.json in Resources */,
@@ -660,7 +648,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MCons/Resources/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -742,7 +730,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MCons/Resources/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = MCons;

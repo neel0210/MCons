@@ -45,30 +45,14 @@ struct HomeView: View {
     private var heroSection: some View {
         VStack(spacing: AppTheme.Spacing.lg) {
             // Animated App Icon
-            ZStack {
-                // Glow
-                Circle()
-                    .fill(
-                        RadialGradient(
-                            colors: [Color(hex: "#6C5CE7").opacity(0.35), .clear],
-                            center: .center,
-                            startRadius: 20,
-                            endRadius: 100
-                        )
-                    )
-                    .frame(width: 200, height: 200)
-                    .scaleEffect(animateHero ? 1.1 : 0.85)
-                    .opacity(animateHero ? 1 : 0)
-                
-                Image(nsImage: .appIcon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 96, height: 96)
-                    .shadow(color: Color(hex: "#6C5CE7").opacity(0.4), radius: 16, y: 8)
-                    .scaleEffect(animateHero ? 1.0 : 0.6)
-                    .opacity(animateHero ? 1 : 0)
-            }
-            .animation(AppAnimations.bouncy, value: animateHero)
+            Image(nsImage: .appIcon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 96, height: 96)
+                .shadow(color: Color.black.opacity(0.2), radius: 10, y: 5)
+                .scaleEffect(animateHero ? 1.0 : 0.7)
+                .opacity(animateHero ? 1 : 0)
+                .animation(AppAnimations.bouncy, value: animateHero)
             
             VStack(spacing: AppTheme.Spacing.sm) {
                 Text("MCons")
@@ -268,12 +252,9 @@ struct PackPreviewCard: View {
                 )
                 
                 VStack(alignment: .leading, spacing: AppTheme.Spacing.xxs) {
-                    HStack {
-                        Text(pack.emoji)
-                        Text(pack.name)
-                            .font(AppTheme.Typography.headline)
-                            .foregroundStyle(.primary)
-                    }
+                    Text(pack.name)
+                        .font(AppTheme.Typography.headline)
+                        .foregroundStyle(.primary)
                     
                     Text("\(pack.iconCount) icons")
                         .font(AppTheme.Typography.caption)

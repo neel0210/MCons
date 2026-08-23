@@ -115,7 +115,7 @@ struct SettingsView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("MCons — Icons for MacOS")
                                     .font(AppTheme.Typography.headline)
-                                Text("Version 1.0.1 • Neel0210")
+                                Text("Version 1.0.2 • Neel0210")
                                     .font(AppTheme.Typography.caption)
                                     .foregroundStyle(.secondary)
                             }
