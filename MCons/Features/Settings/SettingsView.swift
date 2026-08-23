@@ -9,7 +9,6 @@ struct SettingsView: View {
     @AppStorage("recentFolderLimit") private var recentFolderLimit: Int = 10
     
     @StateObject private var updateService = UpdateService.shared
-    @State private var selectedReleaseForChangelog: ReleaseInfo?
     
     var body: some View {
         ScrollView {
@@ -177,46 +176,6 @@ struct SettingsView: View {
         }
         .frame(minWidth: 500)
         .background(AppTheme.Colors.background)
-        .sheet(item: $selectedReleaseForChangelog) { release in
-            ChangelogView(release: release, isUpdateAvailable: true)
-        }
-        .sheet(isPresented: $updateService.showChangelogSheet) {
-            if let release = updateService.latestRelease {
-                ChangelogView(release: release, isUpdateAvailable: true)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    private var updateStatusSubtitle: some View {
-        switch updateService.status {
-        case .idle:
-            if let date = updateService.lastCheckedDate {
-                Text("Last checked: \(date.formatted(date: .abbreviated, time: .shortened))")
-                    .font(AppTheme.Typography.caption)
-                    .foregroundStyle(.secondary)
-            } else {
-                Text("Automatic updates via GitHub Releases")
-                    .font(AppTheme.Typography.caption)
-                    .foregroundStyle(.secondary)
-            }
-        case .checking:
-            Text("Checking for updates...")
-                .font(AppTheme.Typography.caption)
-                .foregroundStyle(.secondary)
-        case .updateAvailable(let release):
-            Text("Update \(release.tagName) available!")
-                .font(AppTheme.Typography.caption)
-                .foregroundStyle(Color(hex: "#00B894"))
-        case .upToDate:
-            Text("You're on the latest version.")
-                .font(AppTheme.Typography.caption)
-                .foregroundStyle(.secondary)
-        case .error(let msg):
-            Text("Check failed: \(msg)")
-                .font(AppTheme.Typography.caption)
-                .foregroundStyle(.red)
-        }
     }
     
     // MARK: - Settings Section Builder

@@ -10,7 +10,6 @@ struct AboutView: View {
     private let telegramSupportURL = URL(string: "https://t.me/MConsupport")!
 
     @StateObject private var updateService = UpdateService.shared
-    @State private var selectedReleaseForChangelog: ReleaseInfo?
 
     var body: some View {
         ScrollView {
@@ -40,14 +39,6 @@ struct AboutView: View {
             .padding(AppTheme.Spacing.xxl)
         }
         .background(AppTheme.Colors.background)
-        .sheet(item: $selectedReleaseForChangelog) { release in
-            ChangelogView(release: release, isUpdateAvailable: true)
-        }
-        .sheet(isPresented: $updateService.showChangelogSheet) {
-            if let release = updateService.latestRelease {
-                ChangelogView(release: release, isUpdateAvailable: true)
-            }
-        }
     }
 
     // MARK: - App Header
