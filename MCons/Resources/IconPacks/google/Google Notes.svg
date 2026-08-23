@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="-48 -16 352 384">
+  <!-- Note Sheet Container -->
+  <path d="M 232 352 H 24 C 10.72 352 0 341.28 0 328 V 24 C 0 10.72 10.72 0 24 0 H 168 L 256 88 V 328 C 256 341.28 245.28 352 232 352 Z" fill="#FFBA00"/>
+  <!-- Folded Corner -->
+  <polygon fill="#FF9500" points="168,0 256,88 168,88"/>
+  <!-- White Lightbulb Silhouette -->
+  <path d="M 156 236 V 256 H 100 V 236 H 156 Z M 128 120 C 157 120.4 180 143.5 180 172 C 180 190.5 170 206.8 155.5 216 H 100.3 C 85.7 206.8 76 190.5 76 172 C 76 143.3 99.3 120 128 120 Z" fill="#FFFFFF"/>
+  <!-- Base Threads -->
+  <rect x="108" y="262" width="40" height="8" rx="4" fill="#FFFFFF"/>
+  <!-- Inner Warm Filament Loop -->
+  <path d="M 114 196 C 114 158 122 144 128 144 C 134 144 142 158 142 196" fill="none" stroke="#FFBA00" stroke-width="12" stroke-linecap="round"/>
+  <line x1="112" y1="202" x2="144" y2="202" stroke="#FFBA00" stroke-width="10" stroke-linecap="round"/>
+</svg>

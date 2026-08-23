@@ -229,6 +229,7 @@ struct AboutView: View {
                 ipRow(packId: "demon-slayer", iconName: "Tanjiro", franchise: "Demon Slayer (Kimetsu no Yaiba)", holder: "© Koyoharu Gotouge / SHUEISHA / Aniplex / ufotable")
                 ipRow(packId: "one-piece", iconName: "Luffy", franchise: "One Piece", holder: "© Eiichiro Oda / SHUEISHA / Toei Animation")
                 ipRow(packId: "solo-leveling", iconName: "Sung Jinwoo", franchise: "Solo Leveling", holder: "Story by Chugong, Art by DUBU (REDICE STUDIO), © D&C Media / KakaoPage / A-1 Pictures")
+                ipRow(packId: "google", iconName: "Google Chrome", franchise: "Google & Alphabet", holder: "© Google LLC / Alphabet Inc. Google, Chrome, Drive, Gmail, Maps, Photos, Files, Keep, Camera, YouTube and related marks are trademarks of Google LLC.")
                 ipRow(systemIcon: "apple.logo", franchise: "Apple & macOS", holder: "macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.")
             }
         }
