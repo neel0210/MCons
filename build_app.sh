@@ -363,11 +363,42 @@ if $DO_ZIP; then
     header "Creating ZIP Archive"
     ZIP_NAME="${APP_NAME}-v${VERSION}-${BUILD_CONFIG}.zip"
     rm -f "${OUTPUT_DIR}/${ZIP_NAME}"
-    if command -v ditto &>/dev/null; then
-        (cd "${OUTPUT_DIR}" && ditto -c -k --keepParent "${APP_NAME}.app" "${ZIP_NAME}")
-    else
-        (cd "${OUTPUT_DIR}" && zip -r -y -q "${ZIP_NAME}" "${APP_NAME}.app")
-    fi
+
+    # Generate helper unquarantine & launcher script
+    COMMAND_SCRIPT="${OUTPUT_DIR}/Open_MCons.command"
+    cat > "${COMMAND_SCRIPT}" << 'EOF'
+#!/bin/bash
+DIR="$(cd "$(dirname "$0")" && pwd)"
+APP="${DIR}/MCons.app"
+
+echo "========================================"
+echo "          🔓 Unlocking MCons            "
+echo "========================================"
+echo ""
+
+if [ -d "$APP" ]; then
+    echo "Clearing Gatekeeper quarantine..."
+    xattr -cr "$APP" 2>/dev/null || true
+    echo "✅ MCons unlocked successfully!"
+    echo "🚀 Launching MCons..."
+    open "$APP"
+elif [ -d "/Applications/MCons.app" ]; then
+    echo "Clearing Gatekeeper quarantine from /Applications/MCons.app..."
+    xattr -cr "/Applications/MCons.app" 2>/dev/null || true
+    echo "✅ MCons unlocked successfully!"
+    echo "🚀 Launching MCons..."
+    open "/Applications/MCons.app"
+else
+    echo "❌ MCons.app not found in current directory or /Applications."
+    echo "   Place MCons.app in the same folder as this script."
+fi
+
+sleep 1
+exit 0
+EOF
+    chmod +x "${COMMAND_SCRIPT}"
+
+    (cd "${OUTPUT_DIR}" && zip -r -y -q "${ZIP_NAME}" "${APP_NAME}.app" "Open_MCons.command")
     ZIP_SIZE=$(du -sh "${OUTPUT_DIR}/${ZIP_NAME}" | awk '{print $1}')
     success "Archive: ${OUTPUT_DIR}/${ZIP_NAME} (${ZIP_SIZE})"
 fi
