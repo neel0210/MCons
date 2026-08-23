@@ -233,30 +233,63 @@ struct AboutView: View {
 
                 Divider()
 
-                ipRow(emoji: "⚡", franchise: "Pokémon", holder: "© Nintendo / Creatures Inc. / GAME FREAK inc. / The Pokémon Company")
-                ipRow(emoji: "⚔️", franchise: "Attack on Titan (Shingeki no Kyojin)", holder: "© Hajime Isayama / Kodansha / \"ATTACK ON TITAN\" Production Committee / MAPPA / WIT Studio")
-                ipRow(emoji: "⚔️", franchise: "Demon Slayer (Kimetsu no Yaiba)", holder: "© Koyoharu Gotouge / SHUEISHA / Aniplex / ufotable")
-                ipRow(emoji: "🏴\u{200D}☠️", franchise: "One Piece", holder: "© Eiichiro Oda / SHUEISHA / Toei Animation")
-                ipRow(emoji: "🗡️", franchise: "Solo Leveling", holder: "Story by Chugong, Art by DUBU (REDICE STUDIO), © D&C Media / KakaoPage / A-1 Pictures")
-                ipRow(emoji: "🍎", franchise: "Apple & macOS", holder: "macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.")
+                ipRow(packId: "pokemon", iconName: "Pikachu", franchise: "Pokémon", holder: "© Nintendo / Creatures Inc. / GAME FREAK inc. / The Pokémon Company")
+                ipRow(packId: "attack-on-titan", iconName: "Attack Titan", franchise: "Attack on Titan (Shingeki no Kyojin)", holder: "© Hajime Isayama / Kodansha / \"ATTACK ON TITAN\" Production Committee / MAPPA / WIT Studio")
+                ipRow(packId: "demon-slayer", iconName: "Tanjiro", franchise: "Demon Slayer (Kimetsu no Yaiba)", holder: "© Koyoharu Gotouge / SHUEISHA / Aniplex / ufotable")
+                ipRow(packId: "one-piece", iconName: "Luffy", franchise: "One Piece", holder: "© Eiichiro Oda / SHUEISHA / Toei Animation")
+                ipRow(packId: "solo-leveling", iconName: "Sung Jinwoo", franchise: "Solo Leveling", holder: "Story by Chugong, Art by DUBU (REDICE STUDIO), © D&C Media / KakaoPage / A-1 Pictures")
+                ipRow(systemIcon: "apple.logo", franchise: "Apple & macOS", holder: "macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.")
             }
         }
     }
 
-    private func ipRow(emoji: String, franchise: String, holder: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: AppTheme.Spacing.sm) {
-                Text(emoji)
-                    .font(.body)
+    private func ipRow(
+        packId: String? = nil,
+        iconName: String? = nil,
+        systemIcon: String? = nil,
+        franchise: String,
+        holder: String
+    ) -> some View {
+        HStack(alignment: .top, spacing: AppTheme.Spacing.md) {
+            // Icon thumbnail SVG
+            Group {
+                if let packId = packId,
+                   let pack = appState.cachedIconPacks.first(where: { $0.id.localizedCaseInsensitiveContains(packId) }),
+                   let icon = (iconName != nil ? pack.icons.first(where: { $0.name.localizedCaseInsensitiveContains(iconName!) }) : nil) ?? pack.icons.first {
+                    Image(nsImage: icon.thumbnailImage(size: 64))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                } else if let systemIcon = systemIcon {
+                    Image(systemName: systemIcon)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(AppTheme.Colors.accentGradient)
+                } else {
+                    Image(systemName: "photo.fill")
+                        .font(.system(size: 18))
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .frame(width: 36, height: 36)
+            .background(
+                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.sm)
+                    .fill(Color.white.opacity(0.04))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.sm)
+                    .stroke(AppTheme.Colors.border, lineWidth: 1)
+            )
+
+            VStack(alignment: .leading, spacing: 3) {
                 Text(franchise)
                     .font(AppTheme.Typography.headline)
                     .foregroundStyle(.primary)
+
+                Text(holder)
+                    .font(AppTheme.Typography.caption)
+                    .foregroundStyle(.secondary)
             }
 
-            Text(holder)
-                .font(AppTheme.Typography.caption)
-                .foregroundStyle(.secondary)
-                .padding(.leading, 28)
+            Spacer()
         }
         .padding(.vertical, AppTheme.Spacing.xs)
     }
