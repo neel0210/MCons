@@ -27,6 +27,9 @@ DerivedData/
 # Build Output Directory
 output/
 
+# Internal dev notes
+brain.md
+
 # Logs & Temporary Files
 *.log
 *.tmp

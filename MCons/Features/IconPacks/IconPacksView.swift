@@ -102,6 +102,7 @@ struct IconPacksView: View {
                         }
                     }
                 }
+                .drawingGroup()
             }
             .padding(AppTheme.Spacing.xxl)
         }

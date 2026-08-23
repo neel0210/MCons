@@ -102,21 +102,18 @@ struct SettingsView: View {
                     }
                 }
                 
-                // About
+                // About & Fair Use
                 settingsSection(title: "About", icon: "info.circle.fill") {
                     VStack(spacing: AppTheme.Spacing.md) {
                         HStack {
                             Image(systemName: "folder.fill.badge.gearshape")
-                                .font(.system(size: 36))
+                                .font(.system(size: 28))
                                 .foregroundStyle(AppTheme.Colors.accentGradient)
                             
                             VStack(alignment: .leading, spacing: 2) {
-                                Text("MCons")
-                                    .font(AppTheme.Typography.title2)
-                                Text("Icons for MacOS")
-                                    .font(AppTheme.Typography.callout)
-                                    .foregroundStyle(AppTheme.Colors.accentGradient)
-                                Text("Version 1.0.1 • Developed by Neel0210")
+                                Text("MCons — Icons for MacOS")
+                                    .font(AppTheme.Typography.headline)
+                                Text("Version 1.0.1 • Neel0210")
                                     .font(AppTheme.Typography.caption)
                                     .foregroundStyle(.secondary)
                             }
@@ -126,10 +123,20 @@ struct SettingsView: View {
                         
                         Divider()
                         
-                        Text("Customize your macOS folders with stunning icon packs. Built with SwiftUI.")
-                            .font(AppTheme.Typography.callout)
-                            .foregroundStyle(.secondary)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Button {
+                            appState.selectedSidebarItem = .about
+                        } label: {
+                            HStack {
+                                Label("View About, Fair Use & Licenses", systemImage: "scalemass.fill")
+                                    .font(AppTheme.Typography.body)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundStyle(.tertiary)
+                            }
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
                 

@@ -76,6 +76,7 @@ struct IconPackDetailView: View {
                             }
                         }
                     }
+                    .drawingGroup()
                     
                     Spacer(minLength: AppTheme.Spacing.xxxl)
                 }

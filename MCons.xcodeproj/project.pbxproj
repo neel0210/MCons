@@ -37,6 +37,7 @@
 		5F7BF9473D856DFD74C82713 /* Tank.svg in Resources */ = {isa = PBXBuildFile; fileRef = 32EA09D6E704DF28ADDCA87A /* Tank.svg */; };
 		6360D956FBBB6651413CC63E /* Colossal Titan.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9B6FF6300529D027D5D7FC7B /* Colossal Titan.svg */; };
 		6439490216BB5F5F9DA227A5 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3FEFE9895F8A0186631F2D0E /* AppIcon.icns */; };
+		6A3FCEAB94C3A0F159D8E458 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE5D82EC9A46C5A5F1EA962 /* AboutView.swift */; };
 		6DCB6702ACE1051106F39283 /* Iron.svg in Resources */ = {isa = PBXBuildFile; fileRef = E3F55A213AC88A801446CAB9 /* Iron.svg */; };
 		732D631FDB415C217570E122 /* Robin.svg in Resources */ = {isa = PBXBuildFile; fileRef = A0DFEC004C0349E0C33478C6 /* Robin.svg */; };
 		73C79F41BD16F2E989E404EF /* Reiner Braun.svg in Resources */ = {isa = PBXBuildFile; fileRef = EDFBECEFA643AE4FECB2F76F /* Reiner Braun.svg */; };
@@ -168,6 +169,7 @@
 		F18267BD460CD69621D4B974 /* Nami.svg */ = {isa = PBXFileReference; path = Nami.svg; sourceTree = "<group>"; };
 		F1A205E0C603EF8C81F6940B /* MCons.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MCons.entitlements; sourceTree = "<group>"; };
 		F59ECB52CCD564948BCE52BF /* Muichiro.svg */ = {isa = PBXFileReference; path = Muichiro.svg; sourceTree = "<group>"; };
+		FBE5D82EC9A46C5A5F1EA962 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		FC1234DE53A60A44323DC9B6 /* Baek Yoonho.svg */ = {isa = PBXFileReference; path = "Baek Yoonho.svg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -197,6 +199,7 @@
 		13FF50C26F058272D5A5B4B8 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				B311007713CECBD115049129 /* About */,
 				C3EDAB6598C0FD38F12C9864 /* Home */,
 				6E3F66FCB518F2C465CDC7CD /* IconApply */,
 				F593C102E231AAC13D14792A /* IconPacks */,
@@ -329,6 +332,14 @@
 				8F1728D5DA96149D06247DC7 /* Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B311007713CECBD115049129 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				FBE5D82EC9A46C5A5F1EA962 /* AboutView.swift */,
+			);
+			path = About;
 			sourceTree = "<group>";
 		};
 		C3EDAB6598C0FD38F12C9864 /* Home */ = {
@@ -564,6 +575,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A3FCEAB94C3A0F159D8E458 /* AboutView.swift in Sources */,
 				EA1D907FF96B7A3B94A5CD31 /* AppAnimations.swift in Sources */,
 				FBB4BD139486340EB1C9E8D6 /* AppFolder.swift in Sources */,
 				FDCA055845174A86F3478F55 /* AppTheme.swift in Sources */,

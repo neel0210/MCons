@@ -169,6 +169,7 @@ struct HomeView: View {
                     }
                 }
             }
+            .drawingGroup()
         }
     }
     

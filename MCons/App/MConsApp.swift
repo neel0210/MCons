@@ -276,6 +276,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     case iconPacks = "Icon Packs"
     case applyIcon = "Apply Icon"
     case settings = "Settings"
+    case about = "About"
     
     var id: String { rawValue }
     
@@ -285,6 +286,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
         case .iconPacks: return "square.grid.3x3.fill"
         case .applyIcon: return "folder.badge.plus"
         case .settings: return "gearshape.fill"
+        case .about: return "info.circle.fill"
         }
     }
 }

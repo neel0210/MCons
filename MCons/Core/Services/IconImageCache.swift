@@ -65,17 +65,27 @@ final class IconImageCache: @unchecked Sendable {
     
     /// Pre-warms/caches icons on a background queue so all UI renders at 60/120 FPS
     func preheat(packs: [IconPack]) {
+        let thumbnailSize = NSSize(width: 76, height: 76)
         queue.async { [weak self] in
             guard let self = self else { return }
             for pack in packs {
                 for icon in pack.icons {
                     if let url = icon.fileURL {
+                        // Cache full-size
                         _ = self.image(for: url)
+                        // Cache grid thumbnail
+                        _ = self.image(for: url, targetSize: thumbnailSize)
                     } else if let hex = icon.colorHex {
                         let key = "\(hex)_512"
                         if self.image(forKey: key) == nil {
                             let img = FolderIconRenderer.renderFolderIcon(colorHex: hex, size: 512)
                             self.setImage(img, forKey: key)
+                        }
+                        // Also cache 76×76 programmatic thumbnail
+                        let thumbKey = "\(hex)_76"
+                        if self.image(forKey: thumbKey) == nil {
+                            let img = FolderIconRenderer.renderFolderIcon(colorHex: hex, size: 76)
+                            self.setImage(img, forKey: thumbKey)
                         }
                     }
                 }

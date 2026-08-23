@@ -34,6 +34,8 @@ struct ContentView: View {
                 IconApplyView()
             case .settings:
                 SettingsView()
+            case .about:
+                AboutView()
             }
         }
         .animation(AppAnimations.quick, value: appState.selectedSidebarItem)
