@@ -44,26 +44,28 @@ struct HomeView: View {
     
     private var heroSection: some View {
         VStack(spacing: AppTheme.Spacing.lg) {
-            // Animated folder icon
+            // Animated App Icon
             ZStack {
                 // Glow
                 Circle()
                     .fill(
                         RadialGradient(
-                            colors: [Color(hex: "#6C5CE7").opacity(0.3), .clear],
+                            colors: [Color(hex: "#6C5CE7").opacity(0.35), .clear],
                             center: .center,
                             startRadius: 20,
                             endRadius: 100
                         )
                     )
                     .frame(width: 200, height: 200)
-                    .scaleEffect(animateHero ? 1.1 : 0.8)
+                    .scaleEffect(animateHero ? 1.1 : 0.85)
                     .opacity(animateHero ? 1 : 0)
                 
-                Image(systemName: "folder.fill.badge.gearshape")
-                    .font(.system(size: 72, weight: .light))
-                    .foregroundStyle(AppTheme.Colors.accentGradient)
-                    .scaleEffect(animateHero ? 1.0 : 0.5)
+                Image(nsImage: .appIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 96, height: 96)
+                    .shadow(color: Color(hex: "#6C5CE7").opacity(0.4), radius: 16, y: 8)
+                    .scaleEffect(animateHero ? 1.0 : 0.6)
                     .opacity(animateHero ? 1 : 0)
             }
             .animation(AppAnimations.bouncy, value: animateHero)
@@ -295,15 +297,23 @@ struct RecentFolderRow: View {
     let url: URL
     let action: () -> Void
     
+    @State private var folderIcon: NSImage?
     @State private var isHovering = false
     
     var body: some View {
         Button(action: action) {
             HStack(spacing: AppTheme.Spacing.md) {
-                let icon = NSWorkspace.shared.icon(forFile: url.path)
-                Image(nsImage: icon)
-                    .resizable()
-                    .frame(width: 32, height: 32)
+                if let icon = folderIcon {
+                    Image(nsImage: icon)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 32, height: 32)
+                } else {
+                    Image(nsImage: NSWorkspace.shared.icon(for: .folder))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 32, height: 32)
+                }
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(url.lastPathComponent)
@@ -333,6 +343,16 @@ struct RecentFolderRow: View {
         .buttonStyle(.plain)
         .onHover { hovering in
             isHovering = hovering
+        }
+        .onAppear {
+            if folderIcon == nil {
+                DispatchQueue.global(qos: .userInitiated).async {
+                    let icon = NSWorkspace.shared.icon(forFile: url.path)
+                    DispatchQueue.main.async {
+                        self.folderIcon = icon
+                    }
+                }
+            }
         }
     }
 }

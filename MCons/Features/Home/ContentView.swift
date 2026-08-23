@@ -57,9 +57,11 @@ struct SidebarView: View {
         .safeAreaInset(edge: .top) {
             // App branding header
             VStack(spacing: AppTheme.Spacing.sm) {
-                Image(systemName: "folder.fill.badge.gearshape")
-                    .font(.system(size: 28))
-                    .foregroundStyle(AppTheme.Colors.accentGradient)
+                Image(nsImage: .appIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 40, height: 40)
+                    .shadow(color: Color.black.opacity(0.18), radius: 4, y: 2)
                 
                 Text("MCons")
                     .font(AppTheme.Typography.headline)

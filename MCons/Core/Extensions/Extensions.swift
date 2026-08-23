@@ -48,6 +48,18 @@ extension Color {
 // MARK: - NSImage Extensions
 
 extension NSImage {
+    /// Cached app icon instance from bundle or system application icon
+    static let appIcon: NSImage = {
+        if let icon = NSImage(named: "AppIcon") {
+            return icon
+        }
+        if let iconPath = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
+           let icon = NSImage(contentsOfFile: iconPath) {
+            return icon
+        }
+        return NSApplication.shared.applicationIconImage
+    }()
+    
     /// Resizes the image to the given size
     func resized(to targetSize: NSSize) -> NSImage {
         let newImage = NSImage(size: targetSize)

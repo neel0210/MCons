@@ -106,9 +106,11 @@ struct SettingsView: View {
                 settingsSection(title: "About", icon: "info.circle.fill") {
                     VStack(spacing: AppTheme.Spacing.md) {
                         HStack {
-                            Image(systemName: "folder.fill.badge.gearshape")
-                                .font(.system(size: 28))
-                                .foregroundStyle(AppTheme.Colors.accentGradient)
+                            Image(nsImage: .appIcon)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 36, height: 36)
+                                .shadow(color: Color.black.opacity(0.15), radius: 4, y: 2)
                             
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("MCons — Icons for MacOS")

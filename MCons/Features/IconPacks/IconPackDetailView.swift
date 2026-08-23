@@ -139,9 +139,10 @@ struct IconPackDetailView: View {
     private var actionBar: some View {
         HStack(spacing: AppTheme.Spacing.lg) {
             if let icon = selectedIcon {
-                let nsImage = icon.previewImage()
+                let nsImage = icon.thumbnailImage(size: 76)
                 Image(nsImage: nsImage)
                     .resizable()
+                    .interpolation(.high)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 44, height: 44)
                     .shadow(color: Color(hex: pack.accentColorHex).opacity(0.4), radius: 6, y: 2)

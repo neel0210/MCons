@@ -43,9 +43,11 @@ struct AboutView: View {
 
     private var appHeader: some View {
         VStack(spacing: AppTheme.Spacing.lg) {
-            Image(systemName: "folder.fill.badge.gearshape")
-                .font(.system(size: 64, weight: .light))
-                .foregroundStyle(AppTheme.Colors.accentGradient)
+            Image(nsImage: .appIcon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 80, height: 80)
+                .shadow(color: Color(hex: "#6C5CE7").opacity(0.35), radius: 12, y: 6)
 
             VStack(spacing: AppTheme.Spacing.sm) {
                 Text("MCons")
