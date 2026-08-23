@@ -3,10 +3,12 @@ import SwiftUI
 /// Main content view with NavigationSplitView sidebar
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
     
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
             SidebarView()
+                .navigationSplitViewColumnWidth(min: 210, ideal: 225, max: 260)
         } detail: {
             detailView
         }
@@ -38,78 +40,189 @@ struct ContentView: View {
                 AboutView()
             }
         }
-        .animation(AppAnimations.quick, value: appState.selectedSidebarItem)
+        .transition(.opacity.animation(.easeInOut(duration: 0.15)))
     }
 }
 
-// MARK: - Sidebar
+// MARK: - Refined Sidebar
 
 struct SidebarView: View {
     @EnvironmentObject var appState: AppState
+    @StateObject private var updateService = UpdateService.shared
     @State private var hoveredItem: SidebarItem?
     
     var body: some View {
-        List(SidebarItem.allCases, selection: $appState.selectedSidebarItem) { item in
-            sidebarRow(item)
-                .tag(item)
+        VStack(spacing: 0) {
+            // App Branding Header
+            appBrandHeader
+                .padding(.horizontal, AppTheme.Spacing.md)
+                .padding(.top, AppTheme.Spacing.lg)
+                .padding(.bottom, AppTheme.Spacing.md)
+            
+            Divider()
+                .opacity(0.4)
+                .padding(.horizontal, AppTheme.Spacing.md)
+                .padding(.bottom, AppTheme.Spacing.sm)
+            
+            // Navigation Groups
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: AppTheme.Spacing.lg) {
+                    // Main Navigation
+                    navigationGroup(title: "DISCOVER") {
+                        sidebarButton(for: .home)
+                        sidebarButton(for: .iconPacks)
+                        sidebarButton(for: .applyIcon)
+                    }
+                    
+                    // Preferences & Info
+                    navigationGroup(title: "PREFERENCES") {
+                        sidebarButton(for: .settings)
+                        sidebarButton(for: .about)
+                    }
+                }
+                .padding(.horizontal, AppTheme.Spacing.sm)
+                .padding(.vertical, AppTheme.Spacing.xs)
+            }
+            
+            Spacer(minLength: 0)
+            
+            // Footer (Status or Update Widget)
+            sidebarFooter
+                .padding(AppTheme.Spacing.sm)
         }
-        .listStyle(.sidebar)
-        .safeAreaInset(edge: .top) {
-            // App branding header
-            VStack(spacing: AppTheme.Spacing.sm) {
-                Image(nsImage: .appIcon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 40, height: 40)
-                    .shadow(color: Color.black.opacity(0.18), radius: 4, y: 2)
-                
+        .background(AppTheme.Colors.sidebarBackground)
+    }
+    
+    // MARK: - App Brand Header
+    
+    private var appBrandHeader: some View {
+        HStack(spacing: AppTheme.Spacing.sm) {
+            Image(nsImage: .appIcon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 32, height: 32)
+                .shadow(color: Color.black.opacity(0.2), radius: 3, y: 1.5)
+            
+            VStack(alignment: .leading, spacing: 0) {
                 Text("MCons")
                     .font(AppTheme.Typography.headline)
                     .foregroundStyle(.primary)
                 
                 Text("Icons for MacOS")
-                    .font(AppTheme.Typography.caption)
+                    .font(.system(size: 10, weight: .medium))
                     .foregroundStyle(.secondary)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, AppTheme.Spacing.lg)
-            .padding(.top, AppTheme.Spacing.sm)
+            
+            Spacer()
+            
+            Text("v\(updateService.currentVersion)")
+                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .padding(.horizontal, 6)
+                .padding(.vertical, 2)
+                .background(Color.white.opacity(0.08))
+                .foregroundStyle(.secondary)
+                .clipShape(Capsule())
         }
-        .safeAreaInset(edge: .bottom) {
-            // Status bar
-            if !appState.statusMessage.isEmpty {
-                HStack(spacing: AppTheme.Spacing.sm) {
-                    Image(systemName: appState.showSuccessAnimation ? "checkmark.circle.fill" : "info.circle.fill")
-                        .foregroundColor(appState.showSuccessAnimation ? AppTheme.Colors.success : .secondary)
-                        .font(.caption)
-                    
-                    Text(appState.statusMessage)
-                        .font(AppTheme.Typography.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
-                }
-                .padding(.horizontal, AppTheme.Spacing.md)
-                .padding(.vertical, AppTheme.Spacing.sm)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.ultraThinMaterial)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-            }
-        }
-        .animation(AppAnimations.smooth, value: appState.statusMessage)
     }
     
-    private func sidebarRow(_ item: SidebarItem) -> some View {
-        Label {
-            Text(item.rawValue)
-                .font(AppTheme.Typography.body)
-        } icon: {
-            Image(systemName: item.icon)
-                .foregroundStyle(
-                    appState.selectedSidebarItem == item
-                    ? AnyShapeStyle(AppTheme.Colors.accentGradient)
-                    : AnyShapeStyle(.secondary)
-                )
+    // MARK: - Navigation Group
+    
+    private func navigationGroup<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(title)
+                .font(.system(size: 10, weight: .bold, design: .rounded))
+                .foregroundStyle(.tertiary)
+                .padding(.horizontal, AppTheme.Spacing.md)
+                .padding(.bottom, 2)
+            
+            content()
         }
-        .padding(.vertical, AppTheme.Spacing.xxs)
+    }
+    
+    // MARK: - Sidebar Item Button
+    
+    private func sidebarButton(for item: SidebarItem) -> some View {
+        let isSelected = appState.selectedSidebarItem == item
+        let isHovered = hoveredItem == item
+        
+        return Button {
+            withAnimation(.easeInOut(duration: 0.15)) {
+                appState.selectedSidebarItem = item
+            }
+        } label: {
+            HStack(spacing: AppTheme.Spacing.sm) {
+                // Leading accent indicator bar
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(isSelected ? AnyShapeStyle(AppTheme.Colors.accentGradient) : AnyShapeStyle(Color.clear))
+                    .frame(width: 3, height: 16)
+                
+                // Icon
+                Image(systemName: item.icon)
+                    .font(.system(size: 14, weight: isSelected ? .semibold : .regular))
+                    .foregroundStyle(
+                        isSelected
+                        ? AnyShapeStyle(AppTheme.Colors.accentGradient)
+                        : AnyShapeStyle(.secondary)
+                    )
+                    .frame(width: 20)
+                
+                // Title
+                Text(item.rawValue)
+                    .font(isSelected ? AppTheme.Typography.bodyBold : AppTheme.Typography.body)
+                    .foregroundStyle(isSelected ? .primary : .secondary)
+                
+                Spacer()
+                
+                // Update badge dot on About item
+                if item == .about, case .updateAvailable = updateService.status {
+                    Circle()
+                        .fill(Color(hex: "#00B894"))
+                        .frame(width: 7, height: 7)
+                }
+            }
+            .padding(.vertical, 7)
+            .padding(.trailing, AppTheme.Spacing.sm)
+            .background(
+                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.sm)
+                    .fill(
+                        isSelected
+                        ? Color.white.opacity(0.08)
+                        : (isHovered ? Color.white.opacity(0.04) : Color.clear)
+                    )
+            )
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering in
+            hoveredItem = hovering ? item : nil
+        }
+    }
+    
+    // MARK: - Footer
+    
+    private var sidebarFooter: some View {
+        VStack(spacing: AppTheme.Spacing.xs) {
+            if !appState.statusMessage.isEmpty {
+                HStack(spacing: AppTheme.Spacing.xs) {
+                    Image(systemName: appState.showSuccessAnimation ? "checkmark.circle.fill" : "info.circle.fill")
+                        .foregroundColor(appState.showSuccessAnimation ? AppTheme.Colors.success : .secondary)
+                        .font(.caption2)
+                    
+                    Text(appState.statusMessage)
+                        .font(.system(size: 11))
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                    
+                    Spacer()
+                }
+                .padding(.horizontal, AppTheme.Spacing.sm)
+                .padding(.vertical, 6)
+                .background(
+                    RoundedRectangle(cornerRadius: AppTheme.CornerRadius.sm)
+                        .fill(Color.black.opacity(0.2))
+                )
+                .transition(.opacity)
+            }
+        }
     }
 }
