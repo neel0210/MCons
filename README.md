@@ -97,9 +97,15 @@ No Swift code changes are needed! The dynamic `IconPackLoader` automatically sca
 
 ---
 
-## 🚀 Build & Run
+## 🚀 Installation & Quick Start
 
-### Quick Start (Debug via Swift CLI)
+### 1-Line Installer (Recommended)
+Run in Terminal to auto-download, install to `/Applications`, remove Gatekeeper quarantine, and launch:
+```bash
+curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
+```
+
+### Manual Build & Run (Debug via Swift CLI)
 ```bash
 swift build
 .build/debug/MCons
