@@ -11,13 +11,7 @@ let package = Package(
             name: "MCons",
             path: "MCons",
             exclude: [
-                "Resources/Info.plist",
-                "Resources/MCons.entitlements",
-                "Resources/AppIcon.icns",
-            ],
-            resources: [
-                .process("Resources/Assets.xcassets"),
-                .copy("Resources/IconPacks"),
+                "Resources",
             ],
             swiftSettings: [
                 .swiftLanguageMode(.v5)

@@ -10,16 +10,16 @@ final class IconPackLoader: Sendable {
         var possiblePackURLs: [URL] = []
         
         if let resURL = Bundle.main.resourceURL {
-            possiblePackURLs.append(resURL.appendingPathComponent("MCons_MCons.bundle/IconPacks"))
             possiblePackURLs.append(resURL.appendingPathComponent("IconPacks"))
+            possiblePackURLs.append(resURL.appendingPathComponent("MCons_MCons.bundle/IconPacks"))
         }
         
-        #if SWIFT_PACKAGE
-        if let moduleResURL = Bundle.module.resourceURL {
-            possiblePackURLs.append(moduleResURL.appendingPathComponent("IconPacks"))
-            possiblePackURLs.append(moduleResURL)
+        if let bundlePath = Bundle.main.path(forResource: "MCons_MCons", ofType: "bundle"),
+           let bundle = Bundle(path: bundlePath),
+           let resURL = bundle.resourceURL {
+            possiblePackURLs.append(resURL.appendingPathComponent("IconPacks"))
+            possiblePackURLs.append(resURL)
         }
-        #endif
         
         // Development path fallback
         let currentDirURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)

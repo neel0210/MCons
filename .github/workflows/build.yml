@@ -88,10 +88,10 @@ jobs:
             echo "Telegram Raw Output: ${RESPONSE}"
           else
             echo "File size (${FILE_SIZE} bytes) exceeds Telegram 50MB bot limit. Sending download link message..."
-            TEXT="⚡ *MCons Beta Build v1.0.2.${{ github.run_number }}* (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 *Date:* ${{ steps.meta.outputs.date }}\n🔖 *Last Commit:* ${{ steps.meta.outputs.last_commit }}\n\n📥 *Download Release:* [Click here to download](${DOWNLOAD_URL})"
+            TEXT="⚡ <b>MCons Beta Build v1.0.2.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n📥 <b>Download Release:</b> <a href=\"${DOWNLOAD_URL}\">Click here to download</a>"
             RESPONSE=$(curl -sS --max-time 30 \
                  --form-string "chat_id=${CHANNEL_ID}" \
-                 --form-string "parse_mode=Markdown" \
+                 --form-string "parse_mode=HTML" \
                  --form-string "text=$(echo -e "${TEXT}")" \
                  "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" 2>&1)
             echo "Telegram Raw Output: ${RESPONSE}"
@@ -144,10 +144,10 @@ jobs:
             echo "Telegram Raw Output: ${RESPONSE}"
           else
             echo "File size (${FILE_SIZE} bytes) exceeds Telegram 50MB bot limit. Sending download link message..."
-            TEXT="🚀 *MCons Production Release v1.0.2.${{ github.run_number }}* (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 *Date:* ${{ steps.meta.outputs.date }}\n🔖 *Last Commit:* ${{ steps.meta.outputs.last_commit }}\n\n🔗 *Release Page:* ${RELEASE_URL}\n📥 *Download Release:* [Click here to download](${DOWNLOAD_URL})"
+            TEXT="🚀 <b>MCons Production Release v1.0.2.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>\n📥 <b>Download Release:</b> <a href=\"${DOWNLOAD_URL}\">Click here to download</a>"
             RESPONSE=$(curl -sS --max-time 30 \
                  --form-string "chat_id=${CHANNEL_ID}" \
-                 --form-string "parse_mode=Markdown" \
+                 --form-string "parse_mode=HTML" \
                  --form-string "text=$(echo -e "${TEXT}")" \
                  "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" 2>&1)
             echo "Telegram Raw Output: ${RESPONSE}"
