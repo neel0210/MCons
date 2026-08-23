@@ -251,9 +251,16 @@ final class UpdateService: ObservableObject {
             updateProgressText = "Relaunching MCons..."
             try? await Task.sleep(nanoseconds: 300_000_000)
             
-            NSWorkspace.shared.open(targetApp)
-            try? await Task.sleep(nanoseconds: 400_000_000)
-            NSApplication.shared.terminate(nil)
+            let pid = ProcessInfo.processInfo.processIdentifier
+            let targetPath = targetApp.path
+            let relaunchScript = "while kill -0 \(pid) 2>/dev/null; do sleep 0.1; done; sleep 0.2; /usr/bin/xattr -cr '\(targetPath)' 2>/dev/null || true; /usr/bin/open '\(targetPath)'"
+            
+            let relauncher = Process()
+            relauncher.executableURL = URL(fileURLWithPath: "/bin/sh")
+            relauncher.arguments = ["-c", relaunchScript]
+            try? relauncher.run()
+            
+            exit(0)
         } catch {
             isUpdating = false
             updateProgressText = "Direct install failed. Opening Terminal..."
