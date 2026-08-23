@@ -32,7 +32,8 @@ jobs:
 
       - name: Verify Build Output
         run: |
-          if [ ! -f "output/MCons-v1.0.2-release.zip" ]; then
+          ZIP_FILE=$(ls output/MCons-*-release.zip 2>/dev/null | head -1 || true)
+          if [ -z "${ZIP_FILE}" ] || [ ! -f "${ZIP_FILE}" ]; then
             echo "❌ Zip archive not found!"
             ls -lh output/
             exit 1
@@ -54,8 +55,8 @@ jobs:
         id: create_beta_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: beta-v1.0.2.${{ github.run_number }}
-          name: MCons Beta Build v1.0.2.${{ github.run_number }}
+          tag_name: beta-v1.0.3.${{ github.run_number }}
+          name: MCons Beta Build v1.0.3.${{ github.run_number }}
           prerelease: true
           generate_release_notes: true
           body: |
@@ -68,7 +69,7 @@ jobs:
             ```bash
             curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
             ```
-          files: output/MCons-v1.0.2-release.zip
+          files: output/MCons-v1.0.3-release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -79,11 +80,11 @@ jobs:
           CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           RELEASE_URL: ${{ steps.create_beta_release.outputs.url }}
         run: |
-          FILE_PATH="output/MCons-v1.0.2-release.zip"
+          FILE_PATH="output/MCons-v1.0.3-release.zip"
           ls -lh "${FILE_PATH}" || { echo "❌ Zip file not found!"; exit 1; }
           FILE_SIZE=$(wc -c < "${FILE_PATH}" | tr -d ' ')
 
-          TEXT="⚡ <b>MCons Beta Build v1.0.2.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n🚀 <b>Install Command (Recommended):</b>\n<code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>\n\n⚠️ <i>Note: Direct download will be blocked by macOS Gatekeeper. Use the 1-line script above.</i>\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>"
+          TEXT="⚡ <b>MCons Beta Build v1.0.3.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n🚀 <b>Install Command (Recommended):</b>\n<code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>\n\n⚠️ <i>Note: Direct download will be blocked by macOS Gatekeeper. Use the 1-line script above.</i>\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>"
 
           RESPONSE=$(curl -sS --max-time 30 \
                --form-string "chat_id=${CHANNEL_ID}" \
@@ -105,8 +106,8 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.2.${{ github.run_number }}
-          name: MCons Production Release v1.0.2.${{ github.run_number }}
+          tag_name: v1.0.3.${{ github.run_number }}
+          name: MCons Production Release v1.0.3.${{ github.run_number }}
           generate_release_notes: true
           body: |
             ### ⚡ Quick Install (macOS 14.0+)
@@ -118,7 +119,7 @@ jobs:
             ```bash
             curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
             ```
-          files: output/MCons-v1.0.2-release.zip
+          files: output/MCons-v1.0.3-release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -129,11 +130,11 @@ jobs:
           CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           RELEASE_URL: ${{ steps.create_release.outputs.url }}
         run: |
-          FILE_PATH="output/MCons-v1.0.2-release.zip"
+          FILE_PATH="output/MCons-v1.0.3-release.zip"
           ls -lh "${FILE_PATH}" || { echo "❌ Zip file not found!"; exit 1; }
           FILE_SIZE=$(wc -c < "${FILE_PATH}" | tr -d ' ')
 
-          TEXT="🚀 <b>MCons Production Release v1.0.2.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n🚀 <b>Install Command (Recommended):</b>\n<code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>\n\n⚠️ <i>Note: Direct download will be blocked by macOS Gatekeeper. Use the 1-line script above.</i>\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>"
+          TEXT="🚀 <b>MCons Production Release v1.0.3.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n🚀 <b>Install Command (Recommended):</b>\n<code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>\n\n⚠️ <i>Note: Direct download will be blocked by macOS Gatekeeper. Use the 1-line script above.</i>\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>"
 
           RESPONSE=$(curl -sS --max-time 30 \
                --form-string "chat_id=${CHANNEL_ID}" \
@@ -141,13 +142,6 @@ jobs:
                --form-string "text=$(echo -e "${TEXT}")" \
                "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" 2>&1)
           echo "Telegram Raw Output: ${RESPONSE}"
-
-          if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
-            echo "✅ Production notification sent to Telegram!"
-          else
-            echo "❌ Failed to send Production notification to Telegram!"
-            exit 1
-          fi
 
           if [[ "$RESPONSE" == *"\"ok\":true"* ]]; then
             echo "✅ Production notification sent to Telegram!"

@@ -52,7 +52,7 @@ DOWNLOAD_URL=$(echo "${RELEASE_JSON}" | grep -m1 '"browser_download_url":' | sed
 if [ -z "${DOWNLOAD_URL}" ] || [ "${DOWNLOAD_URL}" = "null" ]; then
     echo -e "${YELLOW}⚠️  Could not parse latest release API. Using fallback URL...${RESET}"
     TAG_NAME="latest"
-    DOWNLOAD_URL="https://github.com/${REPO}/releases/latest/download/MCons-v1.0.2-release.zip"
+    DOWNLOAD_URL="https://github.com/${REPO}/releases/latest/download/MCons-v1.0.3-release.zip"
 fi
 
 echo -e "${CYAN}▸${RESET} Found version: ${BOLD}${TAG_NAME}${RESET}"

@@ -4,7 +4,7 @@ import SwiftUI
 struct AboutView: View {
     @EnvironmentObject var appState: AppState
 
-    private let appVersion = "1.0.2"
+    private let appVersion = "1.0.3"
     private let githubURL = URL(string: "https://github.com/neel0210/MCons")!
     private let telegramChannelURL = URL(string: "https://t.me/MConsOfficial")!
     private let telegramSupportURL = URL(string: "https://t.me/MConsupport")!
