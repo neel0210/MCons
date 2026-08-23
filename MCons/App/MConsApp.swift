@@ -280,6 +280,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     case home = "Home"
     case iconPacks = "Icon Packs"
     case applyIcon = "Apply Icon"
+    case updates = "Updates"
     case settings = "Settings"
     case about = "About"
     
@@ -290,6 +291,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
         case .home: return "house.fill"
         case .iconPacks: return "square.grid.3x3.fill"
         case .applyIcon: return "folder.badge.plus"
+        case .updates: return "arrow.triangle.2.circlepath"
         case .settings: return "gearshape.fill"
         case .about: return "info.circle.fill"
         }

@@ -74,9 +74,9 @@ struct AboutView: View {
                         .font(AppTheme.Typography.caption)
                         .foregroundStyle(.secondary)
                     
-                    if case .updateAvailable(let release) = updateService.status {
+                    if case .updateAvailable = updateService.status {
                         Button {
-                            selectedReleaseForChangelog = release
+                            appState.selectedSidebarItem = .updates
                         } label: {
                             HStack(spacing: 4) {
                                 Image(systemName: "sparkles")

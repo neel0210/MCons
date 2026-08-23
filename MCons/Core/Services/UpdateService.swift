@@ -47,7 +47,7 @@ enum UpdateStatus: Equatable {
     }
 }
 
-/// Manages checking for updates, parsing changelogs, and triggering 1-line installation
+/// Manages checking for updates, parsing changelogs, and executing updates
 @MainActor
 final class UpdateService: ObservableObject {
     static let shared = UpdateService()
@@ -56,6 +56,9 @@ final class UpdateService: ObservableObject {
     @Published var latestRelease: ReleaseInfo?
     @Published var showChangelogSheet: Bool = false
     @Published var lastCheckedDate: Date?
+    
+    @Published var isUpdating: Bool = false
+    @Published var updateProgressText: String = ""
     
     private let repo = "neel0210/MCons"
     
@@ -146,13 +149,18 @@ final class UpdateService: ObservableObject {
     }
     
     /// Compares remote tag with current version
-    private func isVersionNewer(remoteTag: String, currentVersion: String, currentBuild: String) -> Bool {
-        // Strip 'v' prefix
+    func isVersionNewer(remoteTag: String, currentVersion: String, currentBuild: String) -> Bool {
         let cleanTag = remoteTag.trimmingCharacters(in: CharacterSet(charactersIn: "vV"))
         let remoteParts = cleanTag.split(separator: ".").compactMap { Int($0) }
         
-        let currentCombined = "\(currentVersion).\(currentBuild)"
-        let currentParts = currentCombined.split(separator: ".").compactMap { Int($0) }
+        let cleanCurrent = currentVersion.trimmingCharacters(in: CharacterSet(charactersIn: "vV"))
+        var currentParts = cleanCurrent.split(separator: ".").compactMap { Int($0) }
+        
+        // If remote tag has 4 components (e.g. 1.0.2.21) and local has 3 (1.0.2), append build number
+        if remoteParts.count > currentParts.count {
+            let buildNum = Int(currentBuild) ?? 0
+            currentParts.append(buildNum)
+        }
         
         for i in 0..<max(remoteParts.count, currentParts.count) {
             let r = i < remoteParts.count ? remoteParts[i] : 0
@@ -164,19 +172,92 @@ final class UpdateService: ObservableObject {
         return false
     }
     
-    /// Launches the 1-line update script in Terminal to update and relaunch MCons
+    /// Launches the 1-line update script in Terminal via a temporary executable script
     func launchInstallerInTerminal() {
-        let command = "curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash"
+        let scriptPath = "/tmp/mcons_update.command"
         let script = """
-        tell application "Terminal"
-            activate
-            do script "\(command)"
-        end tell
+        #!/bin/bash
+        echo "=========================================="
+        echo "          🚀 Updating MCons...            "
+        echo "=========================================="
+        echo ""
+        curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
         """
         
-        if let appleScript = NSAppleScript(source: script) {
-            var errorDict: NSDictionary?
-            appleScript.executeAndReturnError(&errorDict)
+        try? script.write(toFile: scriptPath, atomically: true, encoding: .utf8)
+        let chmod = Process()
+        chmod.executableURL = URL(fileURLWithPath: "/bin/chmod")
+        chmod.arguments = ["+x", scriptPath]
+        try? chmod.run()
+        chmod.waitUntilExit()
+        
+        NSWorkspace.shared.open(URL(fileURLWithPath: scriptPath))
+    }
+    
+    /// Downloads and installs update directly in background with visual progress
+    func installUpdateDirectly() async {
+        guard let release = latestRelease else {
+            launchInstallerInTerminal()
+            return
+        }
+        
+        let downloadURL = release.downloadURL ?? URL(string: "https://github.com/\(repo)/releases/download/\(release.tagName)/MCons-v1.0.2-release.zip")!
+        
+        isUpdating = true
+        updateProgressText = "Downloading \(release.tagName)..."
+        
+        do {
+            let (tempZipURL, _) = try await URLSession.shared.download(from: downloadURL)
+            updateProgressText = "Extracting..."
+            
+            let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+            try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+            
+            let ditto = Process()
+            ditto.executableURL = URL(fileURLWithPath: "/usr/bin/ditto")
+            ditto.arguments = ["-x", "-k", tempZipURL.path, tempDir.path]
+            try ditto.run()
+            ditto.waitUntilExit()
+            
+            updateProgressText = "Installing..."
+            
+            var extractedApp = tempDir.appendingPathComponent("MCons.app")
+            if !FileManager.default.fileExists(atPath: extractedApp.path) {
+                if let found = try? FileManager.default.contentsOfDirectory(at: tempDir, includingPropertiesForKeys: nil).first(where: { $0.lastPathComponent == "MCons.app" }) {
+                    extractedApp = found
+                }
+            }
+            
+            guard FileManager.default.fileExists(atPath: extractedApp.path) else {
+                throw NSError(domain: "MCons", code: 1, userInfo: [NSLocalizedDescriptionKey: "Extracted app not found"])
+            }
+            
+            var targetDir = URL(fileURLWithPath: "/Applications")
+            if !FileManager.default.isWritableFile(atPath: targetDir.path) {
+                targetDir = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Applications")
+                try? FileManager.default.createDirectory(at: targetDir, withIntermediateDirectories: true)
+            }
+            let targetApp = targetDir.appendingPathComponent("MCons.app")
+            
+            _ = try? FileManager.default.removeItem(at: targetApp)
+            try FileManager.default.copyItem(at: extractedApp, to: targetApp)
+            
+            let xattr = Process()
+            xattr.executableURL = URL(fileURLWithPath: "/usr/bin/xattr")
+            xattr.arguments = ["-cr", targetApp.path]
+            try? xattr.run()
+            xattr.waitUntilExit()
+            
+            updateProgressText = "Relaunching MCons..."
+            try? await Task.sleep(nanoseconds: 300_000_000)
+            
+            NSWorkspace.shared.open(targetApp)
+            try? await Task.sleep(nanoseconds: 400_000_000)
+            NSApplication.shared.terminate(nil)
+        } catch {
+            isUpdating = false
+            updateProgressText = "Direct install failed. Opening Terminal..."
+            launchInstallerInTerminal()
         }
     }
 }

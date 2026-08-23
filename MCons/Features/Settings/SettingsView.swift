@@ -105,78 +105,29 @@ struct SettingsView: View {
                     }
                 }
                 
-                // Updates Section
+                // Software Update
                 settingsSection(title: "Updates", icon: "arrow.triangle.2.circlepath") {
-                    VStack(spacing: AppTheme.Spacing.lg) {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("MCons \(updateService.currentFullVersion)")
-                                    .font(AppTheme.Typography.bodyBold)
-                                
-                                updateStatusSubtitle
-                            }
-                            
-                            Spacer()
-                            
-                            HStack(spacing: AppTheme.Spacing.sm) {
-                                if case .updateAvailable(let release) = updateService.status {
-                                    Button("View Changelog") {
-                                        selectedReleaseForChangelog = release
-                                    }
-                                    .buttonStyle(.bordered)
-                                    
-                                    Button {
-                                        updateService.launchInstallerInTerminal()
-                                    } label: {
-                                        Label("Update", systemImage: "sparkles")
-                                    }
-                                    .buttonStyle(.borderedProminent)
-                                } else {
-                                    Button {
-                                        Task {
-                                            await updateService.checkForUpdates(silent: false)
-                                        }
-                                    } label: {
-                                        if updateService.status == .checking {
-                                            ProgressView()
-                                                .scaleEffect(0.6)
-                                                .frame(width: 16, height: 16)
-                                        } else {
-                                            Text("Check for Updates")
-                                        }
-                                    }
-                                    .buttonStyle(.bordered)
-                                    .disabled(updateService.status == .checking)
-                                }
-                            }
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Software Update")
+                                .font(AppTheme.Typography.headline)
+                            Text("Current version: \(updateService.currentFullVersion)")
+                                .font(AppTheme.Typography.caption)
+                                .foregroundStyle(.secondary)
                         }
                         
-                        if case .updateAvailable(let release) = updateService.status {
-                            Divider()
-                            
-                            HStack(alignment: .top, spacing: AppTheme.Spacing.md) {
-                                Image(systemName: "sparkles")
-                                    .font(.title3)
-                                    .foregroundStyle(Color(hex: "#6C5CE7"))
-                                
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("New Version Available: \(release.name)")
-                                        .font(AppTheme.Typography.headline)
-                                        .foregroundStyle(.primary)
-                                    
-                                    Text("Released on \(release.formattedDate). Install update to get the latest icon packs and performance enhancements.")
-                                        .font(AppTheme.Typography.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                                
-                                Spacer()
+                        Spacer()
+                        
+                        Button {
+                            appState.selectedSidebarItem = .updates
+                        } label: {
+                            HStack(spacing: 4) {
+                                Text("Manage Updates")
+                                Image(systemName: "chevron.right")
+                                    .font(.caption2)
                             }
-                            .padding(AppTheme.Spacing.md)
-                            .background(
-                                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
-                                    .fill(Color(hex: "#6C5CE7").opacity(0.08))
-                            )
                         }
+                        .buttonStyle(.bordered)
                     }
                 }
                 

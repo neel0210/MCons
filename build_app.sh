@@ -23,8 +23,13 @@ MIN_MACOS="14.0"
 COPYRIGHT="Copyright © 2026 Neel0210. All rights reserved."
 CATEGORY="public.app-category.utilities"
 
-# Derive build number from git commit count if available
-if command -v git &>/dev/null && git rev-parse --is-inside-work-tree &>/dev/null 2>&1; then
+# Derive build number from GITHUB_RUN_NUMBER if in CI, or git commit count
+if [ -n "${GITHUB_RUN_NUMBER:-}" ]; then
+    BUILD_NUMBER="${GITHUB_RUN_NUMBER}"
+    GIT_HASH=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+    GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "main")
+    GIT_DIRTY=""
+elif command -v git &>/dev/null && git rev-parse --is-inside-work-tree &>/dev/null 2>&1; then
     BUILD_NUMBER=$(git rev-list --count HEAD 2>/dev/null || echo "1")
     GIT_HASH=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
     GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
@@ -33,6 +38,7 @@ if command -v git &>/dev/null && git rev-parse --is-inside-work-tree &>/dev/null
         GIT_DIRTY="-dirty"
     fi
 else
+    BUILD_NUMBER="1"
     GIT_HASH="unknown"
     GIT_BRANCH="unknown"
     GIT_DIRTY=""

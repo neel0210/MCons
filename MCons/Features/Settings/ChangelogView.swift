@@ -121,11 +121,20 @@ struct ChangelogView: View {
                 
                 if isUpdateAvailable {
                     Button {
-                        updateService.launchInstallerInTerminal()
+                        Task {
+                            await updateService.installUpdateDirectly()
+                        }
                     } label: {
                         HStack(spacing: AppTheme.Spacing.xs) {
-                            Image(systemName: "terminal.fill")
-                            Text("Update Now (Terminal)")
+                            if updateService.isUpdating {
+                                ProgressView()
+                                    .scaleEffect(0.6)
+                                    .frame(width: 14, height: 14)
+                                Text(updateService.updateProgressText.isEmpty ? "Updating..." : updateService.updateProgressText)
+                            } else {
+                                Image(systemName: "sparkles")
+                                Text("Update Now")
+                            }
                         }
                         .font(AppTheme.Typography.bodyBold)
                         .foregroundStyle(.white)
@@ -135,6 +144,7 @@ struct ChangelogView: View {
                         .clipShape(RoundedRectangle(cornerRadius: AppTheme.CornerRadius.sm))
                     }
                     .buttonStyle(.plain)
+                    .disabled(updateService.isUpdating)
                     .keyboardShortcut(.defaultAction)
                 }
             }

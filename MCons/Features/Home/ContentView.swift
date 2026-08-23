@@ -34,6 +34,8 @@ struct ContentView: View {
                 IconPacksView()
             case .applyIcon:
                 IconApplyView()
+            case .updates:
+                UpdaterView()
             case .settings:
                 SettingsView()
             case .about:
@@ -76,6 +78,7 @@ struct SidebarView: View {
                     
                     // Preferences & Info
                     navigationGroup(title: "PREFERENCES") {
+                        sidebarButton(for: .updates)
                         sidebarButton(for: .settings)
                         sidebarButton(for: .about)
                     }
@@ -173,8 +176,8 @@ struct SidebarView: View {
                 
                 Spacer()
                 
-                // Update badge dot on About item
-                if item == .about, case .updateAvailable = updateService.status {
+                // Update badge dot on Updates item
+                if item == .updates, case .updateAvailable = updateService.status {
                     Circle()
                         .fill(Color(hex: "#00B894"))
                         .frame(width: 7, height: 7)
