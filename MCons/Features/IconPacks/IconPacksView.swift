@@ -36,7 +36,7 @@ struct IconPacksView: View {
                     .transition(.opacity)
             }
         }
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background(AppTheme.Colors.background)
         .onAppear {
             iconPacks = appState.loadIconPacks()
             // If a pack was pre-selected (from home), show it

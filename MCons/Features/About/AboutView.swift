@@ -36,7 +36,7 @@ struct AboutView: View {
             }
             .padding(AppTheme.Spacing.xxl)
         }
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background(AppTheme.Colors.background)
     }
 
     // MARK: - App Header
@@ -279,7 +279,7 @@ struct AboutView: View {
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
-                        .stroke(Color(nsColor: .separatorColor).opacity(0.3), lineWidth: 1)
+                        .stroke(AppTheme.Colors.border, lineWidth: 1)
                 )
         }
     }

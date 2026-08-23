@@ -49,7 +49,7 @@ struct IconApplyView: View {
             }
             .padding(AppTheme.Spacing.xxl)
         }
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background(AppTheme.Colors.background)
         .onAppear {
             // Pick up pre-selected values from app state
             if let icon = appState.selectedIcon {

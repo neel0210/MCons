@@ -54,6 +54,10 @@ struct IconPackDetailView: View {
                         RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                             .fill(AppTheme.Colors.cardBackground)
                     )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
+                            .stroke(AppTheme.Colors.border, lineWidth: 1)
+                    )
                     
                     // Icons grid
                     LazyVGrid(columns: [
@@ -88,6 +92,7 @@ struct IconPackDetailView: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
+        .background(AppTheme.Colors.background)
         .animation(AppAnimations.smooth, value: selectedIcon)
     }
     
@@ -189,15 +194,19 @@ struct IconCell: View {
                     .interpolation(.high)
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 76, height: 76)
+                    .scaleEffect(isHovered ? 1.06 : 1.0)
                     .shadow(
-                        color: isSelected ? Color(hex: accentHex).opacity(0.45) : (isHovered ? .black.opacity(0.25) : .black.opacity(0.12)),
+                        color: isSelected
+                            ? Color(hex: accentHex).opacity(0.5)
+                            : (isHovered ? Color(hex: accentHex).opacity(0.3) : Color.black.opacity(0.2)),
                         radius: isSelected ? 8 : (isHovered ? 6 : 3),
                         y: isSelected ? 4 : 2
                     )
+                    .animation(AppAnimations.quick, value: isHovered)
                 
                 Text(icon.name)
                     .font(AppTheme.Typography.caption)
-                    .foregroundStyle(isSelected ? .primary : .secondary)
+                    .foregroundStyle(isSelected ? .primary : (isHovered ? .primary : .secondary))
                     .lineLimit(1)
                     .truncationMode(.tail)
             }
@@ -207,24 +216,19 @@ struct IconCell: View {
                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                     .fill(
                         isSelected
-                            ? Color(hex: accentHex).opacity(0.15)
-                            : isHovered
-                                ? AppTheme.Colors.cardBackground
-                                : Color.clear
+                            ? Color(hex: accentHex).opacity(0.18)
+                            : (isHovered ? AppTheme.Colors.cardElevated : AppTheme.Colors.cardBackground.opacity(0.6))
                     )
             )
             .overlay(
                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
                     .stroke(
                         isSelected
-                            ? Color(hex: accentHex).opacity(0.8)
-                            : isHovered
-                                ? Color(hex: accentHex).opacity(0.3)
-                                : Color.clear,
-                        lineWidth: isSelected ? 2 : 1
+                            ? Color(hex: accentHex).opacity(0.85)
+                            : (isHovered ? Color(hex: accentHex).opacity(0.4) : AppTheme.Colors.border),
+                        lineWidth: isSelected ? 1.5 : 1
                     )
             )
-            .scaleEffect(isHovered && !isSelected ? 1.04 : 1.0)
             .animation(AppAnimations.quick, value: isHovered)
             .animation(AppAnimations.bouncy, value: isSelected)
         }

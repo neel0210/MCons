@@ -1,61 +1,64 @@
 import SwiftUI
 
-/// Shared high-performance animation constants, springs, and modifiers
+/// Shared high-performance animation constants, springs, and modifiers tuned for Apple ProMotion (120Hz)
 enum AppAnimations {
     
-    // MARK: - Spring Animations
+    // MARK: - ProMotion Springs
     
-    /// Bouncy spring for tactile buttons and icons
-    static let bouncy = Animation.spring(response: 0.35, dampingFraction: 0.65, blendDuration: 0.05)
+    /// Tactile spring for selection, tab switches and icon clicks
+    static let bouncy = Animation.spring(response: 0.28, dampingFraction: 0.72, blendDuration: 0.02)
     
-    /// Smooth spring for layout and page transitions
-    static let smooth = Animation.spring(response: 0.45, dampingFraction: 0.82, blendDuration: 0.08)
+    /// Smooth fluid spring for layout and page navigation
+    static let smooth = Animation.spring(response: 0.35, dampingFraction: 0.86, blendDuration: 0.04)
     
-    /// Ultra-fast spring for hover states (60/120fps)
-    static let quick = Animation.spring(response: 0.22, dampingFraction: 0.75, blendDuration: 0)
+    /// Instant response spring for hover states (zero lag)
+    static let quick = Animation.spring(response: 0.20, dampingFraction: 0.82, blendDuration: 0)
+    
+    /// Snappy interactive response
+    static let snappy = Animation.spring(response: 0.24, dampingFraction: 0.78, blendDuration: 0)
     
     /// Interactive spring for drag and touch
-    static let interactive = Animation.interactiveSpring(response: 0.3, dampingFraction: 0.7, blendDuration: 0.05)
+    static let interactive = Animation.interactiveSpring(response: 0.25, dampingFraction: 0.75, blendDuration: 0.02)
     
     /// Gentle spring for hero effects and subtle floating
-    static let gentle = Animation.spring(response: 0.55, dampingFraction: 0.88, blendDuration: 0.1)
+    static let gentle = Animation.spring(response: 0.45, dampingFraction: 0.90, blendDuration: 0.05)
     
     // MARK: - Eased Animations
     
     /// Standard ease-out for quick state changes
-    static let standard = Animation.easeOut(duration: 0.2)
+    static let standard = Animation.easeOut(duration: 0.16)
     
     /// Fade animation for modal and overlay presentations
-    static let fade = Animation.easeInOut(duration: 0.18)
+    static let fade = Animation.easeInOut(duration: 0.15)
     
     /// Celebration animation for success states
-    static let success = Animation.spring(response: 0.5, dampingFraction: 0.55, blendDuration: 0.05)
+    static let success = Animation.spring(response: 0.42, dampingFraction: 0.60, blendDuration: 0.04)
 }
 
 // MARK: - Animated View Modifiers
 
-/// Pro-grade Card Lift & Glow effect on hover
+/// Pro-grade JetBlack Card Hover Illumination & Lift
 struct CardLiftModifier: ViewModifier {
     @State private var isHovering = false
-    var accentHex: String = "#6C5CE7"
-    var liftScale: CGFloat = 1.018
+    var accentHex: String = "#6366F1"
+    var liftScale: CGFloat = 1.006
     
     func body(content: Content) -> some View {
         content
             .scaleEffect(isHovering ? liftScale : 1.0)
             .shadow(
-                color: isHovering ? Color(hex: accentHex).opacity(0.35) : Color.black.opacity(0.18),
-                radius: isHovering ? 14 : 6,
+                color: isHovering ? Color(hex: accentHex).opacity(0.3) : Color.black.opacity(0.35),
+                radius: isHovering ? 12 : 5,
                 x: 0,
-                y: isHovering ? 8 : 3
+                y: isHovering ? 6 : 2
             )
             .overlay(
                 RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
                     .stroke(
                         isHovering
-                            ? Color(hex: accentHex).opacity(0.7)
-                            : Color(nsColor: .separatorColor).opacity(0.25),
-                        lineWidth: isHovering ? 1.5 : 1
+                            ? Color(hex: accentHex).opacity(0.65)
+                            : AppTheme.Colors.border,
+                        lineWidth: isHovering ? 1.2 : 1
                     )
             )
             .animation(AppAnimations.quick, value: isHovering)
@@ -65,7 +68,7 @@ struct CardLiftModifier: ViewModifier {
     }
 }
 
-/// Scales an element when hovered
+/// Scales an element when hovered without affecting container frame
 struct HoverScale: ViewModifier {
     @State private var isHovering = false
     let scale: CGFloat

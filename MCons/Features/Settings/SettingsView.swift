@@ -147,7 +147,7 @@ struct SettingsView: View {
             .padding(AppTheme.Spacing.xxl)
         }
         .frame(minWidth: 500)
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background(AppTheme.Colors.background)
     }
     
     // MARK: - Settings Section Builder
@@ -170,7 +170,7 @@ struct SettingsView: View {
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: AppTheme.CornerRadius.lg)
-                        .stroke(Color(nsColor: .separatorColor).opacity(0.3), lineWidth: 1)
+                        .stroke(AppTheme.Colors.border, lineWidth: 1)
                 )
         }
     }

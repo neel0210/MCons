@@ -31,7 +31,7 @@ struct HomeView: View {
             }
             .padding(AppTheme.Spacing.xxl)
         }
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background(AppTheme.Colors.background)
         .onAppear {
             iconPacks = appState.loadIconPacks()
             withAnimation(AppAnimations.gentle) {

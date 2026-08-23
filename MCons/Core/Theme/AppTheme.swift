@@ -1,51 +1,63 @@
 import SwiftUI
 
-/// Centralized design system for Mac_ICOns
+/// Centralized JetBlack design system for MCons
 enum AppTheme {
     
-    // MARK: - Colors
+    // MARK: - JetBlack Colors & Surfaces
     
     enum Colors {
-        /// Primary accent gradient
+        /// Primary accent gradient (Electric Violet to Indigo)
         static let accentGradient = LinearGradient(
-            colors: [Color(hex: "#6C5CE7"), Color(hex: "#A29BFE")],
+            colors: [Color(hex: "#6366F1"), Color(hex: "#8B5CF6")],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
         
-        /// Secondary gradient for backgrounds
-        static let backgroundGradient = LinearGradient(
-            colors: [
-                Color(nsColor: .windowBackgroundColor),
-                Color(nsColor: .windowBackgroundColor).opacity(0.95)
-            ],
-            startPoint: .top,
-            endPoint: .bottom
+        /// Secondary neon cyan gradient
+        static let cyanGradient = LinearGradient(
+            colors: [Color(hex: "#00D2FF"), Color(hex: "#3A7BD5")],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
         )
         
-        /// Sidebar background
-        static let sidebarBackground = Color(nsColor: .controlBackgroundColor).opacity(0.5)
+        /// JetBlack Root Background
+        static let jetBlackBackground = Color(hex: "#090A0F")
         
-        /// Card background for light/dark mode
-        static let cardBackground = Color(nsColor: .controlBackgroundColor)
+        /// JetBlack Canvas Background
+        static let background = Color(hex: "#0C0E14")
+        
+        /// JetBlack Sidebar Background
+        static let sidebarBackground = Color(hex: "#08090D")
+        
+        /// JetBlack Card Surface
+        static let cardBackground = Color(hex: "#13151F")
+        
+        /// JetBlack Elevated Card Surface
+        static let cardElevated = Color(hex: "#1A1D2A")
+        
+        /// Subtle Border Stroke
+        static let border = Color.white.opacity(0.08)
+        
+        /// Hover Border Stroke
+        static let borderHover = Color.white.opacity(0.18)
         
         /// Subtle text
-        static let subtitleText = Color.secondary
+        static let subtitleText = Color(hex: "#94A3B8")
         
-        /// Success green
-        static let success = Color(hex: "#00B894")
+        /// Success Emerald
+        static let success = Color(hex: "#10B981")
         
-        /// Warning amber
-        static let warning = Color(hex: "#FDCB6E")
+        /// Warning Amber
+        static let warning = Color(hex: "#F59E0B")
         
-        /// Error red
-        static let error = Color(hex: "#D63031")
+        /// Error Rose
+        static let error = Color(hex: "#F43F5E")
         
         /// Gradients for icon pack cards
         static func packGradient(hex: String) -> LinearGradient {
             let baseColor = Color(hex: hex)
             return LinearGradient(
-                colors: [baseColor.opacity(0.8), baseColor.opacity(0.4)],
+                colors: [baseColor.opacity(0.75), baseColor.opacity(0.25)],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
