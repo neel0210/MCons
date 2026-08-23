@@ -122,6 +122,14 @@ xcodegen generate
 open MCons.xcodeproj
 ```
 
+### macOS Gatekeeper Note (Downloaded Builds)
+If macOS blocks opening a downloaded release build due to Gatekeeper quarantine:
+```bash
+# Remove quarantine attribute
+xattr -cr /Applications/MCons.app
+```
+Or right-click `MCons.app` in Finder and select **Open**.
+
 ---
 
 ## 📂 Project Structure

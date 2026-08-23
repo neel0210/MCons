@@ -272,6 +272,21 @@ PLIST
 # PkgInfo
 echo -n "APPL????" > "${APP_DIR}/Contents/PkgInfo"
 
+# ─── Code Signing ────────────────────────────────────────────────────────────
+header "Code Signing"
+SIGN_IDENTITY="${CODE_SIGN_IDENTITY:--}"
+ENTITLEMENTS_ARGS=()
+if [ -f "MCons/Resources/MCons.entitlements" ]; then
+    ENTITLEMENTS_ARGS=(--entitlements "MCons/Resources/MCons.entitlements")
+fi
+
+log "Signing bundle with identity: ${SIGN_IDENTITY}..."
+codesign --force --deep --options runtime --sign "${SIGN_IDENTITY}" "${ENTITLEMENTS_ARGS[@]}" "${APP_DIR}"
+
+log "Verifying code signature..."
+codesign --verify --deep --strict --verbose=2 "${APP_DIR}"
+success "Code signature valid & verified."
+
 # ─── Bundle stats ────────────────────────────────────────────────────────────
 BINARY_SIZE=$(du -sh "${APP_DIR}/Contents/MacOS/${EXECUTABLE_NAME}" | awk '{print $1}')
 BUNDLE_SIZE=$(du -sh "${APP_DIR}" | awk '{print $1}')
@@ -295,7 +310,12 @@ success "App bundle ready."
 if $DO_ZIP; then
     header "Creating ZIP Archive"
     ZIP_NAME="${APP_NAME}-v${VERSION}-${BUILD_CONFIG}.zip"
-    (cd "${OUTPUT_DIR}" && zip -r -q "${ZIP_NAME}" "${APP_NAME}.app")
+    rm -f "${OUTPUT_DIR}/${ZIP_NAME}"
+    if command -v ditto &>/dev/null; then
+        (cd "${OUTPUT_DIR}" && ditto -c -k --keepParent "${APP_NAME}.app" "${ZIP_NAME}")
+    else
+        (cd "${OUTPUT_DIR}" && zip -r -y -q "${ZIP_NAME}" "${APP_NAME}.app")
+    fi
     ZIP_SIZE=$(du -sh "${OUTPUT_DIR}/${ZIP_NAME}" | awk '{print $1}')
     success "Archive: ${OUTPUT_DIR}/${ZIP_NAME} (${ZIP_SIZE})"
 fi
