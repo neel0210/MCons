@@ -75,13 +75,17 @@ final class FolderService {
         return fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
     }
     
-    /// Renames a folder
+    /// Renames a folder or application
     /// - Parameters:
-    ///   - url: Current folder URL
-    ///   - newName: New name for the folder
+    ///   - url: Current URL
+    ///   - newName: New name
     /// - Returns: New URL if successful, nil otherwise
     func renameFolder(at url: URL, to newName: String) -> URL? {
-        let newURL = url.deletingLastPathComponent().appendingPathComponent(newName)
+        var targetName = newName
+        if isApplication(url: url) && !targetName.lowercased().hasSuffix(".app") {
+            targetName += ".app"
+        }
+        let newURL = url.deletingLastPathComponent().appendingPathComponent(targetName)
         
         do {
             try fileManager.moveItem(at: url, to: newURL)
@@ -89,8 +93,42 @@ final class FolderService {
             SecurityBookmarkManager.shared.saveBookmark(for: newURL)
             return newURL
         } catch {
-            print("Failed to rename folder: \(error.localizedDescription)")
+            print("Failed to rename target: \(error.localizedDescription)")
             return nil
         }
     }
+    
+    /// Checks if a URL represents a macOS application (.app bundle)
+    func isApplication(url: URL) -> Bool {
+        return url.pathExtension.lowercased() == "app"
+    }
+    
+    /// Gets all installed applications from /Applications, /System/Applications, and ~/Applications
+    func installedApplications() -> [URL] {
+        var apps: [URL] = []
+        let appDirs = [
+            URL(fileURLWithPath: "/Applications"),
+            URL(fileURLWithPath: "/System/Applications"),
+            fileManager.homeDirectoryForCurrentUser.appendingPathComponent("Applications")
+        ]
+        
+        for dir in appDirs {
+            guard let contents = try? fileManager.contentsOfDirectory(
+                at: dir,
+                includingPropertiesForKeys: [.isDirectoryKey],
+                options: [.skipsHiddenFiles]
+            ) else { continue }
+            
+            for item in contents where item.pathExtension.lowercased() == "app" {
+                if !apps.contains(where: { $0.lastPathComponent == item.lastPathComponent }) {
+                    apps.append(item)
+                }
+            }
+        }
+        
+        return apps.sorted {
+            $0.deletingPathExtension().lastPathComponent.localizedCaseInsensitiveCompare($1.deletingPathExtension().lastPathComponent) == .orderedAscending
+        }
+    }
 }
+

@@ -17,7 +17,7 @@ set -euo pipefail
 APP_NAME="MCons"
 BUNDLE_ID="com.neel0210.mcons"
 EXECUTABLE_NAME="MCons"
-VERSION="1.0.3"
+VERSION="1.0.4"
 BUILD_NUMBER="1"
 MIN_MACOS="14.0"
 COPYRIGHT="Copyright © 2026 Neel0210. All rights reserved."

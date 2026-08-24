@@ -63,7 +63,7 @@ final class UpdateService: ObservableObject {
     private let repo = "neel0210/MCons"
     
     var currentVersion: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.3"
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.4"
     }
     
     var currentBuildNumber: String {
@@ -201,7 +201,7 @@ final class UpdateService: ObservableObject {
             return
         }
         
-        let downloadURL = release.downloadURL ?? URL(string: "https://github.com/\(repo)/releases/download/\(release.tagName)/MCons-v1.0.3-release.zip")!
+        let downloadURL = release.downloadURL ?? URL(string: "https://github.com/\(repo)/releases/download/\(release.tagName)/MCons-v1.0.4-release.zip")!
         
         isUpdating = true
         updateProgressText = "Downloading \(release.tagName)..."

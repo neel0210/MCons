@@ -118,10 +118,15 @@ final class AppState: ObservableObject {
     ) -> Bool {
         let originalURL = targetFolder
         let originalName = targetFolder.lastPathComponent
+        let isApp = folderService.isApplication(url: originalURL)
+        let targetType = isApp ? "App" : "Folder"
         let hadCustomIcon = iconService.hasCustomIcon(for: originalURL)
         let originalIconImage: NSImage? = hadCustomIcon ? iconService.getIcon(for: originalURL) : nil
         
-        let cleanName = desiredName.trimmingCharacters(in: .whitespacesAndNewlines)
+        var cleanName = desiredName.trimmingCharacters(in: .whitespacesAndNewlines)
+        if isApp && !cleanName.isEmpty && !cleanName.lowercased().hasSuffix(".app") {
+            cleanName += ".app"
+        }
         let newName = cleanName.isEmpty ? originalName : cleanName
         
         var currentURL = originalURL
@@ -133,7 +138,7 @@ final class AppState: ObservableObject {
                 currentURL = renamedURL
                 didRename = true
             } else {
-                let err = IconServiceError.unknown("Failed to rename folder from '\(originalName)' to '\(newName)'.")
+                let err = IconServiceError.unknown("Failed to rename \(targetType.lowercased()) from '\(originalName)' to '\(newName)'.")
                 currentError = err
                 showErrorAlert = true
                 statusMessage = "Rename failed"
@@ -172,7 +177,7 @@ final class AppState: ObservableObject {
         
         // Step 3: Success state updates
         self.targetFolderURL = currentURL
-        self.statusMessage = didRename ? "Folder renamed & icon applied!" : "Icon applied successfully!"
+        self.statusMessage = didRename ? "\(targetType) renamed & icon applied!" : "\(targetType) icon applied successfully!"
         self.showSuccessAnimation = true
         
         if !recentFolders.contains(currentURL) {

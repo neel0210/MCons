@@ -12,11 +12,19 @@ struct IconApplyView: View {
     @State private var showFolderPicker = false
     @State private var showImagePicker = false
     @State private var showCreateFolder = false
+    @State private var showInstalledAppsSheet = false
+    @State private var appSearchText = ""
+    @State private var installedApps: [URL] = []
     @State private var newFolderName = ""
     @State private var createFolderParentURL: URL?
     @State private var showSuccess = false
     @State private var isApplying = false
     @State private var isDragTargeted = false
+    
+    private var isTargetApp: Bool {
+        guard let url = targetFolderURL else { return false }
+        return appState.folderService.isApplication(url: url)
+    }
     
     var body: some View {
         ScrollView {
@@ -68,6 +76,9 @@ struct IconApplyView: View {
         .sheet(isPresented: $showCreateFolder) {
             createFolderSheet
         }
+        .sheet(isPresented: $showInstalledAppsSheet) {
+            installedAppsSheet
+        }
         .overlay {
             if showSuccess {
                 successOverlay
@@ -107,7 +118,7 @@ struct IconApplyView: View {
                     .font(AppTheme.Typography.largeTitle)
                     .foregroundStyle(.primary)
                 
-                Text("Select an icon and a target folder, option to rename folder, then apply")
+                Text("Select an icon and a target folder or application (.app), option to rename, then apply")
                     .font(AppTheme.Typography.body)
                     .foregroundStyle(.secondary)
             }
@@ -230,13 +241,33 @@ struct IconApplyView: View {
         .frame(minWidth: 280, maxWidth: 320)
     }
     
-    // MARK: - Folder Selection Panel
+    // MARK: - Folder & App Selection Panel
     
     private var folderSelectionPanel: some View {
         VStack(alignment: .leading, spacing: AppTheme.Spacing.lg) {
-            Text("Target Folder")
-                .font(AppTheme.Typography.title2)
-                .foregroundStyle(.primary)
+            HStack {
+                Text(isTargetApp ? "Target Application" : "Target Folder")
+                    .font(AppTheme.Typography.title2)
+                    .foregroundStyle(.primary)
+                
+                Spacer()
+                
+                if targetFolderURL != nil {
+                    HStack(spacing: 4) {
+                        Image(systemName: isTargetApp ? "app.fill" : "folder.fill")
+                            .font(.system(size: 10))
+                        Text(isTargetApp ? "APPLICATION" : "FOLDER")
+                            .font(.system(size: 10, weight: .bold))
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(
+                        Capsule()
+                            .fill(isTargetApp ? Color(hex: "#0984E3").opacity(0.15) : Color(hex: "#6C5CE7").opacity(0.15))
+                    )
+                    .foregroundStyle(isTargetApp ? Color(hex: "#0984E3") : Color(hex: "#6C5CE7"))
+                }
+            }
             
             VStack(spacing: AppTheme.Spacing.lg) {
                 // Drop zone
@@ -244,8 +275,8 @@ struct IconApplyView: View {
                     if let url = targetFolderURL {
                         VStack(spacing: AppTheme.Spacing.md) {
                             HStack(spacing: AppTheme.Spacing.md) {
-                                let folderIcon = NSWorkspace.shared.icon(forFile: url.path)
-                                Image(nsImage: folderIcon)
+                                let itemIcon = NSWorkspace.shared.icon(forFile: url.path)
+                                Image(nsImage: itemIcon)
                                     .resizable()
                                     .frame(width: 48, height: 48)
                                 
@@ -276,10 +307,10 @@ struct IconApplyView: View {
                             
                             Divider()
                             
-                            // Rename folder option
+                            // Rename target option
                             VStack(alignment: .leading, spacing: AppTheme.Spacing.xs) {
                                 HStack {
-                                    Text("Folder Name")
+                                    Text(isTargetApp ? "App Name" : "Folder Name")
                                         .font(AppTheme.Typography.captionBold)
                                         .foregroundStyle(.secondary)
                                     
@@ -287,7 +318,7 @@ struct IconApplyView: View {
                                     
                                     if customFolderName != url.lastPathComponent {
                                         Button("Keep Original Name") {
-                                            customFolderName = url.lastPathComponent
+                                            customFolderName = isTargetApp ? url.deletingPathExtension().lastPathComponent : url.lastPathComponent
                                         }
                                         .buttonStyle(.plain)
                                         .font(AppTheme.Typography.caption)
@@ -308,7 +339,7 @@ struct IconApplyView: View {
                                     Image(systemName: "pencil")
                                         .foregroundStyle(.secondary)
                                     
-                                    TextField("Enter folder name", text: $customFolderName)
+                                    TextField(isTargetApp ? "Enter app name" : "Enter folder name", text: $customFolderName)
                                         .textFieldStyle(.plain)
                                         .font(AppTheme.Typography.body)
                                 }
@@ -331,7 +362,7 @@ struct IconApplyView: View {
                                     HStack(spacing: 4) {
                                         Image(systemName: "info.circle.fill")
                                             .font(.caption)
-                                        Text("Folder will be renamed from '\(url.lastPathComponent)' to '\(customFolderName)' upon applying")
+                                        Text("\(isTargetApp ? "App" : "Folder") will be renamed from '\(url.lastPathComponent)' to '\(customFolderName)' upon applying")
                                             .font(AppTheme.Typography.caption)
                                     }
                                     .foregroundStyle(Color(hex: "#6C5CE7"))
@@ -342,15 +373,15 @@ struct IconApplyView: View {
                         .padding(AppTheme.Spacing.lg)
                     } else {
                         VStack(spacing: AppTheme.Spacing.md) {
-                            Image(systemName: "folder.badge.questionmark")
+                            Image(systemName: "folder.badge.gearshape")
                                 .font(.system(size: 40, weight: .light))
                                 .foregroundStyle(.quaternary)
                             
-                            Text("Drop a folder here")
+                            Text("Drop a folder or application (.app) here")
                                 .font(AppTheme.Typography.body)
                                 .foregroundStyle(.secondary)
                             
-                            Text("or use the buttons below")
+                            Text("or use the selection buttons below")
                                 .font(AppTheme.Typography.caption)
                                 .foregroundStyle(.tertiary)
                         }
@@ -376,47 +407,83 @@ struct IconApplyView: View {
                 }
                 .animation(AppAnimations.quick, value: isDragTargeted)
                 
-                // Folder action buttons
-                HStack(spacing: AppTheme.Spacing.md) {
-                    Button {
-                        let panel = NSOpenPanel()
-                        panel.canChooseDirectories = true
-                        panel.canChooseFiles = false
-                        panel.allowsMultipleSelection = false
-                        panel.message = "Select a folder to apply the icon to"
-                        panel.prompt = "Select Folder"
-                        
-                        if panel.runModal() == .OK, let url = panel.url {
-                            withAnimation(AppAnimations.smooth) {
-                                targetFolderURL = url
-                                appState.targetFolderURL = url
-                                customFolderName = url.lastPathComponent
+                // Target action buttons
+                VStack(spacing: AppTheme.Spacing.sm) {
+                    HStack(spacing: AppTheme.Spacing.md) {
+                        Button {
+                            let panel = NSOpenPanel()
+                            panel.canChooseDirectories = true
+                            panel.canChooseFiles = false
+                            panel.allowsMultipleSelection = false
+                            panel.message = "Select a folder to apply the icon to"
+                            panel.prompt = "Select Folder"
+                            
+                            if panel.runModal() == .OK, let url = panel.url {
+                                withAnimation(AppAnimations.smooth) {
+                                    targetFolderURL = url
+                                    appState.targetFolderURL = url
+                                    customFolderName = url.lastPathComponent
+                                }
                             }
+                        } label: {
+                            Label("Choose Folder", systemImage: "folder")
+                                .frame(maxWidth: .infinity)
                         }
-                    } label: {
-                        Label("Choose Folder", systemImage: "folder")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.bordered)
-                    
-                    Button {
-                        // Show create folder sheet
-                        let panel = NSOpenPanel()
-                        panel.canChooseDirectories = true
-                        panel.canChooseFiles = false
-                        panel.allowsMultipleSelection = false
-                        panel.message = "Select where to create the new folder"
-                        panel.prompt = "Select Location"
+                        .buttonStyle(.bordered)
                         
-                        if panel.runModal() == .OK, let url = panel.url {
-                            createFolderParentURL = url
-                            showCreateFolder = true
+                        Button {
+                            let panel = NSOpenPanel()
+                            panel.canChooseDirectories = true
+                            panel.canChooseFiles = true
+                            panel.allowsMultipleSelection = false
+                            panel.directoryURL = URL(fileURLWithPath: "/Applications")
+                            panel.allowedContentTypes = [.application, .package]
+                            panel.message = "Select an Application (.app) to apply the icon to"
+                            panel.prompt = "Select App"
+                            
+                            if panel.runModal() == .OK, let url = panel.url {
+                                withAnimation(AppAnimations.smooth) {
+                                    targetFolderURL = url
+                                    appState.targetFolderURL = url
+                                    customFolderName = url.deletingPathExtension().lastPathComponent
+                                }
+                            }
+                        } label: {
+                            Label("Choose App", systemImage: "app.dashed")
+                                .frame(maxWidth: .infinity)
                         }
-                    } label: {
-                        Label("Create New", systemImage: "folder.badge.plus")
-                            .frame(maxWidth: .infinity)
+                        .buttonStyle(.bordered)
                     }
-                    .buttonStyle(.bordered)
+                    
+                    HStack(spacing: AppTheme.Spacing.md) {
+                        Button {
+                            installedApps = appState.folderService.installedApplications()
+                            showInstalledAppsSheet = true
+                        } label: {
+                            Label("Installed Apps", systemImage: "square.grid.2x2")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        
+                        Button {
+                            // Show create folder sheet
+                            let panel = NSOpenPanel()
+                            panel.canChooseDirectories = true
+                            panel.canChooseFiles = false
+                            panel.allowsMultipleSelection = false
+                            panel.message = "Select where to create the new folder"
+                            panel.prompt = "Select Location"
+                            
+                            if panel.runModal() == .OK, let url = panel.url {
+                                createFolderParentURL = url
+                                showCreateFolder = true
+                            }
+                        } label: {
+                            Label("Create New", systemImage: "folder.badge.plus")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                    }
                 }
                 .padding(.horizontal, AppTheme.Spacing.lg)
                 .padding(.bottom, AppTheme.Spacing.lg)
@@ -616,7 +683,7 @@ struct IconApplyView: View {
                     .font(AppTheme.Typography.title)
                     .foregroundStyle(.white)
                 
-                Text("Your folder now has a custom icon")
+                Text("Your \(isTargetApp ? "application" : "folder") now has a custom icon")
                     .font(AppTheme.Typography.body)
                     .foregroundStyle(.white.opacity(0.8))
                 
@@ -631,6 +698,114 @@ struct IconApplyView: View {
             .glassMorphism(cornerRadius: AppTheme.CornerRadius.xxl)
             .scaleEffect(showSuccess ? 1 : 0.8)
             .animation(AppAnimations.success, value: showSuccess)
+        }
+    }
+    
+    // MARK: - Installed Apps Sheet
+    
+    private var filteredInstalledApps: [URL] {
+        if appSearchText.isEmpty {
+            return installedApps
+        }
+        return installedApps.filter {
+            $0.deletingPathExtension().lastPathComponent.localizedCaseInsensitiveContains(appSearchText)
+        }
+    }
+    
+    private var installedAppsSheet: some View {
+        VStack(spacing: AppTheme.Spacing.lg) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Installed Applications")
+                        .font(AppTheme.Typography.title)
+                    Text("Select any macOS app to customize its icon")
+                        .font(AppTheme.Typography.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                Spacer()
+                
+                Button("Done") {
+                    showInstalledAppsSheet = false
+                }
+                .buttonStyle(.bordered)
+            }
+            
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundStyle(.secondary)
+                TextField("Search applications...", text: $appSearchText)
+                    .textFieldStyle(.plain)
+                if !appSearchText.isEmpty {
+                    Button {
+                        appSearchText = ""
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(AppTheme.Spacing.md)
+            .background(
+                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
+                    .fill(AppTheme.Colors.cardBackground)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
+                    .stroke(Color(nsColor: .separatorColor).opacity(0.3), lineWidth: 1)
+            )
+            
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 90, maximum: 110), spacing: AppTheme.Spacing.md)], spacing: AppTheme.Spacing.md) {
+                    ForEach(filteredInstalledApps, id: \.self) { appURL in
+                        Button {
+                            withAnimation(AppAnimations.smooth) {
+                                targetFolderURL = appURL
+                                appState.targetFolderURL = appURL
+                                customFolderName = appURL.deletingPathExtension().lastPathComponent
+                            }
+                            showInstalledAppsSheet = false
+                        } label: {
+                            VStack(spacing: AppTheme.Spacing.xs) {
+                                let icon = NSWorkspace.shared.icon(forFile: appURL.path)
+                                Image(nsImage: icon)
+                                    .resizable()
+                                    .frame(width: 48, height: 48)
+                                    .shadow(color: .black.opacity(0.1), radius: 3, y: 2)
+                                
+                                Text(appURL.deletingPathExtension().lastPathComponent)
+                                    .font(AppTheme.Typography.caption)
+                                    .foregroundStyle(.primary)
+                                    .lineLimit(2)
+                                    .multilineTextAlignment(.center)
+                                    .frame(height: 28)
+                            }
+                            .padding(AppTheme.Spacing.sm)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
+                                    .fill(targetFolderURL == appURL ? Color(hex: "#6C5CE7").opacity(0.15) : Color(nsColor: .controlBackgroundColor).opacity(0.4))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: AppTheme.CornerRadius.md)
+                                    .stroke(targetFolderURL == appURL ? Color(hex: "#6C5CE7") : Color.clear, lineWidth: 1.5)
+                            )
+                        }
+                        .buttonStyle(.plain)
+                        .hoverScale(1.04)
+                    }
+                }
+                .padding(.vertical, AppTheme.Spacing.xs)
+            }
+            .frame(height: 340)
+        }
+        .padding(AppTheme.Spacing.xxl)
+        .frame(width: 520)
+        .onAppear {
+            if installedApps.isEmpty {
+                installedApps = appState.folderService.installedApplications()
+            }
         }
     }
     
@@ -653,7 +828,7 @@ struct IconApplyView: View {
             if success {
                 if let updatedURL = appState.targetFolderURL {
                     targetFolderURL = updatedURL
-                    customFolderName = updatedURL.lastPathComponent
+                    customFolderName = isTargetApp ? updatedURL.deletingPathExtension().lastPathComponent : updatedURL.lastPathComponent
                 }
                 
                 withAnimation(AppAnimations.success) {
@@ -674,13 +849,16 @@ struct IconApplyView: View {
         
         provider.loadItem(forTypeIdentifier: "public.file-url", options: nil) { item, error in
             if let data = item as? Data,
-               let url = URL(dataRepresentation: data, relativeTo: nil),
-               url.isDirectory {
-                DispatchQueue.main.async {
-                    withAnimation(AppAnimations.smooth) {
-                        targetFolderURL = url
-                        appState.targetFolderURL = url
-                        customFolderName = url.lastPathComponent
+               let url = URL(dataRepresentation: data, relativeTo: nil) {
+                let isDir = url.isDirectory
+                let isApp = url.pathExtension.lowercased() == "app"
+                if isDir || isApp {
+                    DispatchQueue.main.async {
+                        withAnimation(AppAnimations.smooth) {
+                            targetFolderURL = url
+                            appState.targetFolderURL = url
+                            customFolderName = isApp ? url.deletingPathExtension().lastPathComponent : url.lastPathComponent
+                        }
                     }
                 }
             }
@@ -697,3 +875,4 @@ struct IconApplyView: View {
             .padding(.top, AppTheme.Spacing.md)
     }
 }
+
