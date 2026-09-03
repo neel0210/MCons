@@ -45,6 +45,7 @@
 | **One Piece** | Straw Hat Pirates & Legends | 10 | 1024×1024 SVG | Luffy, Zoro, Sanji, Nami, Robin, Chopper, Ace, Law, Shanks, Whitebeard |
 | **Pokémon** | Iconic & Legendary Pokémon | 10 | 1024×1024 SVG | Pikachu, Mewtwo, Rayquaza, Charizard, Charizard X, Charizard Y, Greninja, Snorlax, Tyranitar, Salamence |
 | **Solo Leveling** | *Na Honjaman Rebeleob* Hunters & Shadows | 10 | 1024×1024 SVG | Sung Jinwoo, Igris, Beru, Iron, Tank, Cha Hae-In, Baek Yoonho, Choi Jong-In, Go Gunhee, Thomas Andre |
+| **Dragon Ball Super** | Gods, Angels, and Super Saiyans | 13 | 1024×1024 SVG | Mastered Ultra Instinct Goku, Vegeta Ultra Ego, Gogeta Blue, Vegito Blue, Full Power Broly, Lord Beerus God of Destruction, Whis, Golden Frieza, Goku Black Rose, Jiren, Gohan Beast, Orange Piccolo, Hit |
 | **Google** | Official Google App Icons for Folders | 10 | 1024×1024 SVG | Google Camera, Notes, Files, Chrome, Drive, Maps, Photos, Gmail, Calendar, YouTube |
 | **macOS Native+** | Enhanced Apple system colors | 12 | CoreGraphics Vector | Cupertino Blue, Deep Purple, Rose Pink, Crimson Red, Sunset Orange, Emerald Green, etc. |
 
@@ -182,6 +183,7 @@ All character designs, vector artwork, logos, and trademarks bundled or referenc
 - **⚔️ Demon Slayer (*Kimetsu no Yaiba*)**: © Koyoharu Gotouge / SHUEISHA / Aniplex / ufotable
 - **🏴‍☠️ One Piece**: © Eiichiro Oda / SHUEISHA / Toei Animation
 - **🗡️ Solo Leveling (*Na Honjaman Rebeleob*)**: Story by Chugong, Art by DUBU (REDICE STUDIO), © D&C Media / KakaoPage / A-1 Pictures
+- **🐉 Dragon Ball Super**: © Bird Studio / Shueisha, Toei Animation, Akira Toriyama, Toyotarou
 - **Apple & macOS**: macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.
 
 ### Fair Use Statement
