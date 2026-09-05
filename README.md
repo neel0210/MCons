@@ -47,6 +47,7 @@
 | **Solo Leveling** | *Na Honjaman Rebeleob* Hunters & Shadows | 10 | 1024×1024 SVG | Sung Jinwoo, Igris, Beru, Iron, Tank, Cha Hae-In, Baek Yoonho, Choi Jong-In, Go Gunhee, Thomas Andre |
 | **Dragon Ball Super** | Gods, Angels, and Super Saiyans | 13 | 1024×1024 SVG | Mastered Ultra Instinct Goku, Vegeta Ultra Ego, Gogeta Blue, Vegito Blue, Full Power Broly, Lord Beerus God of Destruction, Whis, Golden Frieza, Goku Black Rose, Jiren, Gohan Beast, Orange Piccolo, Hit |
 | **Fullmetal Alchemist: Brotherhood** | State Alchemists, Homunculi & Warriors | 10 | 1024×1024 SVG | Edward Elric, Alphonse Elric, Roy Mustang, Riza Hawkeye, Alex Armstrong, Olivier Armstrong, Greed Ling, King Bradley, Pride, Scar |
+| **Black Clover** | Magic Knights, Captains & Black Bulls | 12 | 1024×1024 SVG | Asta, Yuno, Noelle Silva, Yami Sukehiro, Julius Novachrono, Fuegoleon, Mereoleona, Luck Voltia, Magna Swing, Nacht Faust, Licht, Charmy |
 | **Google** | Official Google App Icons for Folders | 10 | 1024×1024 SVG | Google Camera, Notes, Files, Chrome, Drive, Maps, Photos, Gmail, Calendar, YouTube |
 | **macOS Native+** | Enhanced Apple system colors | 12 | CoreGraphics Vector | Cupertino Blue, Deep Purple, Rose Pink, Crimson Red, Sunset Orange, Emerald Green, etc. |
 

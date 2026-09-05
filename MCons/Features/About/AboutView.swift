@@ -232,6 +232,7 @@ struct AboutView: View {
                 ipRow(packId: "solo-leveling", iconName: "Sung Jinwoo", franchise: "Solo Leveling", holder: "Story by Chugong, Art by DUBU (REDICE STUDIO), © D&C Media / KakaoPage / A-1 Pictures")
                 ipRow(packId: "dragon-ball-super", iconName: "Mastered Ultra Instinct Goku", franchise: "Dragon Ball Super", holder: "© Bird Studio / Shueisha, Toei Animation, Akira Toriyama, Toyotarou")
                 ipRow(packId: "fullmetal-alchemist-brotherhood", iconName: "Edward Elric", franchise: "Fullmetal Alchemist: Brotherhood", holder: "© Hiromu Arakawa / SQUARE ENIX, Aniplex, BONES, Mainichi Broadcasting System")
+                ipRow(packId: "black-clover", iconName: "Asta", franchise: "Black Clover", holder: "© Yūki Tabata / SHUEISHA, TV TOKYO, Black Clover Project")
                 ipRow(packId: "google", iconName: "Google Chrome", franchise: "Google & Alphabet", holder: "© Google LLC / Alphabet Inc. Google, Chrome, Drive, Gmail, Maps, Photos, Files, Keep, Camera, YouTube and related marks are trademarks of Google LLC.")
                 ipRow(systemIcon: "apple.logo", franchise: "Apple & macOS", holder: "macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.")
             }
