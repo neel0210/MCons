@@ -27,8 +27,8 @@ jobs:
 
       - name: Build MCons App Bundle
         run: |
-          chmod +x build_app.sh
-          ./build_app.sh --zip
+          chmod +x build.sh
+          ./build.sh --zip
 
       - name: Verify Build Output
         run: |

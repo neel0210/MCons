@@ -90,7 +90,7 @@ Inside your pack folder, create a `metadata.json` file:
 
 ### 4. Automatic Discovery
 No Swift code changes are needed! The dynamic `IconPackLoader` automatically scans and registers all pack folders:
-1. Run `./build_app.sh` (or `swift build`)
+1. Run `./build.sh` (or `swift build`, or `.\build.ps1` on Windows)
 2. Launch MCons — your new icon pack will automatically appear in the **Icon Packs** tab!
 
 ---
@@ -127,10 +127,11 @@ swift build
 
 #### Release Build (.app Bundle)
 ```bash
-chmod +x build_app.sh
-./build_app.sh
+chmod +x build.sh
+./build.sh
 open "output/MCons.app"
 ```
+*(Windows PowerShell developers can use `.\build.ps1`)*
 
 #### Open in Xcode
 The project includes both a `Package.swift` (SPM) and an `.xcodeproj` (generated via XcodeGen):
