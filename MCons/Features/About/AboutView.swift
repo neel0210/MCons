@@ -237,6 +237,7 @@ struct AboutView: View {
                 ipRow(packId: "kaiju-no-8", iconName: "Kaiju No. 8", franchise: "Kaiju No. 8", holder: "© Naoya Matsumoto / SHUEISHA, \"Kaiju No. 8\" Production Committee, Production I.G")
                 ipRow(packId: "jujutsu-kaisen", iconName: "Satoru Gojo", franchise: "Jujutsu Kaisen", holder: "© Gege Akutami / SHUEISHA, JUJUTSU KAISEN Project, MAPPA")
                 ipRow(packId: "chainsaw-man", iconName: "Denji", franchise: "Chainsaw Man", holder: "© Tatsuki Fujimoto / SHUEISHA, MAPPA")
+                ipRow(packId: "death-note", iconName: "Light Yagami", franchise: "Death Note", holder: "© Tsugumi Ohba, Takeshi Obata / SHUEISHA, VAP, MADHOUSE, NTV")
                 ipRow(packId: "google", iconName: "Google Chrome", franchise: "Google & Alphabet", holder: "© Google LLC / Alphabet Inc. Google, Chrome, Drive, Gmail, Maps, Photos, Files, Keep, Camera, YouTube and related marks are trademarks of Google LLC.")
                 ipRow(systemIcon: "apple.logo", franchise: "Apple & macOS", holder: "macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.")
             }
