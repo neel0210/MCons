@@ -6,6 +6,9 @@ enum AppTheme {
     // MARK: - JetBlack Colors & Surfaces
     
     enum Colors {
+        /// Primary accent color
+        static let accent = Color(hex: "#6366F1")
+        
         /// Primary accent gradient (Electric Violet to Indigo)
         static let accentGradient = LinearGradient(
             colors: [Color(hex: "#6366F1"), Color(hex: "#8B5CF6")],
