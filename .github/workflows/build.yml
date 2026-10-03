@@ -28,13 +28,19 @@ jobs:
       - name: Build MCons App Bundle
         run: |
           chmod +x build.sh
-          ./build.sh --zip
+          ./build.sh --zip --dmg
 
       - name: Verify Build Output
         run: |
           ZIP_FILE=$(ls output/MCons-*-release.zip 2>/dev/null | head -1 || true)
+          DMG_FILE=$(ls output/MCons-*-release.dmg 2>/dev/null | head -1 || true)
           if [ -z "${ZIP_FILE}" ] || [ ! -f "${ZIP_FILE}" ]; then
             echo "❌ Zip archive not found!"
+            ls -lh output/
+            exit 1
+          fi
+          if [ -z "${DMG_FILE}" ] || [ ! -f "${DMG_FILE}" ]; then
+            echo "❌ DMG file not found!"
             ls -lh output/
             exit 1
           fi
@@ -69,7 +75,9 @@ jobs:
             ```bash
             curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
             ```
-          files: output/MCons-v1.0.4-release.zip
+          files: |
+            output/MCons-v1.0.4-release.zip
+            output/MCons-v1.0.4-release.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -119,7 +127,9 @@ jobs:
             ```bash
             curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
             ```
-          files: output/MCons-v1.0.4-release.zip
+          files: |
+            output/MCons-v1.0.4-release.zip
+            output/MCons-v1.0.4-release.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

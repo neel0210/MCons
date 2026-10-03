@@ -649,6 +649,11 @@ if $DO_DMG; then
     hdiutil create -volname "${APP_NAME}" -srcfolder "${DMG_TEMP}" -ov -format UDZO "${OUTPUT_DIR}/${DMG_NAME}"
     rm -rf "${DMG_TEMP}"
 
+    # Maintain CI alias if version differs from 1.0.4
+    if [ "${VERSION}" != "1.0.4" ]; then
+        cp "${OUTPUT_DIR}/${DMG_NAME}" "${OUTPUT_DIR}/${APP_NAME}-v1.0.4-release.dmg" 2>/dev/null || true
+    fi
+
     DMG_SIZE=$(du -sh "${OUTPUT_DIR}/${DMG_NAME}" | awk '{print $1}')
     success "Disk Image: ${OUTPUT_DIR}/${DMG_NAME} (${DMG_SIZE})"
 fi
