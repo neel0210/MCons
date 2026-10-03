@@ -71,6 +71,7 @@ enum AppTheme {
         static let title = Font.system(size: 22, weight: .bold, design: .rounded)
         static let title2 = Font.system(size: 18, weight: .semibold, design: .rounded)
         static let headline = Font.system(size: 15, weight: .semibold, design: .rounded)
+        static let subheadline = Font.system(size: 13, weight: .regular, design: .rounded)
         static let body = Font.system(size: 14, weight: .regular, design: .default)
         static let bodyBold = Font.system(size: 14, weight: .semibold, design: .default)
         static let callout = Font.system(size: 13, weight: .regular, design: .default)
