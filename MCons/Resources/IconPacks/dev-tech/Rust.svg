@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="folderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2E201B"/>
+      <stop offset="100%" stop-color="#1C1310"/>
+    </linearGradient>
+    <linearGradient id="tabGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#422D26"/>
+      <stop offset="100%" stop-color="#2E201B"/>
+    </linearGradient>
+    <filter id="folderShadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.38"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <filter id="logoShadow" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Folder Back Tab -->
+  <path d="M 120 180 C 120 148 140 128 172 128 L 410 128 C 445 128 470 155 495 190 L 525 230 L 852 230 C 884 230 904 250 904 282 L 904 380 L 120 380 Z" fill="url(#tabGrad)"/>
+
+  <!-- Folder Main Body with Shadow -->
+  <g filter="url(#folderShadow)">
+    <rect x="76" y="220" width="872" height="660" rx="42" fill="url(#folderGrad)"/>
+    <!-- Subtle Top Rim Highlight -->
+    <path d="M 118 221 L 906 221" stroke="#DEA584" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <!-- Centered Developer Technology Logo -->
+  <g filter="url(#logoShadow)">
+    <!-- Rust Gear & R -->
+    <g transform="translate(312, 360) scale(0.78)">
+      <circle cx="256" cy="256" r="230" fill="none" stroke="#DEA584" stroke-width="36"/>
+      <!-- Teeth around gear -->
+      <g fill="#DEA584">
+        <rect x="238" y="0" width="36" height="50" rx="8"/>
+        <rect x="238" y="462" width="36" height="50" rx="8"/>
+        <rect x="0" y="238" width="50" height="36" rx="8"/>
+        <rect x="462" y="238" width="50" height="36" rx="8"/>
+        <rect x="80" y="80" width="40" height="40" rx="8" transform="rotate(45 100 100)"/>
+        <rect x="372" y="80" width="40" height="40" rx="8" transform="rotate(45 392 100)"/>
+        <rect x="80" y="372" width="40" height="40" rx="8" transform="rotate(45 100 392)"/>
+        <rect x="372" y="372" width="40" height="40" rx="8" transform="rotate(45 392 392)"/>
+      </g>
+      <!-- Central Rust 'R' -->
+      <text x="256" y="340" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica" font-size="280" font-weight="900" fill="#DEA584" text-anchor="middle">R</text>
+    </g>
+  </g>
+</svg>

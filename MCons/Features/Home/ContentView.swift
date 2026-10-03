@@ -32,6 +32,8 @@ struct ContentView: View {
                 HomeView()
             case .iconPacks:
                 IconPacksView()
+            case .favorites:
+                FavoritesView()
             case .applyIcon:
                 IconApplyView()
             case .updates:
@@ -86,9 +88,17 @@ struct SidebarView: View {
                         )
                         
                         SidebarRow(
+                            item: .favorites,
+                            isSelected: appState.selectedSidebarItem == .favorites,
+                            badge: appState.favoriteIconIds.isEmpty ? nil : "\(appState.favoriteIconIds.count)",
+                            shortcut: "3",
+                            action: { select(.favorites) }
+                        )
+                        
+                        SidebarRow(
                             item: .applyIcon,
                             isSelected: appState.selectedSidebarItem == .applyIcon,
-                            shortcut: "3",
+                            shortcut: "4",
                             action: { select(.applyIcon) }
                         )
                     }

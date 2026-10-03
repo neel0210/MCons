@@ -55,6 +55,7 @@
 | **Death Note** | Kira, L & Shinigami | 3 | 1024×1024 SVG | Light Yagami, L Lawliet, Ryuk |
 | **Naruto** | Hidden Leaf Shinobi & Akatsuki | 30 | 1024×1024 SVG | Naruto, Sasuke, Sakura, Kakashi, Itachi, Madara, Minato, Jiraiya, Tsunade, Pain, Obito, Gaara, etc. |
 | **Google** | Official Google App Icons for Folders | 10 | 1024×1024 SVG | Google Camera, Notes, Files, Chrome, Drive, Maps, Photos, Gmail, Calendar, YouTube |
+| **Developer & Tech** | Languages, Frameworks & Coding Tools | 12 | 1024×1024 Vector SVG | VS Code, Terminal, GitHub, Git, Docker, Python, Rust, Swift, Go, TypeScript, React, Node.js |
 | **macOS Native+** | Enhanced Apple system colors | 12 | CoreGraphics Vector | Cupertino Blue, Deep Purple, Rose Pink, Crimson Red, Sunset Orange, Emerald Green, etc. |
 
 ---

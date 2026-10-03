@@ -73,12 +73,17 @@ final class AppState: ObservableObject {
     @Published var currentError: IconServiceError?
     @Published var showErrorAlert: Bool = false
     @Published var cachedIconPacks: [IconPack] = []
+    @Published var favoriteIconIds: Set<String> = []
     
     let iconService = IconService()
     let folderService = FolderService()
     let iconPackLoader = IconPackLoader()
     
     init() {
+        // Load saved favorites
+        let saved = UserDefaults.standard.stringArray(forKey: "MCons_Favorites") ?? []
+        self.favoriteIconIds = Set(saved)
+        
         // Instant synchronous first-pass pack metadata loading
         let packs = iconPackLoader.loadAllPacks()
         self.cachedIconPacks = packs
@@ -89,6 +94,26 @@ final class AppState: ObservableObject {
         Task {
             await UpdateService.shared.checkForUpdates(silent: true)
         }
+    }
+    
+    // MARK: - Favorites Management
+    
+    func isFavorite(icon: FolderIcon) -> Bool {
+        favoriteIconIds.contains(icon.id)
+    }
+    
+    func toggleFavorite(icon: FolderIcon) {
+        if favoriteIconIds.contains(icon.id) {
+            favoriteIconIds.remove(icon.id)
+        } else {
+            favoriteIconIds.insert(icon.id)
+        }
+        UserDefaults.standard.set(Array(favoriteIconIds), forKey: "MCons_Favorites")
+    }
+    
+    func favoriteIcons() -> [FolderIcon] {
+        let allIcons = cachedIconPacks.flatMap { $0.icons }
+        return allIcons.filter { favoriteIconIds.contains($0.id) }
     }
     
     /// Returns cached icon packs instantly without disk re-scanning
@@ -284,6 +309,7 @@ final class AppState: ObservableObject {
 enum SidebarItem: String, CaseIterable, Identifiable {
     case home = "Home"
     case iconPacks = "Icon Packs"
+    case favorites = "Favorites"
     case applyIcon = "Apply Icon"
     case updates = "Updates"
     case settings = "Settings"
@@ -295,6 +321,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
         switch self {
         case .home: return "house.fill"
         case .iconPacks: return "square.grid.3x3.fill"
+        case .favorites: return "star.fill"
         case .applyIcon: return "folder.badge.plus"
         case .updates: return "arrow.triangle.2.circlepath"
         case .settings: return "gearshape.fill"

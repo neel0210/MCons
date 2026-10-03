@@ -238,6 +238,7 @@ struct AboutView: View {
                 ipRow(packId: "jujutsu-kaisen", iconName: "Satoru Gojo", franchise: "Jujutsu Kaisen", holder: "© Gege Akutami / SHUEISHA, JUJUTSU KAISEN Project, MAPPA")
                 ipRow(packId: "chainsaw-man", iconName: "Denji", franchise: "Chainsaw Man", holder: "© Tatsuki Fujimoto / SHUEISHA, MAPPA")
                 ipRow(packId: "death-note", iconName: "Light Yagami", franchise: "Death Note", holder: "© Tsugumi Ohba, Takeshi Obata / SHUEISHA, VAP, MADHOUSE, NTV")
+                ipRow(packId: "dev-tech", iconName: "VS Code", franchise: "Developer & Tech", holder: "VS Code, Git, Docker, Python, Rust, Swift, Go, React, Node.js and respective marks belong to their respective foundations & owners.")
                 ipRow(packId: "google", iconName: "Google Chrome", franchise: "Google & Alphabet", holder: "© Google LLC / Alphabet Inc. Google, Chrome, Drive, Gmail, Maps, Photos, Files, Keep, Camera, YouTube and related marks are trademarks of Google LLC.")
                 ipRow(systemIcon: "apple.logo", franchise: "Apple & macOS", holder: "macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.")
             }

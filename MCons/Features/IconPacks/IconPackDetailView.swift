@@ -161,6 +161,26 @@ struct IconPackDetailView: View {
             
             Spacer()
             
+            if let icon = selectedIcon {
+                Button {
+                    appState.toggleFavorite(icon: icon)
+                } label: {
+                    HStack(spacing: AppTheme.Spacing.xs) {
+                        Image(systemName: appState.isFavorite(icon: icon) ? "star.fill" : "star")
+                        Text(appState.isFavorite(icon: icon) ? "Favorited" : "Favorite")
+                    }
+                    .font(AppTheme.Typography.subheadline)
+                    .foregroundStyle(appState.isFavorite(icon: icon) ? Color.yellow : .primary)
+                    .padding(.horizontal, AppTheme.Spacing.md)
+                    .padding(.vertical, AppTheme.Spacing.sm)
+                    .background(
+                        RoundedRectangle(cornerRadius: AppTheme.CornerRadius.sm)
+                            .fill(AppTheme.Colors.cardBackground)
+                    )
+                }
+                .buttonStyle(.plain)
+            }
+            
             Button("Apply to Folder") {
                 if let icon = selectedIcon {
                     appState.selectedIcon = icon
@@ -184,6 +204,7 @@ struct IconCell: View {
     let isHovered: Bool
     let accentHex: String
     let action: () -> Void
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
         Button(action: action) {
@@ -229,6 +250,25 @@ struct IconCell: View {
                         lineWidth: isSelected ? 1.5 : 1
                     )
             )
+            .overlay(alignment: .topTrailing) {
+                if isHovered || appState.isFavorite(icon: icon) {
+                    Button {
+                        appState.toggleFavorite(icon: icon)
+                    } label: {
+                        Image(systemName: appState.isFavorite(icon: icon) ? "star.fill" : "star")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundStyle(appState.isFavorite(icon: icon) ? Color.yellow : .secondary)
+                            .padding(6)
+                            .background(
+                                Circle()
+                                    .fill(AppTheme.Colors.cardBackground.opacity(0.95))
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .padding(6)
+                    .transition(.opacity.combined(with: .scale(scale: 0.85)))
+                }
+            }
             .animation(AppAnimations.quick, value: isHovered)
             .animation(AppAnimations.bouncy, value: isSelected)
         }
