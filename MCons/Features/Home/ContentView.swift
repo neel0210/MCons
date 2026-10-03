@@ -36,6 +36,10 @@ struct ContentView: View {
                 FavoritesView()
             case .applyIcon:
                 IconApplyView()
+            case .batchApply:
+                BatchApplyView()
+            case .packBuilder:
+                PackBuilderView()
             case .updates:
                 UpdaterView()
             case .settings:
@@ -100,6 +104,20 @@ struct SidebarView: View {
                             isSelected: appState.selectedSidebarItem == .applyIcon,
                             shortcut: "4",
                             action: { select(.applyIcon) }
+                        )
+                        
+                        SidebarRow(
+                            item: .batchApply,
+                            isSelected: appState.selectedSidebarItem == .batchApply,
+                            shortcut: "5",
+                            action: { select(.batchApply) }
+                        )
+                        
+                        SidebarRow(
+                            item: .packBuilder,
+                            isSelected: appState.selectedSidebarItem == .packBuilder,
+                            shortcut: "6",
+                            action: { select(.packBuilder) }
                         )
                     }
                     

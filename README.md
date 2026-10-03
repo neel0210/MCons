@@ -24,8 +24,15 @@
 ## ✨ Features
 
 - 🎨 **Curated Vector & Anime Icon Packs** — High-resolution (1024×1024) SVG vector icons across popular series and modern desktop themes.
+- 📁 **Batch Folder Apply** — Select or drag-and-drop multiple folders at once and style them simultaneously with real-time progress.
+- 🛠️ **In-App Custom Pack Builder** — Design, configure, and install custom icon packs directly within the app without writing any code.
+- 🎯 **Menu Bar Quick Access** — Drag-and-drop folder drop target and 1-click favorite icons straight from the macOS menu bar.
+- 🖱️ **Finder Context Menu & URL Scheme** — Right-click any folder in Finder > Services > *Apply Icon with MCons*, or automate via `mcons://apply?path=...`.
+- 🌈 **Dynamic Color Tinting** — Recolor and tint vector icons in real-time with Apple system palettes or custom color pickers.
+- 🔍 **Global Icon Search & Filtering** — Search across all 15+ packs and 150+ characters instantly with theme and category filter chips.
+- 💾 **ICNS & PNG Export** — Right-click any icon to export in crisp 1024×1024 PNG, multi-resolution Apple `.icns`, or vector `.svg`.
+- ⭐ **Favorites System** — Bookmark frequently used icons for instant 1-click access.
 - 📁 **Create & Style** — Create new directories and apply icons in a single atomic workflow.
-- 🖱️ **Drag & Drop** — Drop folders or image files directly into the window to apply instantly.
 - ✏️ **Smart Folder Renaming** — Option to rename target folder, use icon name, or keep original name with real-time preview.
 - ↩️ **Full Undo / Redo (Cmd+Z / Shift+Cmd+Z)** — Complete macOS `UndoManager` integration with automatic rollback if operations fail.
 - 🖼️ **Multi-Format Custom Import** — Import `.svg`, `.png`, `.jpg`, `.icns`, and `.tiff` files to use as custom folder icons.
@@ -110,9 +117,25 @@ No Swift code changes are needed! The dynamic `IconPackLoader` automatically sca
 
 ## 🚀 Installation & Quick Start
 
-### ⚡ Installer (Recommended)
+### 🍺 Homebrew Cask
 
-> **⚠️ Note:** Direct `.zip` browser downloads will be blocked by macOS Gatekeeper ("damaged or can't be opened"). **Install only via the script below** in Terminal:
+Install via Homebrew:
+
+```bash
+brew install --cask neel0210/mcons/mcons
+```
+
+Or directly using the bundled Cask formula:
+
+```bash
+brew install --cask Casks/mcons.rb
+```
+
+---
+
+### ⚡ 1-Line Installer
+
+> **⚠️ Note:** Direct `.zip` browser downloads will be blocked by macOS Gatekeeper ("damaged or can't be opened"). Install via Homebrew above or via this 1-line command in Terminal:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash

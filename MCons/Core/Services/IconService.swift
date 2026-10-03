@@ -82,8 +82,9 @@ final class IconService: Sendable {
     /// - Parameters:
     ///   - image: The NSImage to use as the folder icon
     ///   - folderURL: The URL of the folder to customize
+    ///   - tintColor: Optional NSColor to dynamically tint/recolor the icon
     /// - Throws: `IconServiceError` if folder is invalid, permission denied, or setIcon fails
-    func setIcon(image: NSImage, for folderURL: URL) throws {
+    func setIcon(image: NSImage, for folderURL: URL, tintColor: NSColor? = nil) throws {
         try SecurityBookmarkManager.shared.withSecurityScopedAccess(to: folderURL) { scopedURL in
             let fileManager = FileManager.default
             let path = scopedURL.path
@@ -99,8 +100,12 @@ final class IconService: Sendable {
                 throw IconServiceError.permissionDenied(path: path)
             }
             
-            // 3. Prepare image
-            let iconImage = prepareIconImage(image)
+            // 3. Prepare image (with optional color tint)
+            var baseImage = image
+            if let tint = tintColor {
+                baseImage = Self.tintImage(baseImage, with: tint)
+            }
+            let iconImage = prepareIconImage(baseImage)
             
             // 4. Perform setIcon operation under App Sandbox security scope
             let workspace = NSWorkspace.shared
@@ -172,6 +177,37 @@ final class IconService: Sendable {
     func hasCustomIcon(for folderURL: URL) -> Bool {
         let iconFile = folderURL.appendingPathComponent("Icon\r")
         return FileManager.default.fileExists(atPath: iconFile.path)
+    }
+    
+    // MARK: - Dynamic Color Tinting
+    
+    /// Dynamically tints an image using CoreGraphics blend modes while preserving alpha transparency and details
+    static func tintImage(_ image: NSImage, with tintColor: NSColor) -> NSImage {
+        let size = image.size
+        guard size.width > 0, size.height > 0 else { return image }
+        
+        let tinted = NSImage(size: size)
+        tinted.lockFocus()
+        
+        guard let ctx = NSGraphicsContext.current?.cgContext else {
+            tinted.unlockFocus()
+            return image
+        }
+        
+        let targetRect = NSRect(origin: .zero, size: size)
+        
+        // 1. Draw base image
+        image.draw(in: targetRect, from: .zero, operation: .sourceOver, fraction: 1.0)
+        
+        // 2. Tint with color atop the opaque pixels
+        ctx.saveGState()
+        ctx.setBlendMode(.sourceAtop)
+        tintColor.set()
+        targetRect.fill(using: .sourceAtop)
+        ctx.restoreGState()
+        
+        tinted.unlockFocus()
+        return tinted
     }
     
     // MARK: - Private Helpers & Image Cache

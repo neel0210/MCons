@@ -1,21 +1,27 @@
 import SwiftUI
+import AppKit
 
 @main
 struct MConsApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var appState = AppState()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(appState)
-                .frame(minWidth: 800, minHeight: 600)
+                .frame(minWidth: 840, minHeight: 620)
                 .onAppear {
                     configureWindow()
+                    appDelegate.appState = appState
+                }
+                .onOpenURL { url in
+                    handleIncomingURL(url)
                 }
         }
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified(showsTitle: true))
-        .defaultSize(width: 1000, height: 700)
+        .defaultSize(width: 1040, height: 720)
         .commands {
             CommandGroup(replacing: .undoRedo) {
                 Button("Undo") {
@@ -30,6 +36,12 @@ struct MConsApp: App {
             }
         }
         
+        MenuBarExtra("MCons", systemImage: "folder.badge.gearshape") {
+            MenuBarView()
+                .environmentObject(appState)
+        }
+        .menuBarExtraStyle(.window)
+        
         Settings {
             SettingsView()
                 .environmentObject(appState)
@@ -37,11 +49,63 @@ struct MConsApp: App {
     }
     
     private func configureWindow() {
-        // Configure the main window appearance
         if let window = NSApplication.shared.windows.first {
             window.titlebarAppearsTransparent = true
             window.isMovableByWindowBackground = true
             window.backgroundColor = .clear
+        }
+    }
+    
+    private func handleIncomingURL(_ url: URL) {
+        if url.scheme == "mcons" {
+            // Support mcons://apply?path=/path/to/folder
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            if let path = components?.queryItems?.first(where: { $0.name == "path" })?.value {
+                let folderURL = URL(fileURLWithPath: path)
+                appState.targetFolderURL = folderURL
+                appState.selectedSidebarItem = .applyIcon
+                NSApp.activate(ignoringOtherApps: true)
+            }
+        } else if url.isFileURL {
+            appState.targetFolderURL = url
+            appState.selectedSidebarItem = .applyIcon
+            NSApp.activate(ignoringOtherApps: true)
+        }
+    }
+}
+
+// MARK: - App Delegate & macOS Services Integration
+
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    weak var appState: AppState?
+    
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        NSApp.servicesProvider = self
+        NSUpdateDynamicServices()
+    }
+    
+    // Service provider for macOS Finder context menu: "Apply Icon with MCons"
+    @objc func applyIconFromService(_ pboard: NSPasteboard, userData: String, error: AutoreleasingUnsafeMutablePointer<NSString?>) {
+        guard let types = pboard.types, types.contains(.fileURL),
+              let url = pboard.readObjects(forClasses: [NSURL.self], options: nil)?.first as? URL else {
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            guard let appState = self?.appState else { return }
+            appState.targetFolderURL = url
+            appState.selectedSidebarItem = .applyIcon
+            NSApp.activate(ignoringOtherApps: true)
+        }
+    }
+    
+    func application(_ application: NSApplication, open urls: [URL]) {
+        if let folderURL = urls.first {
+            DispatchQueue.main.async { [weak self] in
+                guard let appState = self?.appState else { return }
+                appState.targetFolderURL = folderURL
+                appState.selectedSidebarItem = .applyIcon
+                NSApp.activate(ignoringOtherApps: true)
+            }
         }
     }
 }
@@ -134,11 +198,22 @@ final class AppState: ObservableObject {
         IconImageCache.shared.preheat(packs: packs)
     }
     
-    /// Executes folder rename and icon application as an atomic operation with UndoManager support (Cmd+Z)
+    /// Deletes a custom pack
+    func deleteCustomPack(_ pack: IconPack) -> Bool {
+        guard pack.isCustom else { return false }
+        let success = iconPackLoader.deleteCustomPack(id: pack.id)
+        if success {
+            refreshIconPacks()
+        }
+        return success
+    }
+    
+    /// Executes folder rename and icon application as an atomic operation with UndoManager and Tint support
     func applyAtomicOperation(
         icon: FolderIcon,
         targetFolder: URL,
         desiredName: String,
+        tintColor: NSColor? = nil,
         undoManager: UndoManager? = nil
     ) -> Bool {
         let originalURL = targetFolder
@@ -184,7 +259,7 @@ final class AppState: ObservableObject {
         }
         
         do {
-            try iconService.setIcon(image: image, for: currentURL)
+            try iconService.setIcon(image: image, for: currentURL, tintColor: tintColor)
         } catch {
             // Rollback rename if setIcon fails
             if didRename {
@@ -228,6 +303,7 @@ final class AppState: ObservableObject {
                     originalIconImage: originalIconImage,
                     redoIcon: icon,
                     redoDesiredName: desiredName,
+                    redoTintColor: tintColor,
                     undoManager: undoManager
                 )
             }
@@ -247,6 +323,7 @@ final class AppState: ObservableObject {
         originalIconImage: NSImage?,
         redoIcon: FolderIcon,
         redoDesiredName: String,
+        redoTintColor: NSColor?,
         undoManager: UndoManager
     ) {
         // 1. Restore previous icon
@@ -274,6 +351,7 @@ final class AppState: ObservableObject {
                 icon: redoIcon,
                 targetFolder: restoredURL,
                 desiredName: redoDesiredName,
+                tintColor: redoTintColor,
                 undoManager: undoManager
             )
         }
@@ -311,6 +389,8 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     case iconPacks = "Icon Packs"
     case favorites = "Favorites"
     case applyIcon = "Apply Icon"
+    case batchApply = "Batch Apply"
+    case packBuilder = "Pack Builder"
     case updates = "Updates"
     case settings = "Settings"
     case about = "About"
@@ -323,6 +403,8 @@ enum SidebarItem: String, CaseIterable, Identifiable {
         case .iconPacks: return "square.grid.3x3.fill"
         case .favorites: return "star.fill"
         case .applyIcon: return "folder.badge.plus"
+        case .batchApply: return "square.stack.3d.up.fill"
+        case .packBuilder: return "wrench.and.screwdriver.fill"
         case .updates: return "arrow.triangle.2.circlepath"
         case .settings: return "gearshape.fill"
         case .about: return "info.circle.fill"

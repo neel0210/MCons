@@ -25,6 +25,9 @@ final class IconPackLoader: Sendable {
         let currentDirURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         possiblePackURLs.append(currentDirURL.appendingPathComponent("MCons/Resources/IconPacks"))
         
+        // User custom packs in Application Support
+        possiblePackURLs.append(Self.customPacksDirectory)
+        
         var loadedPacks: [String: IconPack] = [:]
         
         for packsURL in possiblePackURLs {
@@ -57,13 +60,15 @@ final class IconPackLoader: Sendable {
                 
                 let icons = loadIcons(from: dir, packId: packId)
                 if !icons.isEmpty {
+                    let isCustomPack = dir.path.contains("CustomPacks")
                     let pack = IconPack(
                         id: packId,
                         name: name,
                         description: description,
                         emoji: emoji,
                         accentColorHex: accentColorHex,
-                        icons: icons
+                        icons: icons,
+                        isCustom: isCustomPack
                     )
                     if loadedPacks[packId] == nil {
                         loadedPacks[packId] = pack
@@ -82,6 +87,31 @@ final class IconPackLoader: Sendable {
         }
         
         return allPacks.sorted { $0.name < $1.name }
+    }
+    
+    // MARK: - Custom Pack Directory Management
+    
+    /// Directory for user-created custom packs in ~/Library/Application Support/MCons/CustomPacks
+    static var customPacksDirectory: URL {
+        let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            ?? URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Library/Application Support")
+        let dir = appSupport.appendingPathComponent("MCons/CustomPacks")
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir
+    }
+    
+    /// Deletes a custom pack from ~/Library/Application Support/MCons/CustomPacks
+    func deleteCustomPack(id: String) -> Bool {
+        let packDir = Self.customPacksDirectory.appendingPathComponent(id)
+        if FileManager.default.fileExists(atPath: packDir.path) {
+            do {
+                try FileManager.default.removeItem(at: packDir)
+                return true
+            } catch {
+                return false
+            }
+        }
+        return false
     }
     
     /// Loads individual icons from a pack directory

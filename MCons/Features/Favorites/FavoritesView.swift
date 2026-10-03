@@ -215,6 +215,39 @@ struct FavoritesView: View {
             
             Spacer()
             
+            Menu {
+                Button {
+                    IconExportService.shared.export(icon: icon, format: .png)
+                } label: {
+                    Label("Export PNG (1024×1024)...", systemImage: "photo")
+                }
+                
+                Button {
+                    IconExportService.shared.export(icon: icon, format: .icns)
+                } label: {
+                    Label("Export macOS Icon (.icns)...", systemImage: "app.badge")
+                }
+                
+                Button {
+                    IconExportService.shared.export(icon: icon, format: .svg)
+                } label: {
+                    Label("Export Original Vector (.svg)...", systemImage: "square.and.arrow.up")
+                }
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "square.and.arrow.up")
+                    Text("Export")
+                }
+                .font(AppTheme.Typography.caption)
+                .padding(.horizontal, AppTheme.Spacing.md)
+                .padding(.vertical, AppTheme.Spacing.sm)
+                .background(
+                    RoundedRectangle(cornerRadius: AppTheme.CornerRadius.sm)
+                        .fill(AppTheme.Colors.cardBackground)
+                )
+            }
+            .menuStyle(.borderlessButton)
+            
             Button {
                 appState.toggleFavorite(icon: icon)
                 if selectedIcon == icon {

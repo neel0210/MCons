@@ -162,6 +162,39 @@ struct IconPackDetailView: View {
             Spacer()
             
             if let icon = selectedIcon {
+                Menu {
+                    Button {
+                        IconExportService.shared.export(icon: icon, format: .png)
+                    } label: {
+                        Label("Export PNG (1024×1024)...", systemImage: "photo")
+                    }
+                    
+                    Button {
+                        IconExportService.shared.export(icon: icon, format: .icns)
+                    } label: {
+                        Label("Export macOS Icon (.icns)...", systemImage: "app.badge")
+                    }
+                    
+                    Button {
+                        IconExportService.shared.export(icon: icon, format: .svg)
+                    } label: {
+                        Label("Export Original Vector (.svg)...", systemImage: "square.and.arrow.up")
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "square.and.arrow.up")
+                        Text("Export")
+                    }
+                    .font(AppTheme.Typography.subheadline)
+                    .padding(.horizontal, AppTheme.Spacing.md)
+                    .padding(.vertical, AppTheme.Spacing.sm)
+                    .background(
+                        RoundedRectangle(cornerRadius: AppTheme.CornerRadius.sm)
+                            .fill(AppTheme.Colors.cardBackground)
+                    )
+                }
+                .menuStyle(.borderlessButton)
+                
                 Button {
                     appState.toggleFavorite(icon: icon)
                 } label: {
@@ -273,6 +306,43 @@ struct IconCell: View {
             .animation(AppAnimations.bouncy, value: isSelected)
         }
         .buttonStyle(.plain)
+        .contextMenu {
+            Button {
+                action()
+                appState.selectedSidebarItem = .applyIcon
+            } label: {
+                Label("Apply to Folder", systemImage: "folder.badge.plus")
+            }
+            
+            Button {
+                appState.toggleFavorite(icon: icon)
+            } label: {
+                Label(
+                    appState.isFavorite(icon: icon) ? "Remove Favorite" : "Add to Favorites",
+                    systemImage: appState.isFavorite(icon: icon) ? "star.slash" : "star.fill"
+                )
+            }
+            
+            Divider()
+            
+            Button {
+                IconExportService.shared.export(icon: icon, format: .png)
+            } label: {
+                Label("Export PNG (1024×1024)...", systemImage: "photo")
+            }
+            
+            Button {
+                IconExportService.shared.export(icon: icon, format: .icns)
+            } label: {
+                Label("Export macOS Icon (.icns)...", systemImage: "app.badge")
+            }
+            
+            Button {
+                IconExportService.shared.export(icon: icon, format: .svg)
+            } label: {
+                Label("Export Original Vector (.svg)...", systemImage: "square.and.arrow.up")
+            }
+        }
     }
 }
 

@@ -20,6 +20,8 @@ struct IconApplyView: View {
     @State private var showSuccess = false
     @State private var isApplying = false
     @State private var isDragTargeted = false
+    @State private var enableTint: Bool = false
+    @State private var tintColor: Color = Color(hex: "#007AFF") ?? .blue
     
     private var isTargetApp: Bool {
         guard let url = targetFolderURL else { return false }
@@ -547,8 +549,9 @@ struct IconApplyView: View {
                             .foregroundStyle(.secondary)
                         
                         if let icon = selectedIcon {
-                            let nsImage = icon.previewImage()
-                            Image(nsImage: nsImage)
+                            let baseImage = icon.previewImage()
+                            let displayImage = enableTint ? IconService.tintImage(baseImage, with: NSColor(tintColor)) : baseImage
+                            Image(nsImage: displayImage)
                                 .resizable()
                                 .frame(width: AppTheme.IconSize.preview, height: AppTheme.IconSize.preview)
                         } else {
@@ -566,10 +569,71 @@ struct IconApplyView: View {
                 .frame(maxWidth: .infinity)
                 .padding(AppTheme.Spacing.xl)
                 
+                // Dynamic Tint Controls
+                HStack(spacing: AppTheme.Spacing.md) {
+                    Toggle("Dynamic Color Tint", isOn: $enableTint)
+                        .font(AppTheme.Typography.captionBold)
+                    
+                    if enableTint {
+                        ColorPicker("Tint Color", selection: $tintColor, supportsOpacity: false)
+                            .labelsHidden()
+                        
+                        HStack(spacing: 6) {
+                            ForEach([
+                                ("#007AFF", "Blue"),
+                                ("#AF52DE", "Purple"),
+                                ("#FF2D55", "Pink"),
+                                ("#FF3B30", "Red"),
+                                ("#FF9500", "Orange"),
+                                ("#34C759", "Green"),
+                                ("#00C7BE", "Mint"),
+                                ("#8E8E93", "Graphite")
+                            ], id: \.0) { hex, name in
+                                Circle()
+                                    .fill(Color(hex: hex) ?? .blue)
+                                    .frame(width: 16, height: 16)
+                                    .overlay(Circle().stroke(Color.white.opacity(0.6), lineWidth: 1))
+                                    .onTapGesture {
+                                        if let c = Color(hex: hex) {
+                                            tintColor = c
+                                        }
+                                    }
+                                    .help(name)
+                            }
+                        }
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal, AppTheme.Spacing.xl)
+                
                 Divider()
                 
                 // Action buttons
                 HStack(spacing: AppTheme.Spacing.md) {
+                    // Export button
+                    if let icon = selectedIcon {
+                        Menu {
+                            Button {
+                                IconExportService.shared.export(icon: icon, format: .png, tintColor: enableTint ? NSColor(tintColor) : nil)
+                            } label: {
+                                Label("Export PNG (1024×1024)...", systemImage: "photo")
+                            }
+                            Button {
+                                IconExportService.shared.export(icon: icon, format: .icns, tintColor: enableTint ? NSColor(tintColor) : nil)
+                            } label: {
+                                Label("Export macOS Icon (.icns)...", systemImage: "app.badge")
+                            }
+                            Button {
+                                IconExportService.shared.export(icon: icon, format: .svg)
+                            } label: {
+                                Label("Export Original Vector (.svg)...", systemImage: "square.and.arrow.up")
+                            }
+                        } label: {
+                            Label("Export...", systemImage: "square.and.arrow.up")
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                    
                     // Reset button
                     if let url = targetFolderURL, appState.iconService.hasCustomIcon(for: url) {
                         Button {
@@ -817,10 +881,12 @@ struct IconApplyView: View {
         isApplying = true
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            let tint = enableTint ? NSColor(tintColor) : nil
             let success = appState.applyAtomicOperation(
                 icon: icon,
                 targetFolder: folderURL,
                 desiredName: customFolderName,
+                tintColor: tint,
                 undoManager: undoManager
             )
             isApplying = false

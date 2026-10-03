@@ -537,6 +537,55 @@ cat > "${APP_DIR}/Contents/Info.plist" << PLIST
     <true/>
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>${BUNDLE_ID}</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>mcons</string>
+            </array>
+        </dict>
+    </array>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>Folders and Directories</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>public.folder</string>
+                <string>public.directory</string>
+                <string>com.apple.application-bundle</string>
+            </array>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+        </dict>
+    </array>
+    <key>NSServices</key>
+    <array>
+        <dict>
+            <key>NSMenuItem</key>
+            <dict>
+                <key>default</key>
+                <string>Apply Icon with MCons</string>
+            </dict>
+            <key>NSMessage</key>
+            <string>applyIconFromService</string>
+            <key>NSPortName</key>
+            <string>${APP_NAME}</string>
+            <key>NSRequiredContext</key>
+            <dict/>
+            <key>NSSendTypes</key>
+            <array>
+                <string>NSFilenamesPboardType</string>
+                <string>public.file-url</string>
+            </array>
+        </dict>
+    </array>
     <key>MCBuildGitHash</key>
     <string>${GIT_HASH}${GIT_DIRTY}</string>
     <key>MCBuildGitBranch</key>
