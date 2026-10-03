@@ -50,6 +50,8 @@
 | **Black Clover** | Magic Knights, Captains & Black Bulls | 12 | 1024×1024 SVG | Asta, Yuno, Noelle Silva, Yami Sukehiro, Julius Novachrono, Fuegoleon, Mereoleona, Luck Voltia, Magna Swing, Nacht Faust, Licht, Charmy |
 | **Dandadan** | Spiritual Mediums, Cursed Yokai & Aliens | 8 | 1024×1024 SVG | Momo Ayase, Okarun, Turbo Granny, Seiko Ayase, Aira Shiratori, Jin Enjoji, Vamola, Peeny Weeny |
 | **Kaiju No. 8** | Japan Anti-Kaiju Defense Force & Monsters | 8 | 1024×1024 SVG | Kaiju No. 8, Mina Ashiro, Reno Ichikawa, Kikoru Shinomiya, Soshiro Hoshina, Gen Narumi, Kaiju No. 9, Isao Shinomiya |
+| **Jujutsu Kaisen** | Jujutsu High Sorcerers & Cursed Spirits | 10 | 1024×1024 SVG | Satoru Gojo, Ryomen Sukuna, Yuji Itadori, Megumi Fushiguro, Nobara Kugisaki, Toji Fushiguro, Kento Nanami, Yuta Okkotsu, Suguru Geto, Mahito |
+| **Naruto** | Hidden Leaf Shinobi & Akatsuki | 30 | 1024×1024 SVG | Naruto, Sasuke, Sakura, Kakashi, Itachi, Madara, Minato, Jiraiya, Tsunade, Pain, Obito, Gaara, etc. |
 | **Google** | Official Google App Icons for Folders | 10 | 1024×1024 SVG | Google Camera, Notes, Files, Chrome, Drive, Maps, Photos, Gmail, Calendar, YouTube |
 | **macOS Native+** | Enhanced Apple system colors | 12 | CoreGraphics Vector | Cupertino Blue, Deep Purple, Rose Pink, Crimson Red, Sunset Orange, Emerald Green, etc. |
 
