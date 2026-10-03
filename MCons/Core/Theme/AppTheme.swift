@@ -38,6 +38,9 @@ enum AppTheme {
         /// JetBlack Elevated Card Surface
         static let cardElevated = Color(hex: "#1A1D2A")
         
+        /// Surface color for chips, inputs and backgrounds
+        static let surface = Color(hex: "#1A1D2A")
+        
         /// Subtle Border Stroke
         static let border = Color.white.opacity(0.08)
         

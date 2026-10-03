@@ -590,13 +590,11 @@ struct IconApplyView: View {
                                 ("#8E8E93", "Graphite")
                             ], id: \.0) { hex, name in
                                 Circle()
-                                    .fill(Color(hex: hex) ?? .blue)
+                                    .fill(Color(hex: hex))
                                     .frame(width: 16, height: 16)
                                     .overlay(Circle().stroke(Color.white.opacity(0.6), lineWidth: 1))
                                     .onTapGesture {
-                                        if let c = Color(hex: hex) {
-                                            tintColor = c
-                                        }
+                                        tintColor = Color(hex: hex)
                                     }
                                     .help(name)
                             }

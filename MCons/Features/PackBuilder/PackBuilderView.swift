@@ -9,7 +9,7 @@ struct PackBuilderView: View {
     @State private var packName: String = ""
     @State private var packDescription: String = ""
     @State private var selectedEmoji: String = "📁"
-    @State private var accentColor: Color = Color(hex: "#6C5CE7") ?? .purple
+    @State private var accentColor: Color = Color(hex: "#6C5CE7")
     @State private var addedIconURLs: [URL] = []
     
     @State private var isDragTargeted: Bool = false

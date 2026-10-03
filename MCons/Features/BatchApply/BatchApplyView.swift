@@ -10,7 +10,7 @@ struct BatchApplyView: View {
     @State private var targetFolders: [URL] = []
     @State private var selectedIcon: FolderIcon?
     @State private var enableTint: Bool = false
-    @State private var tintColor: Color = Color(hex: "#007AFF") ?? .blue
+    @State private var tintColor: Color = Color(hex: "#007AFF")
     @State private var showIconPickerSheet: Bool = false
     @State private var isDragTargeted: Bool = false
     
