@@ -29,7 +29,7 @@
 - 🎯 **Menu Bar Quick Access** — Drag-and-drop folder drop target and 1-click favorite icons straight from the macOS menu bar.
 - 🖱️ **Finder Context Menu & URL Scheme** — Right-click any folder in Finder > Services > *Apply Icon with MCons*, or automate via `mcons://apply?path=...`.
 - 🌈 **Dynamic Color Tinting** — Recolor and tint vector icons in real-time with Apple system palettes or custom color pickers.
-- 🔍 **Global Icon Search & Filtering** — Search across all 15+ packs and 150+ characters instantly with theme and category filter chips.
+- 🔍 **Global Icon Search & Filtering** — Search across all 19+ packs and 200+ characters instantly with theme and category filter chips.
 - 💾 **ICNS & PNG Export** — Right-click any icon to export in crisp 1024×1024 PNG, multi-resolution Apple `.icns`, or vector `.svg`.
 - ⭐ **Favorites System** — Bookmark frequently used icons for instant 1-click access.
 - 📁 **Create & Style** — Create new directories and apply icons in a single atomic workflow.
@@ -58,11 +58,13 @@
 | **Dandadan** | Spiritual Mediums, Cursed Yokai & Aliens | 8 | 1024×1024 SVG | Momo Ayase, Okarun, Turbo Granny, Seiko Ayase, Aira Shiratori, Jin Enjoji, Vamola, Peeny Weeny |
 | **Kaiju No. 8** | Japan Anti-Kaiju Defense Force & Monsters | 8 | 1024×1024 SVG | Kaiju No. 8, Mina Ashiro, Reno Ichikawa, Kikoru Shinomiya, Soshiro Hoshina, Gen Narumi, Kaiju No. 9, Isao Shinomiya |
 | **Jujutsu Kaisen** | Jujutsu High Sorcerers & Cursed Spirits | 10 | 1024×1024 SVG | Satoru Gojo, Ryomen Sukuna, Yuji Itadori, Megumi Fushiguro, Nobara Kugisaki, Toji Fushiguro, Kento Nanami, Yuta Okkotsu, Suguru Geto, Mahito |
+| **My Hero Academia** | *Boku no Hero Academia* Heroes & Villains | 10 | 1024×1024 SVG | Izuku Midoriya (Deku), Katsuki Bakugo, Shoto Todoroki, All Might, Ochaco Uraraka, Tomura Shigaraki, Dabi, Hawks, Shota Aizawa, Endeavor |
 | **Chainsaw Man** | Public Safety Devil Hunters, Fiends & Devils | 10 | 1024×1024 SVG | Denji, Makima, Power, Aki Hayakawa, Pochita, Kishibe, Reze, Kobeni Higashiyama, Himeno, Katana Man |
 | **Death Note** | Kira, L & Shinigami | 3 | 1024×1024 SVG | Light Yagami, L Lawliet, Ryuk |
 | **Naruto** | Hidden Leaf Shinobi & Akatsuki | 30 | 1024×1024 SVG | Naruto, Sasuke, Sakura, Kakashi, Itachi, Madara, Minato, Jiraiya, Tsunade, Pain, Obito, Gaara, etc. |
 | **Google** | Official Google App Icons for Folders | 10 | 1024×1024 SVG | Google Camera, Notes, Files, Chrome, Drive, Maps, Photos, Gmail, Calendar, YouTube |
 | **Developer & Tech** | Languages, Frameworks & Coding Tools | 12 | 1024×1024 Vector SVG | VS Code, Terminal, GitHub, Git, Docker, Python, Rust, Swift, Go, TypeScript, React, Node.js |
+| **Cameras** | DSLR, Mirrorless & Action Cameras | 2 | 1024×1024 SVG | Nikon D5300, Insta360 ONE RS |
 | **macOS Native+** | Enhanced Apple system colors | 12 | CoreGraphics Vector | Cupertino Blue, Deep Purple, Rose Pink, Crimson Red, Sunset Orange, Emerald Green, etc. |
 
 ---
@@ -217,7 +219,19 @@ All character designs, vector artwork, logos, and trademarks bundled or referenc
 - **🏴‍☠️ One Piece**: © Eiichiro Oda / SHUEISHA / Toei Animation
 - **🗡️ Solo Leveling (*Na Honjaman Rebeleob*)**: Story by Chugong, Art by DUBU (REDICE STUDIO), © D&C Media / KakaoPage / A-1 Pictures
 - **🐉 Dragon Ball Super**: © Bird Studio / Shueisha, Toei Animation, Akira Toriyama, Toyotarou
-- **Apple & macOS**: macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.
+- **💥 My Hero Academia (*Boku no Hero Academia*)**: © Kohei Horikoshi / SHUEISHA, "My Hero Academia" Production Committee, BONES
+- **🦾 Fullmetal Alchemist: Brotherhood**: © Hiromu Arakawa / Square Enix, "FULLMETAL ALCHEMIST" Production Committee, MBS, BONES
+- **🍀 Black Clover**: © Yuki Tabata / SHUEISHA, TV TOKYO, Black Clover Production Committee, Studio Pierrot
+- **👽 Dandadan**: © Yukinobu Tatsu / SHUEISHA, "Dandadan" Production Committee, Science SARU
+- **💥 Kaiju No. 8**: © Naoya Matsumoto / SHUEISHA, Defense Force Division 3, Production I.G
+- **🤞 Jujutsu Kaisen**: © Gege Akutami / SHUEISHA, "JUJUTSU KAISEN" Production Committee, MAPPA
+- **🪚 Chainsaw Man**: © Tatsuki Fujimoto / SHUEISHA, MAPPA
+- **🍎 Death Note**: © Tsugumi Ohba, Takeshi Obata / SHUEISHA, VAP, Madhouse, NTV, D.N. Dream Partner
+- **🍃 Naruto**: © Masashi Kishimoto, Scott / SHUEISHA, TV TOKYO, Pierrot
+- **🌐 Google**: Google, Chrome, Gmail, Drive, Maps, Photos, and YouTube are trademarks of Google LLC
+- **💻 Developer & Tech**: VS Code and GitHub are trademarks of Microsoft Corporation; Docker, Python, Rust, Swift, Go, TypeScript, React, and Node.js logos/trademarks are property of their respective owners and foundations
+- **📷 Cameras**: Nikon is a trademark of Nikon Corporation; Insta360 is a trademark of Arashi Vision Inc.
+- **🍎 Apple & macOS**: macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.
 
 ### Fair Use Statement
 > **Fair Use Notice:** MCons is a free, non-profit, open-source personal customization utility provided for personal desktop aesthetics, non-commercial commentary, fan tribute, and organizational use.

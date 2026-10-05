@@ -18,9 +18,9 @@ struct IconPack: Identifiable, Hashable, Codable {
         switch id {
         case "attack-on-titan", "black-clover", "chainsaw-man", "dandadan", "death-note",
              "demon-slayer", "dragon-ball-super", "fullmetal-alchemist-brotherhood",
-             "jujutsu-kaisen", "kaiju-no-8", "naruto", "one-piece", "pokemon", "solo-leveling":
+             "jujutsu-kaisen", "kaiju-no-8", "my-hero-academia", "naruto", "one-piece", "pokemon", "solo-leveling":
             return "Anime"
-        case "developer-tech":
+        case "dev-tech", "developer-tech":
             return "Dev & Tech"
         case "google":
             return "Apps"
