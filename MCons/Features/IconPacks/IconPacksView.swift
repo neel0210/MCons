@@ -124,7 +124,7 @@ struct IconPacksView: View {
                         .font(AppTheme.Typography.largeTitle)
                         .foregroundStyle(.primary)
                     
-                    Text("Choose a pack or search across \(iconPacks.flatMap { $0.icons }.count)+ vector desktop icons")
+                    Text("Choose a pack or search across \(iconPacks.reduce(0) { $0 + $1.icons.count })+ vector desktop icons")
                         .font(AppTheme.Typography.body)
                         .foregroundStyle(.secondary)
                 }
@@ -265,7 +265,7 @@ struct IconPacksView: View {
                                 .fill(AppTheme.Colors.cardBackground)
                                 .frame(height: 100)
                                 .overlay(
-                                    Image(nsImage: icon.previewImage())
+                                    Image(nsImage: icon.thumbnailImage(size: 80))
                                         .resizable()
                                         .interpolation(.high)
                                         .aspectRatio(contentMode: .fit)

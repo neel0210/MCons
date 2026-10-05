@@ -236,10 +236,12 @@ struct AboutView: View {
                 ipRow(packId: "dandadan", iconName: "Momo Ayase", franchise: "Dandadan", holder: "© Yukinobu Tatsu / SHUEISHA, Dandadan Production Committee, Science SARU")
                 ipRow(packId: "kaiju-no-8", iconName: "Kaiju No. 8", franchise: "Kaiju No. 8", holder: "© Naoya Matsumoto / SHUEISHA, \"Kaiju No. 8\" Production Committee, Production I.G")
                 ipRow(packId: "jujutsu-kaisen", iconName: "Satoru Gojo", franchise: "Jujutsu Kaisen", holder: "© Gege Akutami / SHUEISHA, JUJUTSU KAISEN Project, MAPPA")
+                ipRow(packId: "my-hero-academia", iconName: "Izuku Midoriya", franchise: "My Hero Academia (Boku no Hero Academia)", holder: "© Kohei Horikoshi / SHUEISHA, \"My Hero Academia\" Production Committee, BONES")
                 ipRow(packId: "chainsaw-man", iconName: "Denji", franchise: "Chainsaw Man", holder: "© Tatsuki Fujimoto / SHUEISHA, MAPPA")
                 ipRow(packId: "death-note", iconName: "Light Yagami", franchise: "Death Note", holder: "© Tsugumi Ohba, Takeshi Obata / SHUEISHA, VAP, MADHOUSE, NTV")
                 ipRow(packId: "dev-tech", iconName: "VS Code", franchise: "Developer & Tech", holder: "VS Code, Git, Docker, Python, Rust, Swift, Go, React, Node.js and respective marks belong to their respective foundations & owners.")
                 ipRow(packId: "google", iconName: "Google Chrome", franchise: "Google & Alphabet", holder: "© Google LLC / Alphabet Inc. Google, Chrome, Drive, Gmail, Maps, Photos, Files, Keep, Camera, YouTube and related marks are trademarks of Google LLC.")
+                ipRow(packId: "cameras", iconName: "Nikon D5300", franchise: "Cameras", holder: "Nikon is a trademark of Nikon Corporation; Insta360 is a trademark of Arashi Vision Inc.")
                 ipRow(systemIcon: "apple.logo", franchise: "Apple & macOS", holder: "macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.")
             }
         }

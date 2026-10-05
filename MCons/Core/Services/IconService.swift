@@ -277,14 +277,37 @@ final class IconService: Sendable {
         var minX = width, maxX = 0, minY = height, maxY = 0
         var foundAny = false
         
-        for y in 0..<height {
-            for x in 0..<width {
-                if let color = bitmap.colorAt(x: x, y: y), color.alphaComponent > 0.05 {
-                    minX = min(minX, x)
-                    maxX = max(maxX, x)
-                    minY = min(minY, y)
-                    maxY = max(maxY, y)
-                    foundAny = true
+        // Fast-path: scan raw bitmap bytes directly (100x faster, zero heap allocations)
+        if let rawData = bitmap.bitmapData {
+            let bytesPerRow = bitmap.bytesPerRow
+            let bytesPerPixel = max(bitmap.bitsPerPixel / 8, 1)
+            let alphaOffset = bytesPerPixel - 1
+            let threshold: UInt8 = 13 // ~0.05 * 255
+            
+            for y in 0..<height {
+                let rowOffset = y * bytesPerRow
+                for x in 0..<width {
+                    let pixelOffset = rowOffset + x * bytesPerPixel
+                    let alpha = rawData[pixelOffset + alphaOffset]
+                    if alpha > threshold {
+                        minX = min(minX, x)
+                        maxX = max(maxX, x)
+                        minY = min(minY, y)
+                        maxY = max(maxY, y)
+                        foundAny = true
+                    }
+                }
+            }
+        } else {
+            for y in 0..<height {
+                for x in 0..<width {
+                    if let color = bitmap.colorAt(x: x, y: y), color.alphaComponent > 0.05 {
+                        minX = min(minX, x)
+                        maxX = max(maxX, x)
+                        minY = min(minY, y)
+                        maxY = max(maxY, y)
+                        foundAny = true
+                    }
                 }
             }
         }

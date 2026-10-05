@@ -40,21 +40,41 @@ final class IconImageCache: @unchecked Sendable {
             return nil
         }
         
-        // If target size specified and different, scale and cache
+        // If target size specified and different, scale and cache in a thread-safe manner
         if let target = targetSize, image.size != target {
-            let scaled = NSImage(size: target)
-            scaled.lockFocus()
-            if let ctx = NSGraphicsContext.current?.cgContext {
-                ctx.clear(CGRect(origin: .zero, size: target))
+            guard let rep = NSBitmapImageRep(
+                bitmapDataPlanes: nil,
+                pixelsWide: Int(target.width),
+                pixelsHigh: Int(target.height),
+                bitsPerSample: 8,
+                samplesPerPixel: 4,
+                hasAlpha: true,
+                isPlanar: false,
+                colorSpaceName: .deviceRGB,
+                bytesPerRow: 0,
+                bitsPerPixel: 0
+            ) else {
+                setImage(image, forKey: key)
+                return image
             }
-            NSGraphicsContext.current?.imageInterpolation = .high
-            image.draw(
-                in: NSRect(origin: .zero, size: target),
-                from: NSRect(origin: .zero, size: image.size),
-                operation: .sourceOver,
-                fraction: 1.0
-            )
-            scaled.unlockFocus()
+            
+            rep.size = target
+            NSGraphicsContext.saveGraphicsState()
+            if let ctx = NSGraphicsContext(bitmapImageRep: rep) {
+                NSGraphicsContext.current = ctx
+                ctx.cgContext.clear(CGRect(origin: .zero, size: target))
+                ctx.imageInterpolation = .high
+                image.draw(
+                    in: NSRect(origin: .zero, size: target),
+                    from: NSRect(origin: .zero, size: image.size),
+                    operation: .sourceOver,
+                    fraction: 1.0
+                )
+            }
+            NSGraphicsContext.restoreGraphicsState()
+            
+            let scaled = NSImage(size: target)
+            scaled.addRepresentation(rep)
             setImage(scaled, forKey: key)
             return scaled
         }

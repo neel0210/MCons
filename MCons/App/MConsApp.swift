@@ -49,7 +49,7 @@ struct MConsApp: App {
     }
     
     private func configureWindow() {
-        if let window = NSApplication.shared.windows.first {
+        if let window = NSApplication.shared.windows.first(where: { !($0 is NSPanel) && $0.canBecomeMain }) ?? NSApplication.shared.windows.first {
             window.titlebarAppearsTransparent = true
             window.isMovableByWindowBackground = true
             window.backgroundColor = .clear

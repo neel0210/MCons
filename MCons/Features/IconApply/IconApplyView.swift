@@ -21,7 +21,7 @@ struct IconApplyView: View {
     @State private var isApplying = false
     @State private var isDragTargeted = false
     @State private var enableTint: Bool = false
-    @State private var tintColor: Color = Color(hex: "#007AFF") ?? .blue
+    @State private var tintColor: Color = Color(hex: "#007AFF")
     
     private var isTargetApp: Bool {
         guard let url = targetFolderURL else { return false }

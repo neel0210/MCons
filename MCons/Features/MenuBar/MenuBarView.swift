@@ -159,8 +159,8 @@ struct MenuBarView: View {
             HStack {
                 Button("Open MCons") {
                     NSApp.activate(ignoringOtherApps: true)
-                    for window in NSApp.windows {
-                        window.makeKeyAndOrderFront(nil)
+                    if let mainWindow = NSApp.windows.first(where: { !($0 is NSPanel) && $0.canBecomeMain }) {
+                        mainWindow.makeKeyAndOrderFront(nil)
                     }
                 }
                 .buttonStyle(.plain)

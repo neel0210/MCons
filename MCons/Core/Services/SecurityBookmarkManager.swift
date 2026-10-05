@@ -23,12 +23,21 @@ final class SecurityBookmarkManager {
         }
         
         do {
-            let options: URL.BookmarkCreationOptions = [.withSecurityScope]
-            let bookmarkData = try url.bookmarkData(
-                options: options,
-                includingResourceValuesForKeys: nil,
-                relativeTo: nil
-            )
+            var bookmarkData: Data
+            do {
+                bookmarkData = try url.bookmarkData(
+                    options: [.withSecurityScope],
+                    includingResourceValuesForKeys: nil,
+                    relativeTo: nil
+                )
+            } catch {
+                // Non-sandboxed fallback
+                bookmarkData = try url.bookmarkData(
+                    options: [],
+                    includingResourceValuesForKeys: nil,
+                    relativeTo: nil
+                )
+            }
             
             let key = keyPrefix + url.path
             userDefaults.set(bookmarkData, forKey: key)
@@ -52,12 +61,23 @@ final class SecurityBookmarkManager {
         
         var isStale = false
         do {
-            let resolvedURL = try URL(
-                resolvingBookmarkData: data,
-                options: [.withSecurityScope],
-                relativeTo: nil,
-                bookmarkDataIsStale: &isStale
-            )
+            var resolvedURL: URL
+            do {
+                resolvedURL = try URL(
+                    resolvingBookmarkData: data,
+                    options: [.withSecurityScope],
+                    relativeTo: nil,
+                    bookmarkDataIsStale: &isStale
+                )
+            } catch {
+                // Non-sandboxed fallback
+                resolvedURL = try URL(
+                    resolvingBookmarkData: data,
+                    options: [],
+                    relativeTo: nil,
+                    bookmarkDataIsStale: &isStale
+                )
+            }
             
             if isStale {
                 saveBookmark(for: resolvedURL)

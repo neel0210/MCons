@@ -442,6 +442,7 @@ struct BatchApplyView: View {
         
         Task {
             for folder in targetFolders {
+                if Task.isCancelled { break }
                 let success = appState.applyAtomicOperation(
                     icon: icon,
                     targetFolder: folder,
@@ -450,16 +451,13 @@ struct BatchApplyView: View {
                     undoManager: undoManager
                 )
                 
-                await MainActor.run {
-                    folderStatuses[folder] = success ? .success : .failed("Apply failed")
-                    progressCount += 1
-                }
+                folderStatuses[folder] = success ? .success : .failed("Apply failed")
+                progressCount += 1
+                await Task.yield()
             }
             
-            await MainActor.run {
-                isProcessing = false
-                statusMessage = "Successfully applied icons to \(progressCount) folders!"
-            }
+            isProcessing = false
+            statusMessage = "Successfully applied icons to \(progressCount) folders!"
         }
     }
     
