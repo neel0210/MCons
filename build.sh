@@ -32,6 +32,16 @@ case "${OS_NAME}" in
     *)                                  PLATFORM="unknown" ;;
 esac
 
+# ─── Toolchain Selection ─────────────────────────────────────────────────────
+# Command Line Tools lack SwiftUI macro plugins (libSwiftUIMacros.dylib).
+# Prefer Xcode.app toolchain when available for full SwiftUI macro support.
+if [ "$PLATFORM" = "macos" ] && [ -z "${DEVELOPER_DIR:-}" ]; then
+    XCODE_APP_DEV="/Applications/Xcode.app/Contents/Developer"
+    if [ -d "$XCODE_APP_DEV" ]; then
+        export DEVELOPER_DIR="$XCODE_APP_DEV"
+    fi
+fi
+
 # ─── Configuration ───────────────────────────────────────────────────────────
 APP_NAME="MCons"
 BUNDLE_ID="com.neel0210.mcons"
