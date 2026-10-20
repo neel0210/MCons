@@ -704,11 +704,73 @@ if $DO_DMG; then
     cp -R "${APP_DIR}" "${DMG_TEMP}/"
     ln -s /Applications "${DMG_TEMP}/Applications"
 
+    # Add visual installer instructions & Gatekeeper launcher inside DMG
+    cat > "${DMG_TEMP}/How to Install.txt" << 'EOF'
+============================================================
+           🎨 MCons for macOS — Installer Instructions
+============================================================
+
+Step 1:
+  Drag "MCons.app" into the "Applications" folder shortcut.
+
+Step 2 (First Launch / Gatekeeper):
+  Since MCons is downloaded from GitHub, macOS may show a prompt:
+  "MCons cannot be opened because Apple cannot check it for malicious software."
+
+  To open:
+  • Right-click "MCons.app" in Applications -> Click "Open" -> Click "Open".
+  OR
+  • Double-click "Open_MCons.command" located in this disk image.
+  OR
+  • Run in Terminal:
+      xattr -cr /Applications/MCons.app
+
+Step 3:
+  Enjoy customizing your Mac folders with 196+ custom icons!
+
+Website: https://neel0210.github.io/MCons/
+Support: https://t.me/MConsupport
+EOF
+
+    cat > "${DMG_TEMP}/Open_MCons.command" << 'EOF'
+#!/bin/bash
+DIR="$(cd "$(dirname "$0")" && pwd)"
+APP_SYS="/Applications/MCons.app"
+APP_LOCAL="${DIR}/MCons.app"
+
+echo "========================================"
+echo "          🔓 Unlocking MCons            "
+echo "========================================"
+echo ""
+
+if [ -d "$APP_SYS" ]; then
+    echo "Clearing Gatekeeper quarantine from ${APP_SYS}..."
+    xattr -cr "$APP_SYS" 2>/dev/null || true
+    echo "✅ MCons unlocked!"
+    echo "🚀 Launching MCons..."
+    open "$APP_SYS"
+elif [ -d "$APP_LOCAL" ]; then
+    echo "Copying MCons.app to /Applications..."
+    cp -R "$APP_LOCAL" /Applications/ 2>/dev/null || true
+    xattr -cr "$APP_SYS" 2>/dev/null || true
+    echo "✅ Installed & unlocked!"
+    echo "🚀 Launching MCons..."
+    open "$APP_SYS"
+else
+    echo "⚠️ Please drag MCons.app into Applications first."
+fi
+
+sleep 1
+exit 0
+EOF
+    chmod +x "${DMG_TEMP}/Open_MCons.command"
+
     log "Creating compressed DMG..."
     hdiutil create -volname "${APP_NAME}" -srcfolder "${DMG_TEMP}" -ov -format UDZO "${OUTPUT_DIR}/${DMG_NAME}"
     rm -rf "${DMG_TEMP}"
 
-    # Maintain CI alias if version differs from 1.0.4
+    # Maintain CI alias and direct latest MCons.dmg
+    cp "${OUTPUT_DIR}/${DMG_NAME}" "${OUTPUT_DIR}/${APP_NAME}.dmg" 2>/dev/null || true
     if [ "${VERSION}" != "1.0.4" ]; then
         cp "${OUTPUT_DIR}/${DMG_NAME}" "${OUTPUT_DIR}/${APP_NAME}-v1.0.4-release.dmg" 2>/dev/null || true
     fi

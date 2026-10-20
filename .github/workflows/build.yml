@@ -1,6 +1,9 @@
 name: Build & Package
 
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       build_type:
@@ -33,7 +36,7 @@ jobs:
       - name: Verify Build Output
         run: |
           ZIP_FILE=$(ls output/MCons-*-release.zip 2>/dev/null | head -1 || true)
-          DMG_FILE=$(ls output/MCons-*-release.dmg 2>/dev/null | head -1 || true)
+          DMG_FILE=$(ls output/MCons-*-release.dmg output/MCons.dmg 2>/dev/null | head -1 || true)
           if [ -z "${ZIP_FILE}" ] || [ ! -f "${ZIP_FILE}" ]; then
             echo "❌ Zip archive not found!"
             ls -lh output/
@@ -52,47 +55,70 @@ jobs:
         run: |
           BUILD_DATE=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
           LAST_COMMIT=$(git log -1 --pretty=format:"%h - %s (%an)")
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            TAG="${{ github.ref_name }}"
+          elif [[ "${{ inputs.build_type }}" == "Production Build" ]]; then
+            TAG="v1.0.4.${{ github.run_number }}"
+          else
+            TAG="beta-v1.0.4.${{ github.run_number }}"
+          fi
           echo "date=${BUILD_DATE}" >> $GITHUB_OUTPUT
           echo "last_commit=${LAST_COMMIT}" >> $GITHUB_OUTPUT
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
 
       # --- TEST BUILD (BETA) ---
       - name: Create GitHub Beta Pre-Release
-        if: ${{ inputs.build_type == 'Test Build (Beta)' }}
+        if: ${{ inputs.build_type == 'Test Build (Beta)' && !startsWith(github.ref, 'refs/tags/v') }}
         id: create_beta_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: beta-v1.0.4.${{ github.run_number }}
-          name: MCons Beta Build v1.0.4.${{ github.run_number }}
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: MCons Beta Build ${{ steps.meta.outputs.tag }}
           prerelease: true
           generate_release_notes: true
           body: |
-            ### ⚡ Quick Install (macOS 14.0+)
+            ### 💿 Install via Disk Image (.dmg) — Recommended
 
-            > [!WARNING]
-            > **Direct `.zip` browser downloads will be blocked by macOS Gatekeeper.**
-            > **Please install / update only via this 1-line command in Terminal:**
+            1. Download **`MCons.dmg`** below.
+            2. Double-click to mount the `.dmg` disk image.
+            3. Drag **MCons.app** into the **Applications** folder shortcut.
+            4. **First Launch (macOS Gatekeeper)**:
+               - **Easiest:** Double-click `Open_MCons.command` inside the DMG.
+               - **Manual:** Right-click `MCons.app` in `/Applications` → click **Open** → click **Open**.
+               - **Terminal:** Run `xattr -cr /Applications/MCons.app`
 
+            ---
+
+            ### ⚡ 1-Line Terminal Quick Install (macOS 14.0+)
             ```bash
             curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
             ```
+
+            ---
+
+            ### 🍺 Homebrew Cask
+            ```bash
+            brew install --cask neel0210/mcons/mcons
+            ```
           files: |
-            output/MCons-v1.0.4-release.zip
-            output/MCons-v1.0.4-release.dmg
+            output/MCons.dmg
+            output/MCons-*-release.dmg
+            output/MCons-*-release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Send Beta Build to Telegram Channel
-        if: ${{ inputs.build_type == 'Test Build (Beta)' }}
+        if: ${{ inputs.build_type == 'Test Build (Beta)' && !startsWith(github.ref, 'refs/tags/v') }}
         env:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           RELEASE_URL: ${{ steps.create_beta_release.outputs.url }}
         run: |
-          FILE_PATH="output/MCons-v1.0.4-release.zip"
-          ls -lh "${FILE_PATH}" || { echo "❌ Zip file not found!"; exit 1; }
-          FILE_SIZE=$(wc -c < "${FILE_PATH}" | tr -d ' ')
+          DMG_FILE=$(ls output/MCons-*-release.dmg output/MCons.dmg 2>/dev/null | head -1 || true)
+          ls -lh "${DMG_FILE}" || { echo "❌ DMG file not found!"; exit 1; }
+          DMG_SIZE=$(du -sh "${DMG_FILE}" | awk '{print $1}')
 
-          TEXT="⚡ <b>MCons Beta Build v1.0.4.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n🚀 <b>Install Command (Recommended):</b>\n<code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>\n\n⚠️ <i>Note: Direct download will be blocked by macOS Gatekeeper. Use the 1-line script above.</i>\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>"
+          TEXT="⚡ <b>MCons Beta Build ${{ steps.meta.outputs.tag }}</b> (DMG: ${DMG_SIZE})\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n💿 <b>Download Mac DMG:</b> <a href=\"${RELEASE_URL}\">MCons.dmg</a>\n\n📋 <b>Installer Instructions:</b>\n1. Mount DMG & drag MCons to Applications\n2. First launch: Right-click > Open (or run: <code>xattr -cr /Applications/MCons.app</code>)\n\n🚀 <b>1-Line Terminal Install:</b>\n<code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>"
 
           RESPONSE=$(curl -sS --max-time 30 \
                --form-string "chat_id=${CHANNEL_ID}" \
@@ -110,41 +136,56 @@ jobs:
 
       # --- PRODUCTION BUILD ---
       - name: Create GitHub Release
-        if: ${{ inputs.build_type == 'Production Build' }}
+        if: ${{ inputs.build_type == 'Production Build' || startsWith(github.ref, 'refs/tags/v') }}
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.4.${{ github.run_number }}
-          name: MCons Production Release v1.0.4.${{ github.run_number }}
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: MCons Production Release ${{ steps.meta.outputs.tag }}
           generate_release_notes: true
           body: |
-            ### ⚡ Quick Install (macOS 14.0+)
+            ### 💿 Install via Disk Image (.dmg) — Recommended
 
-            > [!WARNING]
-            > **Direct `.zip` browser downloads will be blocked by macOS Gatekeeper.**
-            > **Please install / update only via this 1-line command in Terminal:**
+            1. Download **`MCons.dmg`** below.
+            2. Double-click to mount the `.dmg` disk image.
+            3. Drag **MCons.app** into the **Applications** folder shortcut.
+            4. **First Launch (macOS Gatekeeper)**:
+               - **Easiest:** Double-click `Open_MCons.command` inside the DMG.
+               - **Manual:** Right-click `MCons.app` in `/Applications` → click **Open** → click **Open**.
+               - **Terminal:** Run `xattr -cr /Applications/MCons.app`
 
+            ---
+
+            ### ⚡ 1-Line Terminal Quick Install (macOS 14.0+)
             ```bash
             curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
             ```
+
+            ---
+
+            ### 🍺 Homebrew Cask
+            ```bash
+            brew install --cask neel0210/mcons/mcons
+            ```
           files: |
-            output/MCons-v1.0.4-release.zip
-            output/MCons-v1.0.4-release.dmg
+            output/MCons.dmg
+            output/MCons-*-release.dmg
+            output/MCons-*-release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Send Production Build to Telegram Channel
-        if: ${{ inputs.build_type == 'Production Build' }}
+        if: ${{ inputs.build_type == 'Production Build' || startsWith(github.ref, 'refs/tags/v') }}
         env:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           RELEASE_URL: ${{ steps.create_release.outputs.url }}
         run: |
-          FILE_PATH="output/MCons-v1.0.4-release.zip"
-          ls -lh "${FILE_PATH}" || { echo "❌ Zip file not found!"; exit 1; }
-          FILE_SIZE=$(wc -c < "${FILE_PATH}" | tr -d ' ')
+          DMG_FILE=$(ls output/MCons-*-release.dmg output/MCons.dmg 2>/dev/null | head -1 || true)
+          ls -lh "${DMG_FILE}" || { echo "❌ DMG file not found!"; exit 1; }
+          DMG_SIZE=$(du -sh "${DMG_FILE}" | awk '{print $1}')
 
-          TEXT="🚀 <b>MCons Production Release v1.0.4.${{ github.run_number }}</b> (Size: $(du -sh ${FILE_PATH} | awk '{print $1}'))\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n🚀 <b>Install Command (Recommended):</b>\n<code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>\n\n⚠️ <i>Note: Direct download will be blocked by macOS Gatekeeper. Use the 1-line script above.</i>\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>"
+          TEXT="🚀 <b>MCons Production Release ${{ steps.meta.outputs.tag }}</b> (DMG: ${DMG_SIZE})\n\n📅 <b>Date:</b> ${{ steps.meta.outputs.date }}\n🔖 <b>Last Commit:</b> ${{ steps.meta.outputs.last_commit }}\n\n💿 <b>Download Mac DMG:</b> <a href=\"${RELEASE_URL}\">MCons.dmg</a>\n\n📋 <b>Installer Instructions:</b>\n1. Mount DMG & drag MCons to Applications\n2. First launch: Right-click > Open (or run: <code>xattr -cr /Applications/MCons.app</code>)\n\n🚀 <b>1-Line Terminal Install:</b>\n<code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>\n\n🔗 <b>Release Page:</b> <a href=\"${RELEASE_URL}\">${RELEASE_URL}</a>"
 
           RESPONSE=$(curl -sS --max-time 30 \
                --form-string "chat_id=${CHANNEL_ID}" \

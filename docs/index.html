@@ -78,13 +78,13 @@
       </p>
 
       <div class="hero-cta">
-        <a id="heroDmgBtn" href="https://github.com/neel0210/MCons/releases/latest/download/MCons-v1.0.4-release.dmg" download="MCons.dmg" class="btn-hero-download">
+        <a id="heroDmgBtn" href="https://github.com/neel0210/MCons/releases/latest/download/MCons.dmg" download="MCons.dmg" class="btn-hero-download">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
-          <span>Download</span>
+          <span>Download MCons.dmg</span>
         </a>
 
         <a href="https://github.com/neel0210/MCons" target="_blank" rel="noopener" class="btn-hero-secondary">
@@ -368,14 +368,48 @@
         </p>
 
         <div class="download-buttons">
-          <a id="mainDmgBtn" href="https://github.com/neel0210/MCons/releases/latest/download/MCons-v1.0.4-release.dmg" download="MCons.dmg" class="btn-hero-download">
+          <a id="mainDmgBtn" href="https://github.com/neel0210/MCons/releases/latest/download/MCons.dmg" download="MCons.dmg" class="btn-hero-download">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="7 10 12 15 17 10"></polyline>
               <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
-            <span>Download</span>
+            <span>Download MCons.dmg</span>
           </a>
+        </div>
+
+        <!-- Interactive 3-Step macOS Installer Walkthrough -->
+        <div class="installer-walkthrough">
+          <div class="installer-step-card">
+            <div class="step-num-badge">1</div>
+            <div class="step-icon">💿</div>
+            <div class="step-content">
+              <h4>Mount Disk Image</h4>
+              <p>Download & open <code>MCons.dmg</code> to mount the volume.</p>
+            </div>
+          </div>
+
+          <div class="installer-arrow">➔</div>
+
+          <div class="installer-step-card">
+            <div class="step-num-badge">2</div>
+            <div class="step-icon">📂</div>
+            <div class="step-content">
+              <h4>Drag to Applications</h4>
+              <p>Drag <code>MCons.app</code> into the <code>/Applications</code> shortcut.</p>
+            </div>
+          </div>
+
+          <div class="installer-arrow">➔</div>
+
+          <div class="installer-step-card">
+            <div class="step-num-badge">3</div>
+            <div class="step-icon">⚡</div>
+            <div class="step-content">
+              <h4>First Launch</h4>
+              <p>Right-click <b>Open</b> or run <code>xattr -cr</code> in Terminal.</p>
+            </div>
+          </div>
         </div>
 
         <div style="margin-top: 30px;">
@@ -396,6 +430,61 @@
       </div>
     </div>
   </section>
+
+  <!-- Modal for Installer Instructions -->
+  <div id="installerModal" class="modal-overlay">
+    <div class="modal-window installer-modal-window">
+      <button id="installerModalCloseBtn" class="modal-close-btn">&times;</button>
+      <div class="installer-modal-header">
+        <div class="installer-modal-icon">💿</div>
+        <div>
+          <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 4px;">Downloading MCons.dmg</h3>
+          <p style="color: var(--icon-cyan); font-size: 0.88rem; font-weight: 600;">Follow these 3 simple installer steps on macOS:</p>
+        </div>
+      </div>
+
+      <div class="installer-steps-vertical">
+        <div class="modal-step-item">
+          <div class="modal-step-badge">1</div>
+          <div class="modal-step-body">
+            <strong>Open Disk Image</strong>
+            <p>Double-click the downloaded <code>MCons.dmg</code> in your Downloads folder to open it.</p>
+          </div>
+        </div>
+
+        <div class="modal-step-item">
+          <div class="modal-step-badge">2</div>
+          <div class="modal-step-body">
+            <strong>Drag into Applications</strong>
+            <p>Drag the <code>MCons.app</code> icon into the <code>Applications</code> shortcut folder inside the disk image.</p>
+          </div>
+        </div>
+
+        <div class="modal-step-item">
+          <div class="modal-step-badge">3</div>
+          <div class="modal-step-body">
+            <strong>First Launch (macOS Gatekeeper)</strong>
+            <p>Because MCons is downloaded outside the Mac App Store, choose either method to unlock:</p>
+            <ul style="margin: 8px 0 0 18px; font-size: 0.82rem; color: var(--text-dim); line-height: 1.5;">
+              <li><b>Fast:</b> Double-click <code>Open_MCons.command</code> inside the DMG.</li>
+              <li><b>Standard:</b> Right-click <code>MCons.app</code> in Applications → click <b>Open</b>.</li>
+              <li><b>Terminal:</b> Click the command below to copy and run:</li>
+            </ul>
+            <div id="cmdCopyBox" class="terminal-cmd-box" title="Click to copy command">
+              <code>xattr -cr /Applications/MCons.app</code>
+              <span class="copy-icon">📋</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
+        <button id="installerGotItBtn" class="btn-hero-download" style="padding: 10px 24px; font-size: 0.9rem;">
+          <span>Got it!</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal for Full Pack Preview -->
   <div id="packModal" class="modal-overlay">

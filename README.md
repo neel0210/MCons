@@ -119,6 +119,26 @@ No Swift code changes are needed! The dynamic `IconPackLoader` automatically sca
 
 ## 🚀 Installation & Quick Start
 
+### 💿 Disk Image Installer (.dmg) — Recommended
+
+Download the pre-built Universal disk image (Apple Silicon M1/M2/M3/M4 & Intel):
+
+[![Download MCons.dmg](https://img.shields.io/badge/Download-MCons.dmg-2479D4?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/neel0210/MCons/releases/latest/download/MCons.dmg)
+
+**Installation Steps:**
+1. Download **[MCons.dmg](https://github.com/neel0210/MCons/releases/latest/download/MCons.dmg)**.
+2. Double-click to mount the `.dmg` disk image.
+3. Drag **`MCons.app`** into your **`Applications`** folder.
+4. **First Launch (macOS Gatekeeper)**:
+   - **Easiest:** Double-click `Open_MCons.command` inside the DMG disk image.
+   - **Manual:** Right-click `MCons.app` in `/Applications` → click **Open** → confirm **Open**.
+   - **Terminal:** Run:
+     ```bash
+     xattr -cr /Applications/MCons.app
+     ```
+
+---
+
 ### 🍺 Homebrew Cask
 
 Install via Homebrew:
@@ -135,9 +155,9 @@ brew install --cask Casks/mcons.rb
 
 ---
 
-### ⚡ 1-Line Installer
+### ⚡ 1-Line Terminal Installer
 
-> **⚠️ Note:** Direct `.zip` browser downloads will be blocked by macOS Gatekeeper ("damaged or can't be opened"). Install via Homebrew above or via this 1-line command in Terminal:
+Install and launch directly in one command:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash

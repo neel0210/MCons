@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initBrewCopy();
   initModal();
   initReleaseLinks();
+  initInstallerModal();
 });
 
 // 1. Live macOS Window Mockup Interactive Demo
@@ -268,4 +269,62 @@ function initReleaseLinks() {
     })
     .catch(() => {});
 }
+
+// 6. Interactive macOS Installer Instructions Modal
+function initInstallerModal() {
+  const modal = document.getElementById('installerModal');
+  const closeBtn = document.getElementById('installerModalCloseBtn');
+  const gotItBtn = document.getElementById('installerGotItBtn');
+  const heroBtn = document.getElementById('heroDmgBtn');
+  const mainBtn = document.getElementById('mainDmgBtn');
+  const cmdBox = document.getElementById('cmdCopyBox');
+
+  const openModal = () => {
+    if (modal) {
+      setTimeout(() => {
+        modal.classList.add('active');
+      }, 250);
+    }
+  };
+
+  const closeModal = () => {
+    if (modal) {
+      modal.classList.remove('active');
+    }
+  };
+
+  if (heroBtn) {
+    heroBtn.addEventListener('click', openModal);
+  }
+  if (mainBtn) {
+    mainBtn.addEventListener('click', openModal);
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+  }
+  if (gotItBtn) {
+    gotItBtn.addEventListener('click', closeModal);
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+  }
+
+  if (cmdBox) {
+    cmdBox.addEventListener('click', () => {
+      const cmd = 'xattr -cr /Applications/MCons.app';
+      navigator.clipboard.writeText(cmd).then(() => {
+        showToast('Copied "xattr -cr /Applications/MCons.app" to clipboard!');
+      }).catch(() => {
+        showToast('Command: xattr -cr /Applications/MCons.app');
+      });
+    });
+  }
+}
+
 
