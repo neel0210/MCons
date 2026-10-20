@@ -608,6 +608,12 @@ PLIST
 
 echo -n "APPL????" > "${APP_DIR}/Contents/PkgInfo"
 
+# Strip debug symbols in release mode to minimize bundle size
+if [ "$BUILD_CONFIG" = "release" ]; then
+    log "Stripping debug symbols from release binary..."
+    strip -u -r "${APP_DIR}/Contents/MacOS/${EXECUTABLE_NAME}" 2>/dev/null || true
+fi
+
 # ─── Code Signing ────────────────────────────────────────────────────────────
 header "Code Signing"
 SIGN_IDENTITY="${CODE_SIGN_IDENTITY:--}"
@@ -766,7 +772,7 @@ EOF
     chmod +x "${DMG_TEMP}/Open_MCons.command"
 
     log "Creating compressed DMG..."
-    hdiutil create -volname "${APP_NAME}" -srcfolder "${DMG_TEMP}" -ov -format UDZO "${OUTPUT_DIR}/${DMG_NAME}"
+    hdiutil create -volname "${APP_NAME}" -srcfolder "${DMG_TEMP}" -ov -format UDZO -imagekey zlib-level=9 "${OUTPUT_DIR}/${DMG_NAME}"
     rm -rf "${DMG_TEMP}"
 
     # Maintain CI alias and direct latest MCons.dmg
