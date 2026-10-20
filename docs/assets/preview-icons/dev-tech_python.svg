@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="folderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E2A38"/>
+      <stop offset="100%" stop-color="#121B24"/>
+    </linearGradient>
+    <linearGradient id="tabGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#283A4E"/>
+      <stop offset="100%" stop-color="#1E2A38"/>
+    </linearGradient>
+    <filter id="folderShadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.38"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <filter id="logoShadow" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Folder Back Tab -->
+  <path d="M 120 180 C 120 148 140 128 172 128 L 410 128 C 445 128 470 155 495 190 L 525 230 L 852 230 C 884 230 904 250 904 282 L 904 380 L 120 380 Z" fill="url(#tabGrad)"/>
+
+  <!-- Folder Main Body with Shadow -->
+  <g filter="url(#folderShadow)">
+    <rect x="76" y="220" width="872" height="660" rx="42" fill="url(#folderGrad)"/>
+    <!-- Subtle Top Rim Highlight -->
+    <path d="M 118 221 L 906 221" stroke="#FFD43B" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <!-- Centered Developer Technology Logo -->
+  <g filter="url(#logoShadow)">
+    <!-- Python Interlocking Serpents -->
+    <g transform="translate(332, 360) scale(0.72)">
+      <!-- Blue Snake -->
+      <path d="M246 0C116 0 125 57 125 57L125 118L251 118L251 136L72 136C72 136 0 128 0 257C0 386 63 381 63 381L101 381L101 328C101 328 98 264 163 264L288 264C288 264 348 265 348 206L348 57C348 57 359 0 246 0ZM181 37C194 37 205 48 205 61C205 74 194 85 181 85C168 85 157 74 157 61C157 48 168 37 181 37Z" fill="#387EB8"/>
+      <!-- Yellow Snake -->
+      <path d="M254 500C384 500 375 443 375 443L375 382L249 382L249 364L428 364C428 364 500 372 500 243C500 114 437 119 437 119L399 119L399 172C399 172 402 236 337 236L212 236C212 236 152 235 152 294L152 443C152 443 141 500 254 500ZM319 463C306 463 295 452 295 439C295 426 306 415 319 415C332 415 343 426 343 439C343 452 332 463 319 463Z" fill="#FFE052"/>
+    </g>
+  </g>
+</svg>

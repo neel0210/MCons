@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="folderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2A1B18"/>
+      <stop offset="100%" stop-color="#1A100E"/>
+    </linearGradient>
+    <linearGradient id="tabGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3A2521"/>
+      <stop offset="100%" stop-color="#2A1B18"/>
+    </linearGradient>
+    <filter id="folderShadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.38"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <filter id="logoShadow" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Folder Back Tab -->
+  <path d="M 120 180 C 120 148 140 128 172 128 L 410 128 C 445 128 470 155 495 190 L 525 230 L 852 230 C 884 230 904 250 904 282 L 904 380 L 120 380 Z" fill="url(#tabGrad)"/>
+
+  <!-- Folder Main Body with Shadow -->
+  <g filter="url(#folderShadow)">
+    <rect x="76" y="220" width="872" height="660" rx="42" fill="url(#folderGrad)"/>
+    <!-- Subtle Top Rim Highlight -->
+    <path d="M 118 221 L 906 221" stroke="#F05032" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <!-- Centered Developer Technology Logo -->
+  <g filter="url(#logoShadow)">
+    <!-- Git Branching Diamond -->
+    <g transform="translate(322, 370) scale(0.75)">
+      <path d="M472 208 L304 40 C280 16 242 16 218 40 L40 218 C16 242 16 280 40 304 L208 472 C232 496 270 496 294 472 L472 294 C496 270 496 232 472 208 Z" fill="#F05032"/>
+      <!-- Inner Branch Lines & Circles -->
+      <circle cx="170" cy="342" r="38" fill="#FFFFFF"/>
+      <circle cx="342" cy="170" r="38" fill="#FFFFFF"/>
+      <circle cx="342" cy="280" r="38" fill="#FFFFFF"/>
+      <path d="M 170 342 L 342 170" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+      <path d="M 342 170 L 342 280" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

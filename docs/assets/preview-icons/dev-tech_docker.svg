@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="folderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#132B40"/>
+      <stop offset="100%" stop-color="#0B1A27"/>
+    </linearGradient>
+    <linearGradient id="tabGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1C3D5A"/>
+      <stop offset="100%" stop-color="#132B40"/>
+    </linearGradient>
+    <filter id="folderShadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.38"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <filter id="logoShadow" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Folder Back Tab -->
+  <path d="M 120 180 C 120 148 140 128 172 128 L 410 128 C 445 128 470 155 495 190 L 525 230 L 852 230 C 884 230 904 250 904 282 L 904 380 L 120 380 Z" fill="url(#tabGrad)"/>
+
+  <!-- Folder Main Body with Shadow -->
+  <g filter="url(#folderShadow)">
+    <rect x="76" y="220" width="872" height="660" rx="42" fill="url(#folderGrad)"/>
+    <!-- Subtle Top Rim Highlight -->
+    <path d="M 118 221 L 906 221" stroke="#2496ED" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <!-- Centered Developer Technology Logo -->
+  <g filter="url(#logoShadow)">
+    <!-- Docker Moby Whale -->
+    <g transform="translate(252, 390) scale(0.80)">
+      <!-- Container Blocks -->
+      <g fill="#2496ED">
+        <rect x="180" y="80" width="50" height="42" rx="4"/>
+        <rect x="240" y="80" width="50" height="42" rx="4"/>
+        <rect x="300" y="80" width="50" height="42" rx="4"/>
+        <rect x="120" y="130" width="50" height="42" rx="4"/>
+        <rect x="180" y="130" width="50" height="42" rx="4"/>
+        <rect x="240" y="130" width="50" height="42" rx="4"/>
+        <rect x="300" y="130" width="50" height="42" rx="4"/>
+        <rect x="360" y="130" width="50" height="42" rx="4"/>
+        <rect x="180" y="180" width="50" height="42" rx="4"/>
+        <rect x="240" y="180" width="50" height="42" rx="4"/>
+        <rect x="300" y="180" width="50" height="42" rx="4"/>
+        <rect x="360" y="180" width="50" height="42" rx="4"/>
+      </g>
+      <!-- Whale Body -->
+      <path d="M 620 220 C 580 200 520 220 480 220 C 460 220 420 220 120 230 C 70 230 20 270 20 330 C 20 400 120 440 280 440 C 480 440 560 380 610 290 C 625 295 640 290 645 270 C 648 250 635 230 620 220 Z" fill="#2496ED"/>
+      <circle cx="100" cy="300" r="14" fill="#FFFFFF"/>
+    </g>
+  </g>
+</svg>

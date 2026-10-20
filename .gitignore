@@ -34,4 +34,16 @@ brain.md
 *.log
 *.tmp
 .swiftpm/
-EOF
+
+# Windows build artifacts
+windows/dist/
+windows/build/
+*.spec
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Scratch directory
+scratch/

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCons — Native macOS Folder Customizer & Vector Icon Packs</title>
+  <meta name="description" content="Personalize generic macOS blue folders with 196+ handcrafted vector icons, anime packs, dev tech badges, and custom tints. 100% native Swift 6 app for macOS Sonoma & Sequoia.">
+  <meta name="keywords" content="macOS folder icons, custom Mac folders, Mac icon pack, anime folder icons, macOS Sequoia folder customizer, swiftui macos app">
+  <meta name="author" content="Neel Jadhav">
+
+  <!-- OpenGraph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://neel0210.github.io/MCons/">
+  <meta property="og:title" content="MCons — Your Mac Folders, Transformed.">
+  <meta property="og:description" content="196+ handcrafted vector icons, anime packs, custom pack builder, and batch folder applicator for macOS Sonoma & Sequoia.">
+  <meta property="og:image" content="assets/icon-512.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-256.png">
+  <link rel="apple-touch-icon" href="assets/icon-512.png">
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Ambient Glowing Background (Icon Color Palette) -->
+  <div class="bg-ambient">
+    <div class="aurora-blob blob-1"></div>
+    <div class="aurora-blob blob-2"></div>
+    <div class="aurora-blob blob-3"></div>
+  </div>
+
+  <!-- Floating Pill Glass Navigation (macOS 26/27 Style) -->
+  <header class="header-glass">
+    <div class="header-container">
+      <a href="#" class="logo-wrap">
+        <img src="assets/icon-256.png" alt="MCons Logo" />
+        <span class="logo-text">MCons</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#demo">Live Demo</a></li>
+          <li><a href="#packs">Icon Packs</a></li>
+          <li><a href="#download">Download</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="#download" class="btn-primary-pill">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Download</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title">
+        Your Mac Folders, <br/>
+        <span class="icon-gradient-title">Transformed.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Replace generic blue directories with 196+ handcrafted vector icons, anime packs, tech emblems, and custom color tints. 100% native, instant, and non-destructive.
+      </p>
+
+      <div class="hero-cta">
+        <a id="heroDmgBtn" href="https://github.com/neel0210/MCons/releases/latest/download/MCons-v1.0.4-release.dmg" download="MCons.dmg" class="btn-hero-download">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Download</span>
+        </a>
+
+        <a href="https://github.com/neel0210/MCons" target="_blank" rel="noopener" class="btn-hero-secondary">
+          <span>GitHub Source</span>
+          <span>→</span>
+        </a>
+      </div>
+
+      <div class="hero-tags-pill">
+        <span>✓ Apple Silicon & Intel</span>
+        <span>•</span>
+        <span>✓ Zero SIP Disabling</span>
+        <span>•</span>
+        <span>✓ 100% Reversible</span>
+      </div>
+
+      <!-- Live Interactive macOS App Mockup -->
+      <div id="demo" class="mockup-wrapper">
+        <div class="macos-window">
+          <!-- Titlebar -->
+          <div class="window-titlebar">
+            <div class="traffic-lights">
+              <span class="light red"></span>
+              <span class="light yellow"></span>
+              <span class="light green"></span>
+            </div>
+
+            <span class="window-title">MCons — Icon Apply</span>
+
+            <div class="window-segmented-pill">
+              <button class="seg-btn active">Single Folder</button>
+              <button class="seg-btn">Batch Apply</button>
+              <button class="seg-btn">Pack Builder</button>
+            </div>
+          </div>
+
+          <!-- Window Content -->
+          <div class="window-body">
+            <!-- Sidebar -->
+            <div class="mockup-sidebar">
+              <div class="mockup-sidebar-title">Library</div>
+              <div class="mockup-nav-item active">
+                <span>📁</span>
+                <span>Apply Icon</span>
+              </div>
+              <div class="mockup-nav-item">
+                <span>📦</span>
+                <span>Icon Packs</span>
+              </div>
+              <div class="mockup-nav-item">
+                <span>⚡</span>
+                <span>Batch Apply</span>
+              </div>
+              <div class="mockup-nav-item">
+                <span>🎨</span>
+                <span>Pack Builder</span>
+              </div>
+              <div class="mockup-sidebar-title" style="margin-top: 24px;">Quick Actions</div>
+              <div class="mockup-nav-item">
+                <span>⭐</span>
+                <span>Favorites</span>
+              </div>
+              <div class="mockup-nav-item">
+                <span>⚙️</span>
+                <span>Settings</span>
+              </div>
+            </div>
+
+            <!-- Stage: Folder Canvas -->
+            <div class="mockup-stage">
+              <div class="folder-canvas-wrap">
+                <!-- macOS Sonoma / Sequoia Style Vector Folder -->
+                <svg id="mockupFolderSvg" class="mac-folder-svg" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Back Tab -->
+                  <path id="folderTabPath" d="M12 28C12 21.3726 17.3726 16 24 16H70C75.2536 16 80.0899 19.4344 81.8159 24.3986L86.1841 36.9686C87.0471 39.4507 89.4652 41.1672 92.0921 41.1672H176C182.627 41.1672 188 46.5398 188 53.1672V136C188 142.627 182.627 148 176 148H24C17.3726 148 12 142.627 12 136V28Z" fill="#2479d4"/>
+                  <!-- Paper Sheet -->
+                  <rect x="24" y="32" width="152" height="100" rx="8" fill="#ffffff" fill-opacity="0.9"/>
+                  <!-- Front Flap with Depth Gradient -->
+                  <path id="folderFrontPath" d="M10 52C10 45.3726 15.3726 40 22 40H178C184.627 40 190 45.3726 190 52V136C190 142.627 184.627 148 178 148H22C15.3726 148 10 142.627 10 136V52Z" fill="#3abfc3"/>
+                  <path d="M10 52C10 45.3726 15.3726 40 22 40H178C184.627 40 190 45.3726 190 52V56H10V52Z" fill="#ffffff" fill-opacity="0.25"/>
+                </svg>
+
+                <!-- Vector Badge / Character Overlay -->
+                <div class="folder-icon-overlay">
+                  <img id="mockupOverlayIcon" src="assets/preview-icons/my-hero-academia__izuku_midoriya.svg" alt="Active Icon" />
+                </div>
+              </div>
+
+              <div id="mockupTargetName" class="folder-target-name">Deku Projects</div>
+              <div class="folder-target-path">~/Documents/GitHub/MyHeroAcademia</div>
+
+              <div class="stage-badge-pill">
+                <span>●</span> Ready to apply
+              </div>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="mockup-controls">
+              <div>
+                <div class="control-group-title">1. Select Folder Icon</div>
+                <div class="icon-selector-grid">
+                  <button class="icon-chip-btn active" data-icon="assets/preview-icons/my-hero-academia__izuku_midoriya.svg" data-name="Deku" title="Izuku Midoriya">
+                    <img src="assets/preview-icons/my-hero-academia__izuku_midoriya.svg" alt="Deku" />
+                  </button>
+                  <button class="icon-chip-btn" data-icon="assets/preview-icons/jujutsu-kaisen__satoru_gojo.svg" data-name="Gojo" title="Satoru Gojo">
+                    <img src="assets/preview-icons/jujutsu-kaisen__satoru_gojo.svg" alt="Gojo" />
+                  </button>
+                  <button class="icon-chip-btn" data-icon="assets/preview-icons/one-piece_luffy.svg" data-name="Luffy" title="Monkey D. Luffy">
+                    <img src="assets/preview-icons/one-piece_luffy.svg" alt="Luffy" />
+                  </button>
+                  <button class="icon-chip-btn" data-icon="assets/preview-icons/naruto__naruto_uzumaki.svg" data-name="Naruto" title="Naruto Uzumaki">
+                    <img src="assets/preview-icons/naruto__naruto_uzumaki.svg" alt="Naruto" />
+                  </button>
+                  <button class="icon-chip-btn" data-icon="assets/preview-icons/dev-tech_docker.svg" data-name="Docker" title="Docker Container">
+                    <img src="assets/preview-icons/dev-tech_docker.svg" alt="Docker" />
+                  </button>
+                  <button class="icon-chip-btn" data-icon="assets/preview-icons/dev-tech_python.svg" data-name="Python" title="Python 3">
+                    <img src="assets/preview-icons/dev-tech_python.svg" alt="Python" />
+                  </button>
+                  <button class="icon-chip-btn" data-icon="assets/preview-icons/pokemon_pikachu.svg" data-name="Pikachu" title="Pikachu">
+                    <img src="assets/preview-icons/pokemon_pikachu.svg" alt="Pikachu" />
+                  </button>
+                  <button class="icon-chip-btn" data-icon="assets/preview-icons/chainsaw-man_denji.svg" data-name="Denji" title="Chainsaw Man">
+                    <img src="assets/preview-icons/chainsaw-man_denji.svg" alt="Denji" />
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div class="control-group-title">2. Folder Tint Color</div>
+                <div class="color-swatches">
+                  <button class="swatch-btn active" style="background: #3abfc3;" data-color="#3abfc3" title="MCons Cyan"></button>
+                  <button class="swatch-btn" style="background: #2479d4;" data-color="#2479d4" title="Sapphire Blue"></button>
+                  <button class="swatch-btn" style="background: #fd5607;" data-color="#fd5607" title="Sunset Orange"></button>
+                  <button class="swatch-btn" style="background: #fd9024;" data-color="#fd9024" title="Flame Amber"></button>
+                  <button class="swatch-btn" style="background: #10b981;" data-color="#10b981" title="Emerald Green"></button>
+                  <button class="swatch-btn" style="background: #1e2433;" data-color="#1e2433" title="Obsidian Slate"></button>
+                </div>
+              </div>
+
+              <button id="mockupApplyBtn" class="btn-apply-pill">
+                Apply to Folder
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Pill Bar -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-pill-container">
+        <div>
+          <div class="stat-number">19</div>
+          <div class="stat-label">Curated Icon Packs</div>
+        </div>
+        <div>
+          <div class="stat-number">196+</div>
+          <div class="stat-label">Handcrafted Vector SVGs</div>
+        </div>
+        <div>
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Finder Native (Swift 6)</div>
+        </div>
+        <div>
+          <div class="stat-number">0</div>
+          <div class="stat-label">System Files Touched</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section id="features" class="section-pad">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag-pill">Core Features</span>
+        <h2 class="section-title">Engineered with macOS DNA</h2>
+        <p class="section-desc">
+          MCons doesn't just paint folders — it creates high-density custom icon families conforming to macOS Sonoma & Sequoia design specifications.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-pill-card">
+          <div class="feature-icon-badge">⚡</div>
+          <h3>1-Click Drag & Drop</h3>
+          <p>
+            Drop any folder onto MCons and select an icon. Writes directly to macOS extended attributes (`com.apple.ResourceFork` / `Icon\r`), updating Finder and Dock instantly.
+          </p>
+        </div>
+
+        <div class="feature-pill-card">
+          <div class="feature-icon-badge">🛠️</div>
+          <h3>Custom Pack Builder</h3>
+          <p>
+            Import any SVG, PNG, or vector artwork. MCons automatically cuts out the silhouette, adjusts lighting, and frames it with native macOS folder geometry.
+          </p>
+        </div>
+
+        <div class="feature-pill-card">
+          <div class="feature-icon-badge">🚀</div>
+          <h3>Lightning Batch Apply</h3>
+          <p>
+            Organize dozens of client projects or dev repositories in seconds. Select multiple directories and apply matched icons and colors with recursive depth and full undo.
+          </p>
+        </div>
+
+        <div class="feature-pill-card">
+          <div class="feature-icon-badge">🧭</div>
+          <h3>Menu Bar Companion</h3>
+          <p>
+            Tucked neatly into your top macOS status bar for rapid drag-and-drop icon application without ever switching away from Finder or your code editor.
+          </p>
+        </div>
+
+        <div class="feature-pill-card">
+          <div class="feature-icon-badge">🔒</div>
+          <h3>100% Non-Destructive</h3>
+          <p>
+            Zero SIP disabling required. MCons respects macOS Gatekeeper and security boundaries. Click "Restore Default" and your folder returns to original blue instantly.
+          </p>
+        </div>
+
+        <div class="feature-pill-card">
+          <div class="feature-icon-badge">🔄</div>
+          <h3>Sparkle Auto-Updates</h3>
+          <p>
+            Integrated with Sparkle 2 framework. New icon packs, system optimizations, and macOS version compatibility patches arrive seamlessly with signed Delta updates.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Icon Packs Catalog & Interactive Explorer -->
+  <section id="packs" class="section-pad packs-explorer">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag-pill">Icon Gallery</span>
+        <h2 class="section-title">Explore 19 Bundled Packs</h2>
+        <p class="section-desc">
+          Browse through legendary anime series, essential developer tools, Google suite, and hardware camera icons.
+        </p>
+      </div>
+
+      <!-- Controls: Category Chips + Search -->
+      <div class="explorer-controls">
+        <div class="category-tabs">
+          <button class="cat-btn active" data-cat="all">All Packs (19)</button>
+          <button class="cat-btn" data-cat="Anime">Anime (14)</button>
+          <button class="cat-btn" data-cat="Tech & Dev">Tech & Dev (2)</button>
+          <button class="cat-btn" data-cat="Gaming">Gaming (1)</button>
+          <button class="cat-btn" data-cat="Hardware">Hardware & Minimal (2)</button>
+        </div>
+
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input id="packSearchInput" type="text" placeholder="Search Gojo, Naruto, Docker, Python..." />
+        </div>
+      </div>
+
+      <!-- Dynamic Cards Grid -->
+      <div id="packsGrid" class="packs-grid">
+        <!-- Rendered dynamically by app.js from MCONS_PACKS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Download & Installation Hub -->
+  <section id="download" class="section-pad download-section">
+    <div class="container">
+      <div class="download-pill-card">
+        <img src="assets/icon-512.png" alt="MCons Icon" class="download-app-icon" />
+
+        <h2 class="section-title" style="margin-bottom: 12px;">Get MCons for macOS</h2>
+        <p class="section-desc" style="max-width: 580px; margin: 0 auto 30px;">
+          Universal binary for Apple Silicon (M1, M2, M3, M4) and Intel Macs. Requires macOS Sonoma 14.0 or macOS Sequoia 15.0+.
+        </p>
+
+        <div class="download-buttons">
+          <a id="mainDmgBtn" href="https://github.com/neel0210/MCons/releases/latest/download/MCons-v1.0.4-release.dmg" download="MCons.dmg" class="btn-hero-download">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download</span>
+          </a>
+        </div>
+
+        <div style="margin-top: 30px;">
+          <div style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 10px;">Or install via Homebrew Cask:</div>
+          <div id="brewCopyBox" class="brew-pill-box" title="Click to copy command">
+            <span>$ brew install --cask mcons</span>
+            <span>📋</span>
+          </div>
+        </div>
+
+        <!-- Fair Use Disclosure -->
+        <div class="fair-use-box">
+          <h4>⚖️ Fair Use & Trademark Disclosure</h4>
+          <p>
+            MCons is free, open-source software distributed under the MIT License. Character artwork, emblems, and logos included in bundled icon packs belong to their respective copyright holders, including Shueisha, MAPPA, Bones, Google LLC, Apple Inc., and respective foundations. These assets are curated strictly for non-commercial desktop personalization under Fair Use principles.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal for Full Pack Preview -->
+  <div id="packModal" class="modal-overlay">
+    <div class="modal-window">
+      <button id="modalCloseBtn" class="modal-close-btn">&times;</button>
+      <div style="display: flex; align-items: baseline; gap: 12px;">
+        <h3 id="modalTitle" style="font-size: 1.5rem;">Pack Name</h3>
+        <span id="modalCount" style="font-size: 0.85rem; color: var(--icon-cyan); font-weight: 700;"></span>
+      </div>
+      <p id="modalDesc" style="color: var(--text-muted); margin: 8px 0 18px; font-size: 0.9rem;"></p>
+      
+      <div id="modalIconsGrid" class="modal-icons-grid">
+        <!-- Rendered on pack click -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="assets/icon-256.png" alt="MCons Logo" style="width: 28px; height: 28px; border-radius: 7px;" />
+            <span style="font-size: 1.15rem; font-weight: 800;">MCons</span>
+          </div>
+          <p>
+            The premium desktop folder customization utility for macOS. Fast, native, and delightfully aesthetic.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Product</h5>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#demo">Live Demo</a></li>
+            <li><a href="#packs">Icon Packs</a></li>
+            <li><a href="#download">Download DMG</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <ul>
+            <li><a href="https://github.com/neel0210/MCons" target="_blank" rel="noopener">GitHub Repository</a></li>
+            <li><a href="https://github.com/neel0210/MCons/releases" target="_blank" rel="noopener">Releases & Changelog</a></li>
+            <li><a href="https://raw.githubusercontent.com/neel0210/MCons/main/appcast.xml" target="_blank" rel="noopener">Sparkle Appcast</a></li>
+            <li><a href="https://github.com/neel0210/MCons/issues" target="_blank" rel="noopener">Issue Tracker</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Community</h5>
+          <ul>
+            <li><a href="https://github.com/neel0210" target="_blank" rel="noopener">Created by @neel0210</a></li>
+            <li><a href="https://github.com/neel0210/MCons/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a></li>
+            <li><a href="https://github.com/neel0210/MCons/blob/main/README.md" target="_blank" rel="noopener">Documentation</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 MCons by Neel Jadhav. macOS and Finder are trademarks of Apple Inc.</div>
+        <div style="display: flex; gap: 16px;">
+          <a href="https://github.com/neel0210/MCons" style="color: var(--text-dim); text-decoration: none;">GitHub</a>
+          <a href="#download" style="color: var(--text-dim); text-decoration: none;">Latest Build</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="packs-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
