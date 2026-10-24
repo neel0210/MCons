@@ -14,18 +14,47 @@ from tkinter import filedialog, messagebox
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mcons_core
 
+# High-DPI Awareness on Windows
+if sys.platform == "win32":
+    try:
+        import ctypes
+        ctypes.windll.shcore.SetProcessDpiAwareness(2)  # Per-Monitor DPI aware
+    except Exception:
+        try:
+            import ctypes
+            ctypes.windll.user32.SetProcessDPIAware()
+        except Exception:
+            pass
+
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
 
 class MConsWindowsApp(ctk.CTk):
-    def __init__(self):
+    def __init__(self, initial_folder: Optional[str] = None):
         super().__init__()
 
         self.title("MCons — Windows Folder Customizer")
         self.geometry("980x680")
         self.minsize(860, 580)
         self.configure(fg_color="#08090d")
+
+        # Set Window Icon
+        ico_candidates = [
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "mcons.ico"),
+            os.path.abspath("windows/mcons.ico"),
+        ]
+        if getattr(sys, 'frozen', False):
+            meipass = getattr(sys, '_MEIPASS', None)
+            if meipass:
+                ico_candidates.insert(0, os.path.join(meipass, "mcons.ico"))
+        for ico in ico_candidates:
+            if os.path.exists(ico):
+                try:
+                    self.iconbitmap(ico)
+                    break
+                except Exception:
+                    pass
 
         self.selected_folder: Optional[str] = None
         self.selected_icon_path: Optional[str] = None
@@ -38,6 +67,15 @@ class MConsWindowsApp(ctk.CTk):
         self.icon_cache: Dict[str, ctk.CTkImage] = {}
 
         self._build_ui()
+
+        if initial_folder and os.path.isdir(initial_folder):
+            self.selected_folder = os.path.abspath(initial_folder)
+            self.folder_path_entry.delete(0, "end")
+            self.folder_path_entry.insert(0, self.selected_folder)
+            self.status_label.configure(
+                text=f"Selected folder: '{os.path.basename(self.selected_folder)}'",
+                text_color="#38bdf8"
+            )
 
     def _build_ui(self):
         # 1. Top Header
@@ -333,10 +371,25 @@ class MConsWindowsApp(ctk.CTk):
                 border_width=2 if self.selected_icon_path == icon["path"] else 1,
                 corner_radius=12,
                 width=140,
-                height=110
+                height=135
             )
             card.grid(row=row, column=col, padx=8, pady=8, sticky="nsew")
             card.bind("<Button-1>", lambda e, p=icon["path"], n=icon["name"]: self._select_icon(p, n))
+
+            # Thumbnail Image Preview
+            thumb_path = mcons_core.get_icon_thumbnail_path(icon["path"], size=44)
+            if thumb_path and os.path.exists(thumb_path):
+                if thumb_path not in self.icon_cache:
+                    try:
+                        pil_im = Image.open(thumb_path)
+                        self.icon_cache[thumb_path] = ctk.CTkImage(light_image=pil_im, dark_image=pil_im, size=(44, 44))
+                    except Exception:
+                        pass
+                if thumb_path in self.icon_cache:
+                    img = self.icon_cache[thumb_path]
+                    img_lbl = ctk.CTkLabel(card, text="", image=img)
+                    img_lbl.pack(pady=(10, 2))
+                    img_lbl.bind("<Button-1>", lambda e, p=icon["path"], n=icon["name"]: self._select_icon(p, n))
 
             name_lbl = ctk.CTkLabel(
                 card,
@@ -344,7 +397,7 @@ class MConsWindowsApp(ctk.CTk):
                 font=ctk.CTkFont(size=11, weight="bold"),
                 text_color="#f8fafc"
             )
-            name_lbl.pack(pady=(16, 2), padx=6)
+            name_lbl.pack(pady=(4, 1), padx=6)
             name_lbl.bind("<Button-1>", lambda e, p=icon["path"], n=icon["name"]: self._select_icon(p, n))
 
             pack_lbl = ctk.CTkLabel(
@@ -353,7 +406,7 @@ class MConsWindowsApp(ctk.CTk):
                 font=ctk.CTkFont(size=9),
                 text_color="#94a3b8"
             )
-            pack_lbl.pack(pady=(0, 14), padx=6)
+            pack_lbl.pack(pady=(0, 10), padx=6)
             pack_lbl.bind("<Button-1>", lambda e, p=icon["path"], n=icon["name"]: self._select_icon(p, n))
 
     def _select_icon(self, icon_path: str, icon_name: str):
@@ -428,7 +481,27 @@ class MConsWindowsApp(ctk.CTk):
 
 
 def cli_main():
+    # If running CLI commands from cmd/powershell, attach console so stdout/stderr output directly
+    if any(arg in sys.argv[1:] for arg in ["apply", "restore", "list", "--help", "-h"]):
+        if sys.platform == "win32":
+            try:
+                import ctypes
+                if ctypes.windll.kernel32.AttachConsole(-1):
+                    sys.stdout = open("CONOUT$", "w", encoding="utf-8")
+                    sys.stderr = open("CONOUT$", "w", encoding="utf-8")
+            except Exception:
+                pass
+
+    # If direct folder path passed (e.g. from Windows Explorer context menu)
+    if len(sys.argv) > 1 and not sys.argv[1].startswith("-") and sys.argv[1] not in ["apply", "restore", "list"]:
+        folder_arg = sys.argv[1]
+        if os.path.isdir(folder_arg):
+            app = MConsWindowsApp(initial_folder=folder_arg)
+            app.mainloop()
+            return
+
     parser = argparse.ArgumentParser(description="MCons for Windows — Desktop Folder Icon Customizer")
+    parser.add_argument("--folder", help="Target folder to open in GUI", default=None)
     subparsers = parser.add_subparsers(dest="command")
 
     apply_p = subparsers.add_parser("apply", help="Apply icon to folder")
@@ -458,7 +531,7 @@ def cli_main():
         sys.exit(0)
     else:
         # Launch GUI
-        app = MConsWindowsApp()
+        app = MConsWindowsApp(initial_folder=args.folder)
         app.mainloop()
 
 

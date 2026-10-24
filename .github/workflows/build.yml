@@ -16,24 +16,21 @@ on:
           - 'Production Build'
 
 jobs:
-  build:
+  build-macos:
     name: Build macOS App
     runs-on: macos-latest
-    permissions:
-      contents: write
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Build MCons App Bundle
+      - name: Build MCons macOS Bundle
         run: |
           chmod +x build.sh
           ./build.sh --zip --dmg
 
-      - name: Verify Build Output
+      - name: Verify macOS Output
         run: |
           ZIP_FILE=$(ls output/MCons-*-release.zip 2>/dev/null | head -1 || true)
           DMG_FILE=$(ls output/MCons-*-release.dmg output/MCons.dmg 2>/dev/null | head -1 || true)
@@ -47,8 +44,88 @@ jobs:
             ls -lh output/
             exit 1
           fi
-          echo "Output directory listing:"
           ls -lh output/
+
+      - name: Upload macOS Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcons-macos
+          path: |
+            output/MCons.dmg
+            output/MCons-*-release.dmg
+            output/MCons-*-release.zip
+          retention-days: 7
+
+  build-windows:
+    name: Build Windows App & Installer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller customtkinter pillow
+
+      - name: Install Inno Setup
+        run: |
+          choco install innosetup -y
+
+      - name: Build Windows Standalone EXE & Installer
+        run: |
+          python windows/build_exe.py
+
+      - name: Verify Windows Output
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "windows/dist/MCons-Windows.exe")) {
+            Write-Error "MCons-Windows.exe not found!"
+          }
+          if (-not (Test-Path "windows/dist/MCons-Windows-Setup.exe")) {
+            Write-Error "MCons-Windows-Setup.exe not found!"
+          }
+          Get-ChildItem -Path windows/dist
+
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcons-windows
+          path: |
+            windows/dist/MCons-Windows-Setup.exe
+            windows/dist/MCons-Windows.exe
+          retention-days: 7
+
+  release:
+    name: Publish GitHub Release
+    needs: [build-macos, build-windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download macOS Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: mcons-macos
+          path: release-assets/
+
+      - name: Download Windows Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: mcons-windows
+          path: release-assets/
 
       - name: Extract Build Metadata
         id: meta
@@ -69,7 +146,6 @@ jobs:
       # --- TEST BUILD (BETA) ---
       - name: Create GitHub Beta Pre-Release
         if: ${{ inputs.build_type == 'Test Build (Beta)' && !startsWith(github.ref, 'refs/tags/v') }}
-        id: create_beta_release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.meta.outputs.tag }}
@@ -77,72 +153,47 @@ jobs:
           prerelease: true
           generate_release_notes: true
           body: |
-            ### 💿 Install via Disk Image (.dmg) — Recommended
+            ## 🪟 Windows 10 & 11 Installation
+            
+            - **Installer (Recommended):** Download and run **`MCons-Windows-Setup.exe`**. Includes automatic Start Menu shortcut, Desktop shortcut, and Windows Explorer right-click context menu integration (*"Customize with MCons"*).
+            - **Standalone Executable:** Download **`MCons-Windows.exe`** for instant portable use without installation.
 
+            ---
+
+            ## 🍎 macOS Installation (macOS 14.0+)
+            
             1. Download **`MCons.dmg`** below.
             2. Double-click to mount the `.dmg` disk image.
             3. Drag **MCons.app** into the **Applications** folder shortcut.
-            4. **First Launch (macOS Gatekeeper)**:
-               - **Easiest:** Double-click `Open_MCons.command` inside the DMG.
-               - **Manual:** Right-click `MCons.app` in `/Applications` → click **Open** → click **Open**.
-               - **Terminal:** Run `xattr -cr /Applications/MCons.app`
-
-            ---
-
-            ### ⚡ 1-Line Terminal Quick Install (macOS 14.0+)
-            ```bash
-            curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
-            ```
-
-            ---
-
-            ### 🍺 Homebrew Cask
-            ```bash
-            brew install --cask neel0210/mcons/mcons
-            ```
+            4. **Gatekeeper:** Right-click `MCons.app` in `/Applications` → click **Open** → click **Open**, or run `xattr -cr /Applications/MCons.app`.
           files: |
-            output/MCons.dmg
-            output/MCons-*-release.dmg
-            output/MCons-*-release.zip
+            release-assets/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # --- PRODUCTION BUILD ---
       - name: Create GitHub Release
         if: ${{ inputs.build_type == 'Production Build' || startsWith(github.ref, 'refs/tags/v') }}
-        id: create_release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.meta.outputs.tag }}
           name: MCons Production Release ${{ steps.meta.outputs.tag }}
           generate_release_notes: true
           body: |
-            ### 💿 Install via Disk Image (.dmg) — Recommended
+            ## 🪟 Windows 10 & 11 Installation
+            
+            - **Installer (Recommended):** Download and run **`MCons-Windows-Setup.exe`**. Includes automatic Start Menu shortcut, Desktop shortcut, and Windows Explorer right-click context menu integration (*"Customize with MCons"*).
+            - **Standalone Executable:** Download **`MCons-Windows.exe`** for instant portable use without installation.
 
+            ---
+
+            ## 🍎 macOS Installation (macOS 14.0+)
+            
             1. Download **`MCons.dmg`** below.
             2. Double-click to mount the `.dmg` disk image.
             3. Drag **MCons.app** into the **Applications** folder shortcut.
-            4. **First Launch (macOS Gatekeeper)**:
-               - **Easiest:** Double-click `Open_MCons.command` inside the DMG.
-               - **Manual:** Right-click `MCons.app` in `/Applications` → click **Open** → click **Open**.
-               - **Terminal:** Run `xattr -cr /Applications/MCons.app`
-
-            ---
-
-            ### ⚡ 1-Line Terminal Quick Install (macOS 14.0+)
-            ```bash
-            curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
-            ```
-
-            ---
-
-            ### 🍺 Homebrew Cask
-            ```bash
-            brew install --cask neel0210/mcons/mcons
-            ```
+            4. **Gatekeeper:** Right-click `MCons.app` in `/Applications` → click **Open** → click **Open**, or run `xattr -cr /Applications/MCons.app`.
           files: |
-            output/MCons.dmg
-            output/MCons-*-release.dmg
-            output/MCons-*-release.zip
+            release-assets/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

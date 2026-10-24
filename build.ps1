@@ -1,4 +1,4 @@
-﻿# MCons Build & Automation Script for Windows PowerShell
+# MCons Build & Automation Script for Windows PowerShell
 # Provides native asset validation, project cleanup, GitHub Actions CI dispatch, and downloads.
 
 param (
@@ -16,6 +16,8 @@ param (
     [switch]$CiBeta,
     [switch]$CiProd,
     [switch]$Download,
+    [switch]$Windows,
+    [switch]$Run,
     [string]$Version = "",
     [switch]$Help
 )
@@ -59,8 +61,12 @@ function Show-Help {
     Write-Host ""
     Write-Host "Usage: .\build.ps1 [flags]" -ForegroundColor White
     Write-Host ""
+    Write-Host "Windows Native Build Flags:" -ForegroundColor Yellow
+    Write-Host "  -Windows        Compile standalone Windows .exe and Inno Setup installer"
+    Write-Host "  -Run            Launch MCons Windows application"
+    Write-Host ""
     Write-Host "Asset & Project Flags:" -ForegroundColor Yellow
-    Write-Host "  -Validate       Validate all 14 IconPacks (metadata.json & SVGs)"
+    Write-Host "  -Validate       Validate all 19 IconPacks (metadata.json & SVGs)"
     Write-Host "  -Clean          Remove .build\ and output\ directories"
     Write-Host "  -Info           Print project build metadata"
     Write-Host "  -Version <str>  Set build version (default: $Version)"
@@ -70,10 +76,6 @@ function Show-Help {
     Write-Host "  -CiProd         Dispatch GitHub Actions Production Build workflow"
     Write-Host "  -Download       Download latest compiled release artifact from GitHub"
     Write-Host "  -Help           Show this help"
-    Write-Host ""
-    Write-Host "Cross-Platform Notice:" -ForegroundColor Gray
-    Write-Host "  MCons requires macOS 14.0+ (SwiftUI & AppKit) to compile binary." -ForegroundColor Gray
-    Write-Host "  On Windows, use -CiBeta or -CiProd to compile on macOS runner." -ForegroundColor Gray
     Write-Host ""
 }
 
@@ -220,9 +222,40 @@ function Invoke-DownloadRelease {
     }
 }
 
+function Invoke-WindowsBuild {
+    Write-Host "`n━━━ Building MCons for Windows ━━━" -ForegroundColor Cyan
+    python windows/build_exe.py
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "Windows build failed with exit code $LASTEXITCODE"
+    } else {
+        Write-Host "`nSUCCESS: Windows standalone executable and installer built successfully!" -ForegroundColor Green
+    }
+}
+
+function Invoke-RunWindows {
+    Write-Host "`n━━━ Launching MCons Windows App ━━━" -ForegroundColor Cyan
+    $distExe = "windows\dist\MCons-Windows.exe"
+    if (Test-Path $distExe) {
+        Start-Process $distExe
+    } else {
+        Write-Host "Standalone executable not found. Running Python source..." -ForegroundColor Yellow
+        python windows/mcons_app.py
+    }
+}
+
 # Main Execution Switch
 if ($Help) {
     Show-Help
+    exit 0
+}
+
+if ($Windows) {
+    Invoke-WindowsBuild
+    exit 0
+}
+
+if ($Run) {
+    Invoke-RunWindows
     exit 0
 }
 
@@ -261,11 +294,9 @@ Show-Info
 Invoke-Validation
 
 Write-Host ""
-Write-Host "Cross-Platform Notice:" -ForegroundColor Yellow
-Write-Host "  MCons requires macOS 14.0+ (SwiftUI & AppKit) to compile binary." -ForegroundColor White
-Write-Host "  To build on macOS runner via GitHub Actions, run:" -ForegroundColor White
-Write-Host "    .\build.ps1 -CiBeta" -ForegroundColor Cyan
-Write-Host "    .\build.ps1 -CiProd" -ForegroundColor Cyan
-Write-Host "  To download the latest compiled release, run:" -ForegroundColor White
-Write-Host "    .\build.ps1 -Download" -ForegroundColor Cyan
+Write-Host "Quick Actions:" -ForegroundColor Yellow
+Write-Host "  Build Windows App & Installer:  .\build.ps1 -Windows" -ForegroundColor Cyan
+Write-Host "  Launch Windows Desktop App:     .\build.ps1 -Run" -ForegroundColor Cyan
+Write-Host "  Build macOS via GitHub Actions: .\build.ps1 -CiProd" -ForegroundColor Cyan
+Write-Host "  Download Latest Releases:       .\build.ps1 -Download" -ForegroundColor Cyan
 Write-Host ""

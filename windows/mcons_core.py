@@ -26,15 +26,55 @@ SHCNF_PATHW = 0x0005
 ICO_SIZES = [(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)]
 
 
+def get_cache_dir() -> str:
+    """Returns local app cache directory for fast thumbnail access"""
+    local_app_data = os.environ.get("LOCALAPPDATA")
+    if local_app_data:
+        cache_dir = os.path.join(local_app_data, "MCons", "Thumbnails")
+    else:
+        cache_dir = os.path.join(os.path.expanduser("~"), ".mcons", "thumbnails")
+    os.makedirs(cache_dir, exist_ok=True)
+    return cache_dir
+
+
+def get_icon_thumbnail_path(svg_path: str, size: int = 48) -> Optional[str]:
+    """Returns or creates a cached PNG thumbnail path for fast UI display"""
+    import hashlib
+    h = hashlib.md5(svg_path.encode("utf-8")).hexdigest()
+    thumb_path = os.path.join(get_cache_dir(), f"{h}_{size}.png")
+    if os.path.exists(thumb_path):
+        return thumb_path
+
+    im = extract_image_from_svg(svg_path)
+    if im:
+        try:
+            im_thumb = im.resize((size, size), Image.Resampling.LANCZOS)
+            im_thumb.save(thumb_path, format="PNG")
+            return thumb_path
+        except Exception:
+            pass
+    return None
+
+
 def get_packs_dir() -> str:
     """Finds the IconPacks directory in source tree or bundled executable"""
-    # 1. Next to executable
+    # 1. PyInstaller single-file temp extract directory
+    if getattr(sys, 'frozen', False):
+        meipass = getattr(sys, '_MEIPASS', None)
+        if meipass and os.path.isdir(os.path.join(meipass, "IconPacks")):
+            return os.path.join(meipass, "IconPacks")
+        exe_dir = os.path.dirname(os.path.abspath(sys.executable))
+        if os.path.isdir(os.path.join(exe_dir, "IconPacks")):
+            return os.path.join(exe_dir, "IconPacks")
+
+    # 2. Next to executable or current script
     exe_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     candidates = [
         os.path.join(exe_dir, "IconPacks"),
         os.path.join(exe_dir, "MCons", "Resources", "IconPacks"),
         os.path.join(exe_dir, "..", "MCons", "Resources", "IconPacks"),
         os.path.abspath("MCons/Resources/IconPacks"),
+        os.path.abspath("../MCons/Resources/IconPacks"),
     ]
     for c in candidates:
         if os.path.isdir(c):
@@ -131,6 +171,34 @@ def extract_image_from_svg(svg_path: str) -> Optional[Image.Image]:
         return None
 
 
+def resolve_icon_path(query: str) -> Optional[str]:
+    """Resolves an icon name, pack/icon, relative path, or absolute path to a valid SVG/ICO file"""
+    if os.path.isfile(query):
+        return os.path.abspath(query)
+
+    packs_dir = get_packs_dir()
+
+    # Try relative to packs dir
+    cand = os.path.join(packs_dir, query)
+    if os.path.isfile(cand):
+        return cand
+    if os.path.isfile(cand + ".svg"):
+        return cand + ".svg"
+
+    # Search through all packs
+    clean_q = query.lower().strip()
+    if clean_q.endswith(".svg") or clean_q.endswith(".ico"):
+        clean_q = os.path.splitext(clean_q)[0]
+
+    for p in load_all_packs(packs_dir):
+        for icon in p["icons"]:
+            iname = icon["name"].lower()
+            if iname == clean_q or iname.replace(" ", "-") == clean_q or iname.replace("-", " ") == clean_q:
+                return icon["path"]
+
+    return None
+
+
 def convert_image_to_ico(im: Image.Image, output_path: str):
     """Converts a PIL Image to a multi-size Windows .ico file"""
     im.save(output_path, format="ICO", sizes=ICO_SIZES)
@@ -143,6 +211,11 @@ def apply_folder_icon(folder_path: str, svg_or_ico_path: str) -> Tuple[bool, str
     folder_path = os.path.abspath(folder_path)
     if not os.path.isdir(folder_path):
         return False, f"Folder does not exist: {folder_path}"
+
+    resolved = resolve_icon_path(svg_or_ico_path)
+    if not resolved:
+        return False, f"Icon not found: {svg_or_ico_path}"
+    svg_or_ico_path = resolved
 
     target_ico = os.path.join(folder_path, "folder_icon.ico")
     desktop_ini = os.path.join(folder_path, "desktop.ini")

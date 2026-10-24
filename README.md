@@ -3,13 +3,15 @@
   <h1>MCons</h1>
   <h3>Icons for MacOS</h3>
 
-  <p>A native macOS utility for creating folders with custom icons. Built with <b>Swift 6</b> and <b>SwiftUI</b>.</p>
+  <p>A native cross-platform utility for creating and styling folders with custom icons on <b>macOS</b> and <b>Windows 10/11</b>.</p>
 
   <p>Developed by <b>Neel0210</b></p>
 
   <p>
     <img src="https://img.shields.io/badge/macOS-14.0%2B-blue?logo=apple" alt="macOS" />
+    <img src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D6?logo=windows" alt="Windows" />
     <img src="https://img.shields.io/badge/Swift-6.0-orange?logo=swift" alt="Swift" />
+    <img src="https://img.shields.io/badge/Python-3.10%2B-blue?logo=python" alt="Python" />
     <img src="https://img.shields.io/badge/License-MIT-green" alt="License" />
   </p>
 
@@ -119,7 +121,36 @@ No Swift code changes are needed! The dynamic `IconPackLoader` automatically sca
 
 ## 🚀 Installation & Quick Start
 
-### 💿 Disk Image Installer (.dmg) — Recommended
+### 🪟 Windows 10 & Windows 11 — Native Companion App
+
+MCons on Windows provides full native folder icon customization with Windows Explorer shell integration, high-DPI scaling, and instant icon cache refresh.
+
+[![Download Windows Installer](https://img.shields.io/badge/Download-Windows%20Installer%20(.exe)-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/neel0210/MCons/releases/latest/download/MCons-Windows-Setup.exe)
+[![Download Standalone Portable](https://img.shields.io/badge/Download-Portable%20(.exe)-107C41?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/neel0210/MCons/releases/latest/download/MCons-Windows.exe)
+
+**Installation Options:**
+- **Installer (Recommended):** Download and run **`MCons-Windows-Setup.exe`**. Includes:
+  - 🖱️ **Windows Explorer Context Menu:** Right-click any folder > *"Customize with MCons"*.
+  - 🚀 Start Menu and Desktop shortcuts.
+  - 🧼 Clean uninstaller with automatic registry cleanup.
+- **Portable Standalone:** Run **`MCons-Windows.exe`** directly without installation.
+- **PowerShell / CLI Automation:**
+  ```powershell
+  # Apply icon by name or path
+  MCons.exe apply "C:\MyFolder" --icon Gaara
+
+  # Restore default folder icon
+  MCons.exe restore "C:\MyFolder"
+
+  # List all 19 bundled packs & icons
+  MCons.exe list
+  ```
+
+---
+
+### 🍏 macOS (macOS 14.0+)
+
+#### 💿 Disk Image Installer (.dmg) — Recommended
 
 Download the pre-built Universal disk image (Apple Silicon M1/M2/M3/M4 & Intel):
 
