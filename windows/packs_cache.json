@@ -1,0 +1,994 @@
+[
+  {
+    "id": "attack-on-titan",
+    "name": "Attack on Titan",
+    "description": "Scout Regiment, Titans, and Survey Corps custom folder icons",
+    "emoji": "\u2694\ufe0f",
+    "category": "Anime",
+    "accentColorHex": "#2B4C3F",
+    "count": 11,
+    "icons": [
+      {
+        "name": "Annie Leonhart",
+        "file": "Annie Leonhart.svg"
+      },
+      {
+        "name": "Armin Arlert",
+        "file": "Armin Arlert.svg"
+      },
+      {
+        "name": "Attack Titan",
+        "file": "Attack Titan.svg"
+      },
+      {
+        "name": "Colossal Titan",
+        "file": "Colossal Titan.svg"
+      },
+      {
+        "name": "Eren Yeager",
+        "file": "Eren Yeager.svg"
+      },
+      {
+        "name": "Erwin Smith",
+        "file": "Erwin Smith.svg"
+      },
+      {
+        "name": "Hange Zoe",
+        "file": "Hange Zoe.svg"
+      },
+      {
+        "name": "Levi Ackerman",
+        "file": "Levi Ackerman.svg"
+      },
+      {
+        "name": "Mikasa Ackerman",
+        "file": "Mikasa Ackerman.svg"
+      },
+      {
+        "name": "Reiner Braun",
+        "file": "Reiner Braun.svg"
+      },
+      {
+        "name": "Zeke Yeager",
+        "file": "Zeke Yeager.svg"
+      }
+    ]
+  },
+  {
+    "id": "black-clover",
+    "name": "Black Clover",
+    "description": "Magic Knights, Captains, and Black Bulls custom macOS folder icons",
+    "emoji": "\ud83c\udf40",
+    "category": "Anime",
+    "accentColorHex": "#10B981",
+    "count": 12,
+    "icons": [
+      {
+        "name": "Asta",
+        "file": "Asta.svg"
+      },
+      {
+        "name": "Charmy Pappitson",
+        "file": "Charmy Pappitson.svg"
+      },
+      {
+        "name": "Fuegoleon Vermillion",
+        "file": "Fuegoleon Vermillion.svg"
+      },
+      {
+        "name": "Julius Novachrono",
+        "file": "Julius Novachrono.svg"
+      },
+      {
+        "name": "Licht",
+        "file": "Licht.svg"
+      },
+      {
+        "name": "Luck Voltia",
+        "file": "Luck Voltia.svg"
+      },
+      {
+        "name": "Magna Swing",
+        "file": "Magna Swing.svg"
+      },
+      {
+        "name": "Mereoleona Vermillion",
+        "file": "Mereoleona Vermillion.svg"
+      },
+      {
+        "name": "Nacht Faust",
+        "file": "Nacht Faust.svg"
+      },
+      {
+        "name": "Noelle Silva",
+        "file": "Noelle Silva.svg"
+      },
+      {
+        "name": "Yami Sukehiro",
+        "file": "Yami Sukehiro.svg"
+      },
+      {
+        "name": "Yuno",
+        "file": "Yuno.svg"
+      }
+    ]
+  },
+  {
+    "id": "cameras",
+    "name": "Cameras",
+    "description": "DSLR, mirrorless, and action camera folder icons",
+    "emoji": "\ud83d\udcf7",
+    "category": "Hardware",
+    "accentColorHex": "#FF5252",
+    "count": 2,
+    "icons": [
+      {
+        "name": "Insta360 ONE RS",
+        "file": "Insta360 ONE RS.svg"
+      },
+      {
+        "name": "Nikon D5300",
+        "file": "Nikon D5300.svg"
+      }
+    ]
+  },
+  {
+    "id": "chainsaw-man",
+    "name": "Chainsaw Man",
+    "description": "Public Safety Devil Hunters, Fiends, and Devils custom folder icons",
+    "emoji": "\ud83e\ude9a",
+    "category": "Anime",
+    "accentColorHex": "#E84118",
+    "count": 10,
+    "icons": [
+      {
+        "name": "Aki Hayakawa",
+        "file": "Aki Hayakawa.svg"
+      },
+      {
+        "name": "Denji",
+        "file": "Denji.svg"
+      },
+      {
+        "name": "Himeno",
+        "file": "Himeno.svg"
+      },
+      {
+        "name": "Katana Man",
+        "file": "Katana Man.svg"
+      },
+      {
+        "name": "Kishibe",
+        "file": "Kishibe.svg"
+      },
+      {
+        "name": "Kobeni Higashiyama",
+        "file": "Kobeni Higashiyama.svg"
+      },
+      {
+        "name": "Makima",
+        "file": "Makima.svg"
+      },
+      {
+        "name": "Pochita",
+        "file": "Pochita.svg"
+      },
+      {
+        "name": "Power",
+        "file": "Power.svg"
+      },
+      {
+        "name": "Reze",
+        "file": "Reze.svg"
+      }
+    ]
+  },
+  {
+    "id": "dandadan",
+    "name": "Dandadan",
+    "description": "Spiritual mediums, cursed yokai, and alien invaders custom folder icons",
+    "emoji": "\ud83d\udef8",
+    "category": "Anime",
+    "accentColorHex": "#FF2A85",
+    "count": 8,
+    "icons": [
+      {
+        "name": "Aira Shiratori",
+        "file": "Aira Shiratori.svg"
+      },
+      {
+        "name": "Jin Enjoji",
+        "file": "Jin Enjoji.svg"
+      },
+      {
+        "name": "Momo Ayase",
+        "file": "Momo Ayase.svg"
+      },
+      {
+        "name": "Okarun",
+        "file": "Okarun.svg"
+      },
+      {
+        "name": "Peeny Weeny",
+        "file": "Peeny Weeny.svg"
+      },
+      {
+        "name": "Seiko Ayase",
+        "file": "Seiko Ayase.svg"
+      },
+      {
+        "name": "Turbo Granny",
+        "file": "Turbo Granny.svg"
+      },
+      {
+        "name": "Vamola",
+        "file": "Vamola.svg"
+      }
+    ]
+  },
+  {
+    "id": "death-note",
+    "name": "Death Note",
+    "description": "Kira, L, and Shinigami custom folder icons",
+    "emoji": "\ud83d\udcd3",
+    "category": "Anime",
+    "accentColorHex": "#1E272C",
+    "count": 3,
+    "icons": [
+      {
+        "name": "L Lawliet",
+        "file": "L Lawliet.svg"
+      },
+      {
+        "name": "Light Yagami",
+        "file": "Light Yagami.svg"
+      },
+      {
+        "name": "Ryuk",
+        "file": "Ryuk.svg"
+      }
+    ]
+  },
+  {
+    "id": "demon-slayer",
+    "name": "Demon Slayer",
+    "description": "Kimetsu no Yaiba Hashira and Demon custom folder icons",
+    "emoji": "\u2694\ufe0f",
+    "category": "Anime",
+    "accentColorHex": "#E74C3C",
+    "count": 15,
+    "icons": [
+      {
+        "name": "Akaza",
+        "file": "Akaza.svg"
+      },
+      {
+        "name": "Douma",
+        "file": "Douma.svg"
+      },
+      {
+        "name": "Giyu Tomioka",
+        "file": "Giyu Tomioka.svg"
+      },
+      {
+        "name": "Gyomei",
+        "file": "Gyomei.svg"
+      },
+      {
+        "name": "Inosuke Hashibira",
+        "file": "Inosuke Hashibira.svg"
+      },
+      {
+        "name": "Kokushibo",
+        "file": "Kokushibo.svg"
+      },
+      {
+        "name": "Muichiro",
+        "file": "Muichiro.svg"
+      },
+      {
+        "name": "Muzan",
+        "file": "Muzan.svg"
+      },
+      {
+        "name": "Nezuko Kamado",
+        "file": "Nezuko Kamado.svg"
+      },
+      {
+        "name": "Obanai Iguro",
+        "file": "Obanai Iguro.svg"
+      },
+      {
+        "name": "Rengoku",
+        "file": "Rengoku.svg"
+      },
+      {
+        "name": "Sanemi",
+        "file": "Sanemi.svg"
+      },
+      {
+        "name": "Tanjiro",
+        "file": "Tanjiro.svg"
+      },
+      {
+        "name": "Yoriichi",
+        "file": "Yoriichi.svg"
+      },
+      {
+        "name": "Zenitsu Agatsuma",
+        "file": "Zenitsu Agatsuma.svg"
+      }
+    ]
+  },
+  {
+    "id": "dev-tech",
+    "name": "Developer & Tech",
+    "description": "Clean modern folder icons for coding languages, frameworks, and developer tools",
+    "emoji": "\ud83d\udcbb",
+    "category": "Tech & Dev",
+    "accentColorHex": "#007ACC",
+    "count": 12,
+    "icons": [
+      {
+        "name": "Docker",
+        "file": "Docker.svg"
+      },
+      {
+        "name": "Git",
+        "file": "Git.svg"
+      },
+      {
+        "name": "GitHub",
+        "file": "GitHub.svg"
+      },
+      {
+        "name": "Go",
+        "file": "Go.svg"
+      },
+      {
+        "name": "Node.js",
+        "file": "Node.js.svg"
+      },
+      {
+        "name": "Python",
+        "file": "Python.svg"
+      },
+      {
+        "name": "React",
+        "file": "React.svg"
+      },
+      {
+        "name": "Rust",
+        "file": "Rust.svg"
+      },
+      {
+        "name": "Swift",
+        "file": "Swift.svg"
+      },
+      {
+        "name": "Terminal",
+        "file": "Terminal.svg"
+      },
+      {
+        "name": "TypeScript",
+        "file": "TypeScript.svg"
+      },
+      {
+        "name": "VS Code",
+        "file": "VS Code.svg"
+      }
+    ]
+  },
+  {
+    "id": "dragon-ball-super",
+    "name": "Dragon Ball Super",
+    "description": "Gods, Angels, and Super Saiyans custom folder icons",
+    "emoji": "\ud83d\udc09",
+    "category": "Anime",
+    "accentColorHex": "#FF8800",
+    "count": 13,
+    "icons": [
+      {
+        "name": "Full Power Broly",
+        "file": "Full Power Broly.svg"
+      },
+      {
+        "name": "Gogeta Blue",
+        "file": "Gogeta Blue.svg"
+      },
+      {
+        "name": "Gohan Beast",
+        "file": "Gohan Beast.svg"
+      },
+      {
+        "name": "Goku Black Rose",
+        "file": "Goku Black Rose.svg"
+      },
+      {
+        "name": "Golden Frieza",
+        "file": "Golden Frieza.svg"
+      },
+      {
+        "name": "Hit",
+        "file": "Hit.svg"
+      },
+      {
+        "name": "Jiren",
+        "file": "Jiren.svg"
+      },
+      {
+        "name": "Lord Beerus God of Destruction",
+        "file": "Lord Beerus God of Destruction.svg"
+      },
+      {
+        "name": "Mastered Ultra Instinct Goku",
+        "file": "Mastered Ultra Instinct Goku.svg"
+      },
+      {
+        "name": "Orange Piccolo",
+        "file": "Orange Piccolo.svg"
+      },
+      {
+        "name": "Vegeta Ultra Ego",
+        "file": "Vegeta Ultra Ego.svg"
+      },
+      {
+        "name": "Vegito Blue",
+        "file": "Vegito Blue.svg"
+      },
+      {
+        "name": "Whis",
+        "file": "Whis.svg"
+      }
+    ]
+  },
+  {
+    "id": "fullmetal-alchemist-brotherhood",
+    "name": "Fullmetal Alchemist: Brotherhood",
+    "description": "State Alchemists, Homunculi, and warriors custom folder icons",
+    "emoji": "\u2697\ufe0f",
+    "category": "Anime",
+    "accentColorHex": "#C41E3A",
+    "count": 10,
+    "icons": [
+      {
+        "name": "Alex Armstrong",
+        "file": "Alex Armstrong.svg"
+      },
+      {
+        "name": "Alphonse Elric",
+        "file": "Alphonse Elric.svg"
+      },
+      {
+        "name": "Edward Elric",
+        "file": "Edward Elric.svg"
+      },
+      {
+        "name": "Greed Ling",
+        "file": "Greed Ling.svg"
+      },
+      {
+        "name": "King Bradley",
+        "file": "King Bradley.svg"
+      },
+      {
+        "name": "Olivier Armstrong",
+        "file": "Olivier Armstrong.svg"
+      },
+      {
+        "name": "Pride",
+        "file": "Pride.svg"
+      },
+      {
+        "name": "Riza Hawkeye",
+        "file": "Riza Hawkeye.svg"
+      },
+      {
+        "name": "Roy Mustang",
+        "file": "Roy Mustang.svg"
+      },
+      {
+        "name": "Scar",
+        "file": "Scar.svg"
+      }
+    ]
+  },
+  {
+    "id": "google",
+    "name": "Google",
+    "description": "Official Google app icons designed for macOS folders",
+    "emoji": "\ud83c\udf10",
+    "category": "Tech & Dev",
+    "accentColorHex": "#4285F4",
+    "count": 10,
+    "icons": [
+      {
+        "name": "Gmail",
+        "file": "Gmail.svg"
+      },
+      {
+        "name": "Google Calendar",
+        "file": "Google Calendar.svg"
+      },
+      {
+        "name": "Google Camera",
+        "file": "Google Camera.svg"
+      },
+      {
+        "name": "Google Chrome",
+        "file": "Google Chrome.svg"
+      },
+      {
+        "name": "Google Drive",
+        "file": "Google Drive.svg"
+      },
+      {
+        "name": "Google Files",
+        "file": "Google Files.svg"
+      },
+      {
+        "name": "Google Maps",
+        "file": "Google Maps.svg"
+      },
+      {
+        "name": "Google Notes",
+        "file": "Google Notes.svg"
+      },
+      {
+        "name": "Google Photos",
+        "file": "Google Photos.svg"
+      },
+      {
+        "name": "YouTube",
+        "file": "YouTube.svg"
+      }
+    ]
+  },
+  {
+    "id": "jujutsu-kaisen",
+    "name": "Jujutsu Kaisen",
+    "description": "Jujutsu High sorcerers, curse users, and Special Grade custom folder icons",
+    "emoji": "\ud83e\udd1e",
+    "category": "Anime",
+    "accentColorHex": "#3B3B98",
+    "count": 10,
+    "icons": [
+      {
+        "name": "Kento Nanami",
+        "file": "Kento Nanami.svg"
+      },
+      {
+        "name": "Mahito",
+        "file": "Mahito.svg"
+      },
+      {
+        "name": "Megumi Fushiguro",
+        "file": "Megumi Fushiguro.svg"
+      },
+      {
+        "name": "Nobara Kugisaki",
+        "file": "Nobara Kugisaki.svg"
+      },
+      {
+        "name": "Ryomen Sukuna",
+        "file": "Ryomen Sukuna.svg"
+      },
+      {
+        "name": "Satoru Gojo",
+        "file": "Satoru Gojo.svg"
+      },
+      {
+        "name": "Suguru Geto",
+        "file": "Suguru Geto.svg"
+      },
+      {
+        "name": "Toji Fushiguro",
+        "file": "Toji Fushiguro.svg"
+      },
+      {
+        "name": "Yuji Itadori",
+        "file": "Yuji Itadori.svg"
+      },
+      {
+        "name": "Yuta Okkotsu",
+        "file": "Yuta Okkotsu.svg"
+      }
+    ]
+  },
+  {
+    "id": "kaiju-no-8",
+    "name": "Kaiju No. 8",
+    "description": "Japan Anti-Kaiju Defense Force officers, Numbered Weapons, and monster folder icons",
+    "emoji": "\u26a1",
+    "category": "Anime",
+    "accentColorHex": "#00E5FF",
+    "count": 8,
+    "icons": [
+      {
+        "name": "Gen Narumi",
+        "file": "Gen Narumi.svg"
+      },
+      {
+        "name": "Isao Shinomiya",
+        "file": "Isao Shinomiya.svg"
+      },
+      {
+        "name": "Kaiju No. 8",
+        "file": "Kaiju No. 8.svg"
+      },
+      {
+        "name": "Kaiju No. 9",
+        "file": "Kaiju No. 9.svg"
+      },
+      {
+        "name": "Kikoru Shinomiya",
+        "file": "Kikoru Shinomiya.svg"
+      },
+      {
+        "name": "Mina Ashiro",
+        "file": "Mina Ashiro.svg"
+      },
+      {
+        "name": "Reno Ichikawa",
+        "file": "Reno Ichikawa.svg"
+      },
+      {
+        "name": "Soshiro Hoshina",
+        "file": "Soshiro Hoshina.svg"
+      }
+    ]
+  },
+  {
+    "id": "macos-native-plus",
+    "name": "macOS Native+",
+    "description": "Enhanced versions of Apple's native folder colors",
+    "emoji": "\ud83c\udf4e",
+    "category": "System & Minimal",
+    "accentColorHex": "#007AFF",
+    "count": 0,
+    "icons": []
+  },
+  {
+    "id": "my-hero-academia",
+    "name": "My Hero Academia",
+    "description": "Pro Heroes, Class 1-A students, and League of Villains custom folder icons",
+    "emoji": "\ud83d\udca5",
+    "category": "Anime",
+    "accentColorHex": "#00B894",
+    "count": 10,
+    "icons": [
+      {
+        "name": "All Might",
+        "file": "All Might.svg"
+      },
+      {
+        "name": "Dabi",
+        "file": "Dabi.svg"
+      },
+      {
+        "name": "Endeavor",
+        "file": "Endeavor.svg"
+      },
+      {
+        "name": "Hawks",
+        "file": "Hawks.svg"
+      },
+      {
+        "name": "Izuku Midoriya",
+        "file": "Izuku Midoriya.svg"
+      },
+      {
+        "name": "Katsuki Bakugo",
+        "file": "Katsuki Bakugo.svg"
+      },
+      {
+        "name": "Ochaco Uraraka",
+        "file": "Ochaco Uraraka.svg"
+      },
+      {
+        "name": "Shota Aizawa",
+        "file": "Shota Aizawa.svg"
+      },
+      {
+        "name": "Shoto Todoroki",
+        "file": "Shoto Todoroki.svg"
+      },
+      {
+        "name": "Tomura Shigaraki",
+        "file": "Tomura Shigaraki.svg"
+      }
+    ]
+  },
+  {
+    "id": "naruto",
+    "name": "Naruto",
+    "description": "Legendary shinobi, Hokage, and Akatsuki custom macOS folder icons",
+    "emoji": "\ud83c\udf65",
+    "category": "Anime",
+    "accentColorHex": "#FF8C00",
+    "count": 30,
+    "icons": [
+      {
+        "name": "Danzo Shimura",
+        "file": "Danzo Shimura.svg"
+      },
+      {
+        "name": "Deidara",
+        "file": "Deidara.svg"
+      },
+      {
+        "name": "Gaara",
+        "file": "Gaara.svg"
+      },
+      {
+        "name": "Hashirama Senju",
+        "file": "Hashirama Senju.svg"
+      },
+      {
+        "name": "Hidan",
+        "file": "Hidan.svg"
+      },
+      {
+        "name": "Hinata Hyuga",
+        "file": "Hinata Hyuga.svg"
+      },
+      {
+        "name": "Itachi Uchiha",
+        "file": "Itachi Uchiha.svg"
+      },
+      {
+        "name": "Jiraiya",
+        "file": "Jiraiya.svg"
+      },
+      {
+        "name": "Kabuto Yakushi",
+        "file": "Kabuto Yakushi.svg"
+      },
+      {
+        "name": "Kakashi Hatake",
+        "file": "Kakashi Hatake.svg"
+      },
+      {
+        "name": "Killer Bee",
+        "file": "Killer Bee.svg"
+      },
+      {
+        "name": "Kisame Hoshigaki",
+        "file": "Kisame Hoshigaki.svg"
+      },
+      {
+        "name": "Konan",
+        "file": "Konan.svg"
+      },
+      {
+        "name": "Kurama",
+        "file": "Kurama.svg"
+      },
+      {
+        "name": "Madara Uchiha",
+        "file": "Madara Uchiha.svg"
+      },
+      {
+        "name": "Might Guy",
+        "file": "Might Guy.svg"
+      },
+      {
+        "name": "Minato Namikaze",
+        "file": "Minato Namikaze.svg"
+      },
+      {
+        "name": "Naruto Uzumaki",
+        "file": "Naruto Uzumaki.svg"
+      },
+      {
+        "name": "Neji Hyuga",
+        "file": "Neji Hyuga.svg"
+      },
+      {
+        "name": "Obito Uchiha",
+        "file": "Obito Uchiha.svg"
+      },
+      {
+        "name": "Orochimaru",
+        "file": "Orochimaru.svg"
+      },
+      {
+        "name": "Pain",
+        "file": "Pain.svg"
+      },
+      {
+        "name": "Rock Lee",
+        "file": "Rock Lee.svg"
+      },
+      {
+        "name": "Sakura Haruno",
+        "file": "Sakura Haruno.svg"
+      },
+      {
+        "name": "Sasori",
+        "file": "Sasori.svg"
+      },
+      {
+        "name": "Sasuke Uchiha",
+        "file": "Sasuke Uchiha.svg"
+      },
+      {
+        "name": "Shikamaru Nara",
+        "file": "Shikamaru Nara.svg"
+      },
+      {
+        "name": "Shisui Uchiha",
+        "file": "Shisui Uchiha.svg"
+      },
+      {
+        "name": "Tobirama Senju",
+        "file": "Tobirama Senju.svg"
+      },
+      {
+        "name": "Tsunade",
+        "file": "Tsunade.svg"
+      }
+    ]
+  },
+  {
+    "id": "one-piece",
+    "name": "One Piece",
+    "description": "Straw Hat Pirates and legendary One Piece custom folder icons",
+    "emoji": "\ud83c\udff4\u200d\u2620\ufe0f",
+    "category": "Anime",
+    "accentColorHex": "#FF5722",
+    "count": 10,
+    "icons": [
+      {
+        "name": "Ace",
+        "file": "Ace.svg"
+      },
+      {
+        "name": "Chopper",
+        "file": "Chopper.svg"
+      },
+      {
+        "name": "Law",
+        "file": "Law.svg"
+      },
+      {
+        "name": "Luffy",
+        "file": "Luffy.svg"
+      },
+      {
+        "name": "Nami",
+        "file": "Nami.svg"
+      },
+      {
+        "name": "Robin",
+        "file": "Robin.svg"
+      },
+      {
+        "name": "Sanji",
+        "file": "Sanji.svg"
+      },
+      {
+        "name": "Shanks",
+        "file": "Shanks.svg"
+      },
+      {
+        "name": "Whitebeard",
+        "file": "Whitebeard.svg"
+      },
+      {
+        "name": "Zoro",
+        "file": "Zoro.svg"
+      }
+    ]
+  },
+  {
+    "id": "pokemon",
+    "name": "Pok\u00e9mon",
+    "description": "Legendary and iconic Pok\u00e9mon custom folder icons",
+    "emoji": "\u26a1",
+    "category": "Gaming & Anime",
+    "accentColorHex": "#FFCB05",
+    "count": 10,
+    "icons": [
+      {
+        "name": "Chalizard X",
+        "file": "Chalizard X.svg"
+      },
+      {
+        "name": "Chalizard Y",
+        "file": "Chalizard Y.svg"
+      },
+      {
+        "name": "Chalizard",
+        "file": "Chalizard.svg"
+      },
+      {
+        "name": "Greyninja",
+        "file": "Greyninja.svg"
+      },
+      {
+        "name": "Mewtwo",
+        "file": "Mewtwo.svg"
+      },
+      {
+        "name": "Pikachu",
+        "file": "Pikachu.svg"
+      },
+      {
+        "name": "Rayquaza",
+        "file": "Rayquaza.svg"
+      },
+      {
+        "name": "Salamance",
+        "file": "Salamance.svg"
+      },
+      {
+        "name": "Snorlax",
+        "file": "Snorlax.svg"
+      },
+      {
+        "name": "Tyranitar",
+        "file": "Tyranitar.svg"
+      }
+    ]
+  },
+  {
+    "id": "solo-leveling",
+    "name": "Solo Leveling",
+    "description": "Shadow Monarch and elite S-Rank hunters custom folder icons",
+    "emoji": "\ud83d\udde1\ufe0f",
+    "category": "Anime",
+    "accentColorHex": "#7B2CBF",
+    "count": 12,
+    "icons": [
+      {
+        "name": "Baek Yoonho",
+        "file": "Baek Yoonho.svg"
+      },
+      {
+        "name": "Beru",
+        "file": "Beru.svg"
+      },
+      {
+        "name": "Cha Hae In",
+        "file": "Cha Hae In.svg"
+      },
+      {
+        "name": "Choi Jong In",
+        "file": "Choi Jong In.svg"
+      },
+      {
+        "name": "Go Gunhee",
+        "file": "Go Gunhee.svg"
+      },
+      {
+        "name": "Igris",
+        "file": "Igris.svg"
+      },
+      {
+        "name": "Iron",
+        "file": "Iron.svg"
+      },
+      {
+        "name": "Liu Zhigang",
+        "file": "Liu Zhigang.svg"
+      },
+      {
+        "name": "Sung Jinwoo",
+        "file": "Sung Jinwoo.svg"
+      },
+      {
+        "name": "Tank",
+        "file": "Tank.svg"
+      },
+      {
+        "name": "Thomas Andre",
+        "file": "Thomas Andre.svg"
+      },
+      {
+        "name": "Yoo Jinho",
+        "file": "Yoo Jinho.svg"
+      }
+    ]
+  }
+]

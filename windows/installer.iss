@@ -37,7 +37,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "contextmenu"; Description: "Add 'Customize with MCons' to Windows Explorer folder right-click menu"; GroupDescription: "Windows Shell Integration:"
 
 [Files]
-Source: "dist\MCons-Windows.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
+Source: "dist\MCons\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "mcons.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]

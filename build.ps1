@@ -234,8 +234,11 @@ function Invoke-WindowsBuild {
 
 function Invoke-RunWindows {
     Write-Host "`n━━━ Launching MCons Windows App ━━━" -ForegroundColor Cyan
+    $onedirExe = "windows\dist\MCons\MCons.exe"
     $distExe = "windows\dist\MCons-Windows.exe"
-    if (Test-Path $distExe) {
+    if (Test-Path $onedirExe) {
+        Start-Process $onedirExe
+    } elseif (Test-Path $distExe) {
         Start-Process $distExe
     } else {
         Write-Host "Standalone executable not found. Running Python source..." -ForegroundColor Yellow

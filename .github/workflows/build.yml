@@ -2,6 +2,8 @@ name: Build & Package
 
 on:
   push:
+    branches:
+      - '**'
     tags:
       - 'v*'
   workflow_dispatch:
@@ -9,11 +11,11 @@ on:
       build_type:
         description: 'Select Build Type'
         required: true
-        default: 'Test Build (Beta)'
+        default: 'Production Build'
         type: choice
         options:
-          - 'Test Build (Beta)'
           - 'Production Build'
+          - 'Test Build (Beta)'
 
 jobs:
   build-macos:
@@ -134,65 +136,49 @@ jobs:
           LAST_COMMIT=$(git log -1 --pretty=format:"%h - %s (%an)")
           if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             TAG="${{ github.ref_name }}"
-          elif [[ "${{ inputs.build_type }}" == "Production Build" ]]; then
-            TAG="v1.0.4.${{ github.run_number }}"
+            NAME="MCons Release ${TAG}"
+            PRERELEASE=false
+          elif [[ "${{ github.ref }}" == refs/heads/main || "${{ github.ref }}" == refs/heads/master ]]; then
+            TAG="v1.0.4-build.${{ github.run_number }}"
+            NAME="MCons Production Release ${TAG}"
+            PRERELEASE=false
           else
-            TAG="beta-v1.0.4.${{ github.run_number }}"
+            SAFE_BRANCH=$(echo "${{ github.ref_name }}" | tr '/' '-')
+            TAG="v1.0.4-${SAFE_BRANCH}.${{ github.run_number }}"
+            NAME="MCons ${SAFE_BRANCH} Build ${TAG}"
+            PRERELEASE=true
           fi
           echo "date=${BUILD_DATE}" >> $GITHUB_OUTPUT
           echo "last_commit=${LAST_COMMIT}" >> $GITHUB_OUTPUT
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
+          echo "name=${NAME}" >> $GITHUB_OUTPUT
+          echo "prerelease=${PRERELEASE}" >> $GITHUB_OUTPUT
 
-      # --- TEST BUILD (BETA) ---
-      - name: Create GitHub Beta Pre-Release
-        if: ${{ inputs.build_type == 'Test Build (Beta)' && !startsWith(github.ref, 'refs/tags/v') }}
+      - name: Publish Multi-Platform Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.meta.outputs.tag }}
-          name: MCons Beta Build ${{ steps.meta.outputs.tag }}
-          prerelease: true
+          name: ${{ steps.meta.outputs.name }}
+          prerelease: ${{ steps.meta.outputs.prerelease == 'true' }}
           generate_release_notes: true
           body: |
-            ## 🪟 Windows 10 & 11 Installation
-            
+            ## 🚀 MCons Multi-Platform Release (${{ steps.meta.outputs.tag }})
+
+            ### 🪟 Windows 10 & 11
             - **Installer (Recommended):** Download and run **`MCons-Windows-Setup.exe`**. Includes automatic Start Menu shortcut, Desktop shortcut, and Windows Explorer right-click context menu integration (*"Customize with MCons"*).
             - **Standalone Executable:** Download **`MCons-Windows.exe`** for instant portable use without installation.
 
             ---
 
-            ## 🍎 macOS Installation (macOS 14.0+)
-            
+            ### 🍎 macOS Installation (macOS 14.0+)
             1. Download **`MCons.dmg`** below.
             2. Double-click to mount the `.dmg` disk image.
             3. Drag **MCons.app** into the **Applications** folder shortcut.
             4. **Gatekeeper:** Right-click `MCons.app` in `/Applications` → click **Open** → click **Open**, or run `xattr -cr /Applications/MCons.app`.
-          files: |
-            release-assets/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # --- PRODUCTION BUILD ---
-      - name: Create GitHub Release
-        if: ${{ inputs.build_type == 'Production Build' || startsWith(github.ref, 'refs/tags/v') }}
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.meta.outputs.tag }}
-          name: MCons Production Release ${{ steps.meta.outputs.tag }}
-          generate_release_notes: true
-          body: |
-            ## 🪟 Windows 10 & 11 Installation
             
-            - **Installer (Recommended):** Download and run **`MCons-Windows-Setup.exe`**. Includes automatic Start Menu shortcut, Desktop shortcut, and Windows Explorer right-click context menu integration (*"Customize with MCons"*).
-            - **Standalone Executable:** Download **`MCons-Windows.exe`** for instant portable use without installation.
-
             ---
-
-            ## 🍎 macOS Installation (macOS 14.0+)
-            
-            1. Download **`MCons.dmg`** below.
-            2. Double-click to mount the `.dmg` disk image.
-            3. Drag **MCons.app** into the **Applications** folder shortcut.
-            4. **Gatekeeper:** Right-click `MCons.app` in `/Applications` → click **Open** → click **Open**, or run `xattr -cr /Applications/MCons.app`.
+            *Commit: `${{ steps.meta.outputs.last_commit }}`*
+            *Built: `${{ steps.meta.outputs.date }}`*
           files: |
             release-assets/*
         env:

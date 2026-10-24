@@ -38,6 +38,7 @@ brain.md
 # Windows build artifacts
 windows/dist/
 windows/build/
+windows/thumbnails/
 *.spec
 
 # Python artifacts

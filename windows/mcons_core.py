@@ -37,8 +37,25 @@ def get_cache_dir() -> str:
     return cache_dir
 
 
-def get_icon_thumbnail_path(svg_path: str, size: int = 48) -> Optional[str]:
+def get_icon_thumbnail_path(svg_path: str, size: int = 44) -> Optional[str]:
     """Returns or creates a cached PNG thumbnail path for fast UI display"""
+    base_name = os.path.splitext(os.path.basename(svg_path))[0]
+    parent_dir = os.path.basename(os.path.dirname(svg_path))
+    thumb_name = f"{parent_dir}_{base_name}.png"
+
+    candidates = [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "thumbnails", thumb_name),
+        os.path.abspath(os.path.join("windows", "thumbnails", thumb_name)),
+    ]
+    if getattr(sys, 'frozen', False):
+        meipass = getattr(sys, '_MEIPASS', None)
+        if meipass:
+            candidates.insert(0, os.path.join(meipass, "thumbnails", thumb_name))
+
+    for c in candidates:
+        if os.path.isfile(c):
+            return c
+
     import hashlib
     h = hashlib.md5(svg_path.encode("utf-8")).hexdigest()
     thumb_path = os.path.join(get_cache_dir(), f"{h}_{size}.png")
@@ -83,9 +100,43 @@ def get_packs_dir() -> str:
 
 
 def load_all_packs(packs_dir: Optional[str] = None) -> List[Dict]:
-    """Loads all 19 icon packs and their icons metadata"""
+    """Loads all 19 icon packs and their icons metadata (cached for high performance)"""
     if not packs_dir:
         packs_dir = get_packs_dir()
+
+    # Fast Path: Check pre-built packs_cache.json
+    cache_candidates = [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "packs_cache.json"),
+        os.path.abspath(os.path.join("windows", "packs_cache.json")),
+    ]
+    if getattr(sys, 'frozen', False):
+        meipass = getattr(sys, '_MEIPASS', None)
+        if meipass:
+            cache_candidates.insert(0, os.path.join(meipass, "packs_cache.json"))
+        exe_dir = os.path.dirname(os.path.abspath(sys.executable))
+        cache_candidates.insert(1, os.path.join(exe_dir, "packs_cache.json"))
+
+    for c in cache_candidates:
+        if os.path.isfile(c):
+            try:
+                with open(c, "r", encoding="utf-8") as f:
+                    raw_packs = json.load(f)
+                packs = []
+                for p in raw_packs:
+                    p_copy = dict(p)
+                    p_path = os.path.join(packs_dir, p["id"])
+                    p_copy["icons"] = [
+                        {
+                            "name": i["name"],
+                            "file": i["file"],
+                            "path": os.path.join(p_path, i["file"])
+                        }
+                        for i in p["icons"]
+                    ]
+                    packs.append(p_copy)
+                return packs
+            except Exception:
+                pass
 
     if not os.path.isdir(packs_dir):
         return []
@@ -145,6 +196,7 @@ def load_all_packs(packs_dir: Optional[str] = None) -> List[Dict]:
             "description": meta.get("description", ""),
             "emoji": meta.get("emoji", "📁"),
             "category": pack_category,
+            "accentColorHex": meta.get("accentColorHex", "#6366F1"),
             "icons": icons,
             "count": len(icons)
         })
@@ -298,9 +350,126 @@ def restore_folder_icon(folder_path: str) -> Tuple[bool, str]:
 def notify_windows_explorer(folder_path: str):
     """Signals Windows Shell to reload folder icons without restarting explorer.exe"""
     try:
+        # Invalidate Windows Explorer thumbnail cache by updating folder mtime
+        try:
+            os.utime(folder_path, None)
+        except Exception:
+            pass
         # SHCNE_UPDATEDIR = 0x00001000, SHCNF_PATHW = 0x0005
         ctypes.windll.shell32.SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATHW, folder_path, None)
         # SHCNE_ASSOCCHANGED = 0x08000000, SHCNF_IDLIST = 0x0000
         ctypes.windll.shell32.SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, None, None)
     except Exception as e:
         print(f"Shell notify warning: {e}")
+
+
+def get_favorites_file() -> str:
+    local_app_data = os.environ.get("LOCALAPPDATA")
+    if local_app_data:
+        app_dir = os.path.join(local_app_data, "MCons")
+    else:
+        app_dir = os.path.join(os.path.expanduser("~"), ".mcons")
+    os.makedirs(app_dir, exist_ok=True)
+    return os.path.join(app_dir, "favorites.json")
+
+
+def get_favorites() -> List[str]:
+    fav_file = get_favorites_file()
+    if os.path.isfile(fav_file):
+        try:
+            with open(fav_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, list):
+                    return [f for f in data if os.path.isfile(f) or os.path.exists(f)]
+        except Exception:
+            pass
+    return []
+
+
+def is_favorite(icon_path: str) -> bool:
+    favs = get_favorites()
+    norm = os.path.normpath(icon_path)
+    return any(os.path.normpath(f) == norm for f in favs)
+
+
+def toggle_favorite(icon_path: str) -> bool:
+    favs = get_favorites()
+    norm = os.path.normpath(icon_path)
+    if any(os.path.normpath(f) == norm for f in favs):
+        favs = [f for f in favs if os.path.normpath(f) != norm]
+        is_fav = False
+    else:
+        favs.append(icon_path)
+        is_fav = True
+
+    try:
+        with open(get_favorites_file(), "w", encoding="utf-8") as f:
+            json.dump(favs, f, indent=2)
+    except Exception:
+        pass
+    return is_fav
+
+
+def clear_thumbnail_cache() -> int:
+    """Cleans up cached PNG thumbnails and returns freed file count"""
+    cache_dir = get_cache_dir()
+    count = 0
+    if os.path.isdir(cache_dir):
+        for f in os.listdir(cache_dir):
+            fp = os.path.join(cache_dir, f)
+            try:
+                if os.path.isfile(fp):
+                    os.remove(fp)
+                    count += 1
+            except Exception:
+                pass
+    return count
+
+
+def is_context_menu_registered() -> bool:
+    if sys.platform != "win32":
+        return False
+    try:
+        import winreg
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Classes\Directory\shell\MCons"):
+            return True
+    except Exception:
+        return False
+
+
+def set_context_menu_registered(enabled: bool, exe_path: Optional[str] = None) -> bool:
+    if sys.platform != "win32":
+        return False
+    try:
+        import winreg
+        if not exe_path:
+            exe_path = sys.executable
+
+        key_path = r"Software\Classes\Directory\shell\MCons"
+        bg_key_path = r"Software\Classes\Directory\Background\shell\MCons"
+
+        if enabled:
+            # Folder right-click
+            with winreg.CreateKey(winreg.HKEY_CURRENT_USER, key_path) as key:
+                winreg.SetValueEx(key, "", 0, winreg.REG_SZ, "Customize with MCons")
+                winreg.SetValueEx(key, "Icon", 0, winreg.REG_SZ, f'"{exe_path}"')
+            with winreg.CreateKey(winreg.HKEY_CURRENT_USER, key_path + r"\command") as key:
+                winreg.SetValueEx(key, "", 0, winreg.REG_SZ, f'"{exe_path}" "%1"')
+
+            # Folder background right-click
+            with winreg.CreateKey(winreg.HKEY_CURRENT_USER, bg_key_path) as key:
+                winreg.SetValueEx(key, "", 0, winreg.REG_SZ, "Customize folder with MCons")
+                winreg.SetValueEx(key, "Icon", 0, winreg.REG_SZ, f'"{exe_path}"')
+            with winreg.CreateKey(winreg.HKEY_CURRENT_USER, bg_key_path + r"\command") as key:
+                winreg.SetValueEx(key, "", 0, winreg.REG_SZ, f'"{exe_path}" "%V"')
+            return True
+        else:
+            for kp in [key_path + r"\command", key_path, bg_key_path + r"\command", bg_key_path]:
+                try:
+                    winreg.DeleteKey(winreg.HKEY_CURRENT_USER, kp)
+                except Exception:
+                    pass
+            return True
+    except Exception as e:
+        print(f"Registry toggle error: {e}")
+        return False
