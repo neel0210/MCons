@@ -1,19 +1,21 @@
 <div align="center">
   <img src="assets/icon.png" width="128" height="128" alt="MCons App Icon" />
   <h1>MCons</h1>
-  <h3>Icons for MacOS</h3>
+  <h3>Icons for macOS & Windows</h3>
 
-  <p>A native utility for creating and styling folders with custom icons on <b>macOS</b>.</p>
+  <p>A native utility for creating and styling folders with custom icons on <b>macOS</b> and <b>Windows</b>.</p>
 
   <p>Developed by <b>Neel0210</b></p>
 
   <p>
+    <a href="https://mcons.pages.dev"><img src="https://img.shields.io/badge/Website-mcons.pages.dev-0051C3?logo=cloudflarepages&logoColor=white" alt="Website" /></a>
     <img src="https://img.shields.io/badge/macOS-14.0%2B-blue?logo=apple" alt="macOS" />
-    <img src="https://img.shields.io/badge/Swift-6.0-orange?logo=swift" alt="Swift" />
+    <img src="https://img.shields.io/badge/Windows-10%2B-blue?logo=windows" alt="Windows" />
     <img src="https://img.shields.io/badge/License-MIT-green" alt="License" />
   </p>
 
   <p>
+    🌐 <a href="https://mcons.pages.dev"><b>Official Website (mcons.pages.dev)</b></a> &nbsp;|&nbsp; 
     <a href="https://t.me/MConsOfficial">📢 <b>Telegram Channel (@MConsOfficial)</b></a> &nbsp;|&nbsp; 
     <a href="https://t.me/MConsupport">💬 <b>Telegram Support Group (@MConsupport)</b></a>
   </p>
