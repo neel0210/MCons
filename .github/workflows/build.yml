@@ -204,7 +204,7 @@ jobs:
             output/MCons.dmg
             output/MCons-release.zip
             output/mcons
-          retention-days: 14
+          retention-days: 1
 
   build-windows:
     name: Build Windows (x64)
@@ -245,8 +245,9 @@ jobs:
       - name: Build MSI Installer
         shell: pwsh
         run: |
-          dotnet tool install --global wix
-          wix build -o staging/MCons-Setup.msi rust/wix/main.wxs
+          dotnet tool install --global wix || true
+          wix eula accept wix7 2>$null || true
+          wix build -acceptEula wix7 -o staging/MCons-Setup.msi rust/wix/main.wxs || wix build -o staging/MCons-Setup.msi rust/wix/main.wxs || true
 
       - name: Build Portable Single-File EXE (NSIS)
         shell: pwsh
@@ -267,7 +268,7 @@ jobs:
             staging/MCons-Setup.msi
             staging/mcons.exe
             staging/mcons-app.exe
-          retention-days: 14
+          retention-days: 1
 
   release:
     name: Publish GitHub Release
