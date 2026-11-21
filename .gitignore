@@ -1,0 +1,54 @@
+# macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon\r
+._*
+.Spotlight-V100
+.Trashes
+.VolumeIcon.icns
+
+# Swift Package Manager & Build Artifacts
+.build/
+Packages/
+xcuserdata/
+DerivedData/
+
+# Xcode User Data (Keep shared config/project files)
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.pbxuser
+*.xcuserdatad
+*.xcworkspace
+!/*.xcodeproj/project.xcworkspace
+!/*.xcodeproj/xcshareddata
+
+# Build Output Directory
+output/
+
+# Internal dev notes
+brain.md
+
+# Logs & Temporary Files
+*.log
+*.tmp
+.swiftpm/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Scratch directory
+scratch/
+
+# Rust workspace (rust/ branch)
+rust/target/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example

@@ -1,0 +1,19 @@
+[workspace]
+members = [
+    "crates/mcons-core",
+    "crates/mcons-cli",
+    "crates/mcons-app",
+]
+resolver = "2"
+
+[workspace.package]
+version = "1.0.0"
+edition = "2021"
+license = "MIT"
+# https://github.com/neel0210/MCons — Neel0210
+
+[workspace.dependencies]
+mcons-core = { path = "crates/mcons-core" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"

@@ -1,0 +1,14 @@
+[package]
+name = "mcons-app"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "MCons desktop UI in Rust: a local Web UI (single-page app) that reproduces the SwiftUI app's exact look, served from 127.0.0.1:8795"
+
+[[bin]]
+name = "mcons-app"
+path = "src/main.rs"
+
+[dependencies]
+mcons-core = { workspace = true }
+serde_json = { workspace = true }

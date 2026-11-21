@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCons — Native Folder Icon Customizer for macOS & Windows</title>
+  <meta name="description" content="A fast, native utility to customize folder icons with handcrafted vector artwork. Over 240 icons across 20 offline packs, atomic filesystem styling, and a first-class CLI.">
+  
+  <link rel="icon" type="image/png" href="assets/icon-256.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="nav-bar">
+    <div class="nav-container">
+      <a href="#" class="brand-link">
+        <img src="assets/icon-256.png" alt="MCons Icon" class="brand-avatar">
+        <span class="brand-name">MCons</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#features" class="nav-item">Features</a>
+        <a href="#packs" class="nav-item">Collections</a>
+        <a href="#cli" class="nav-item">CLI</a>
+        <a href="#install" class="nav-item">Install</a>
+        <a href="#faq" class="nav-item">FAQ</a>
+      </nav>
+
+      <div class="nav-right">
+        <a href="https://github.com/neel0210/MCons" target="_blank" rel="noopener noreferrer" class="nav-gh-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <a href="#install" class="nav-cta-btn">Get MCons</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="site-container">
+      <div class="hero-header">
+        <h1 class="hero-title">Custom folder icons,<br>engineered for your desktop.</h1>
+        <p class="hero-summary">
+          Transform system directories with 240+ handcrafted vector icons and custom color tints. Apply in milliseconds via the native GUI or automate directory styling with a headless Rust CLI.
+        </p>
+
+        <!-- Primary Install Strip -->
+        <div class="hero-actions">
+          <div class="quick-terminal-box">
+            <span class="term-platform-tag">
+              <svg width="12" height="12" viewBox="0 0 170 170" fill="currentColor">
+                <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.05-7.69-7.79-11.97-14.23-6.53-9.8-11.83-21.2-15.91-34.2-4.08-13-6.12-25.1-6.12-36.31 0-16.7 4.35-30.28 13.06-40.75 8.7-10.47 19.34-15.82 31.91-16.06 4.9.12 10.42 1.37 16.57 3.75 6.15 2.37 10.3 3.63 12.45 3.77 1.83-.26 5.86-1.57 12.09-3.92 6.23-2.35 11.53-3.4 15.91-3.15 15.24 1.09 26.68 6.72 34.34 16.89-13.5 8.16-20.14 19.64-19.92 34.43.22 11.53 4.67 21.1 13.35 28.72 4.35 3.81 9.4 6.64 15.15 8.5-2.61 7.84-5.99 15.68-10.14 23.52zM119.22 31.84c0-7.73 2.72-15 8.16-21.83 5.44-6.84 12.19-10.9 20.25-12.19.11 1.09.16 2.07.16 2.94 0 7.73-2.94 15.02-8.82 21.88-5.88 6.86-12.63 10.66-20.25 11.41-.22-.76-.33-1.48-.33-2.21z"/>
+              </svg>
+              <span>macOS</span>
+            </span>
+            <span class="term-prefix">$</span>
+            <code id="heroCurlCmd">curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>
+            <button class="btn-copy-term" id="heroCopyBtn" aria-label="Copy terminal install command">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span id="heroCopyLabel">Copy</span>
+            </button>
+          </div>
+
+          <a href="https://github.com/neel0210/MCons/releases/latest" class="btn-secondary-action">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="8" height="8"></rect>
+              <rect x="13" y="3" width="8" height="8"></rect>
+              <rect x="3" y="13" width="8" height="8"></rect>
+              <rect x="13" y="13" width="8" height="8"></rect>
+            </svg>
+            <span>Windows Portable (.exe)</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Real App Showcase & Live Carousel -->
+      <div class="hero-visual-frame">
+        <div class="frame-bar">
+          <div class="frame-dots">
+            <span class="f-dot"></span>
+            <span class="f-dot"></span>
+            <span class="f-dot"></span>
+          </div>
+          <div class="frame-tabs">
+            <button class="f-tab active" data-shot="assets/screenshots/app_packs.png">Icon Packs (20)</button>
+            <button class="f-tab" data-shot="assets/screenshots/app_apply.png">Folder Themer</button>
+            <button class="f-tab" data-shot="assets/screenshots/app_pack_detail.png">Vector Grid</button>
+            <button class="f-tab" data-shot="assets/screenshots/app_builder.png">Pack Builder</button>
+            <button class="f-tab" data-shot="assets/screenshots/app_home.png">Dashboard</button>
+          </div>
+          <div class="frame-tag">Live App View</div>
+        </div>
+        <div class="frame-screen">
+          <img id="mainAppScreen" src="assets/screenshots/app_packs.png" alt="MCons application interface" class="screen-img">
+        </div>
+      </div>
+
+      <!-- Live Scrolling Screenshot Reel -->
+      <div class="reel-container">
+        <div class="reel-track" id="reelTrack">
+          <div class="reel-cell">
+            <img src="assets/screenshots/app_packs.png" alt="Packs view">
+            <span class="reel-caption">20 Curated Icon Packs</span>
+          </div>
+          <div class="reel-cell">
+            <img src="assets/screenshots/app_apply.png" alt="Apply icon view">
+            <span class="reel-caption">Folder Customization &amp; Color Tinting</span>
+          </div>
+          <div class="reel-cell">
+            <img src="assets/screenshots/app_pack_detail.png" alt="Detail vector grid">
+            <span class="reel-caption">Crisp Scalable Vector Grid</span>
+          </div>
+          <div class="reel-cell">
+            <img src="assets/screenshots/app_builder.png" alt="Builder view">
+            <span class="reel-caption">Visual SVG/PNG Pack Builder</span>
+          </div>
+          <div class="reel-cell">
+            <img src="assets/screenshots/app_home.png" alt="Dashboard view">
+            <span class="reel-caption">Recent Folders &amp; Quick Apply</span>
+          </div>
+          <!-- Loop duplicates -->
+          <div class="reel-cell">
+            <img src="assets/screenshots/app_packs.png" alt="Packs view">
+            <span class="reel-caption">20 Curated Icon Packs</span>
+          </div>
+          <div class="reel-cell">
+            <img src="assets/screenshots/app_apply.png" alt="Apply icon view">
+            <span class="reel-caption">Folder Customization &amp; Color Tinting</span>
+          </div>
+          <div class="reel-cell">
+            <img src="assets/screenshots/app_pack_detail.png" alt="Detail vector grid">
+            <span class="reel-caption">Crisp Scalable Vector Grid</span>
+          </div>
+          <div class="reel-cell">
+            <img src="assets/screenshots/app_builder.png" alt="Builder view">
+            <span class="reel-caption">Visual SVG/PNG Pack Builder</span>
+          </div>
+          <div class="reel-cell">
+            <img src="assets/screenshots/app_home.png" alt="Dashboard view">
+            <span class="reel-caption">Recent Folders &amp; Quick Apply</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics Bar -->
+  <section class="metrics-section">
+    <div class="site-container">
+      <div class="metrics-grid">
+        <div class="metric-block">
+          <div class="metric-val">240+</div>
+          <div class="metric-label">Handcrafted Vector Icons</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-val">20</div>
+          <div class="metric-label">Offline Bundled Collections</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-val">&lt; 1ms</div>
+          <div class="metric-label">Rust Execution Latency</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-val">0</div>
+          <div class="metric-label">External Network Requests</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Features Section -->
+  <section class="features-section" id="features">
+    <div class="site-container">
+      <div class="section-lead">
+        <span class="lead-tag">Architecture</span>
+        <h2 class="lead-title">Engineered for clean systems.</h2>
+        <p class="lead-desc">No daemons, no background memory footprint, and zero telemetry. MCons interacts directly with operating system APIs.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-top">
+            <span class="feature-index">01</span>
+            <h3 class="feature-title">Native Filesystem Integration</h3>
+          </div>
+          <p class="feature-body">
+            Stamps folder icons cleanly using native OS structures. On macOS, MCons updates Finder attributes (<code>com.apple.FinderInfo</code>) and sets <code>Icon\r</code> resources. On Windows, it configures <code>desktop.ini</code> and sets read-only folder attributes.
+          </p>
+          <div class="feature-footer-code">
+            <code>FinderInfo • desktop.ini • attrib +r</code>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-top">
+            <span class="feature-index">02</span>
+            <h3 class="feature-title">Embedded Vector Pipeline</h3>
+          </div>
+          <p class="feature-body">
+            A high-performance image engine compiled in Rust. Automatically trims transparent boundaries, calculates contrast-preserving color matrices, and generates multi-scale <code>.icns</code> and <code>.ico</code> files without external dependencies.
+          </p>
+          <div class="feature-footer-code">
+            <code>resvg • tiny-skia • png • ico</code>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-top">
+            <span class="feature-index">03</span>
+            <h3 class="feature-title">Self-Contained Collections</h3>
+          </div>
+          <p class="feature-body">
+            All 20 icon packs are embedded directly into the portable application binary. Never downloads assets from external servers during runtime. Works entirely air-gapped on private systems.
+          </p>
+          <div class="feature-footer-code">
+            <code>100% Offline • Zero Telemetry</code>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-top">
+            <span class="feature-index">04</span>
+            <h3 class="feature-title">Custom Pack Builder</h3>
+          </div>
+          <p class="feature-body">
+            Import sets of SVG or PNG files via drag-and-drop. MCons sanitizes filenames, auto-generates normalized slugs, validates vector dimensions, and registers packs into your personal library.
+          </p>
+          <div class="feature-footer-code">
+            <code>~/Library/Application Support/MCons</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Curated Icon Collections -->
+  <section class="packs-section" id="packs">
+    <div class="site-container">
+      <div class="section-lead">
+        <span class="lead-tag">Library</span>
+        <h2 class="lead-title">20 Curated Collections Bundled In.</h2>
+        <p class="lead-desc">Full icon packs embedded directly inside the app. Ready to use immediately upon launching.</p>
+      </div>
+
+      <div class="packs-table-grid">
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">01</span>
+            <div>
+              <h4 class="pack-name">Demon Slayer</h4>
+              <span class="pack-cat">Anime &amp; Manga</span>
+            </div>
+          </div>
+          <p class="pack-detail">Tanjiro, Nezuko, Zenitsu, Inosuke, Hashira pillars, and Demon Slayer Corps emblems.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">02</span>
+            <div>
+              <h4 class="pack-name">Marvel Universe</h4>
+              <span class="pack-cat">Comics &amp; Cinema</span>
+            </div>
+          </div>
+          <p class="pack-detail">Spider-Man, Iron Man, Captain America, Avengers, Thor, Wolverine, and superhero insignias.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">03</span>
+            <div>
+              <h4 class="pack-name">Developer &amp; Tech</h4>
+              <span class="pack-cat">Software &amp; Tools</span>
+            </div>
+          </div>
+          <p class="pack-detail">Rust, Python, Docker, React, TypeScript, Git, Linux, Kubernetes, VS Code, and terminal tools.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">04</span>
+            <div>
+              <h4 class="pack-name">One Piece</h4>
+              <span class="pack-cat">Anime &amp; Manga</span>
+            </div>
+          </div>
+          <p class="pack-detail">Monkey D. Luffy, Straw Hat crew, Wano arc, Jolly Rogers, and Grand Line emblems.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">05</span>
+            <div>
+              <h4 class="pack-name">Dragon Ball Z</h4>
+              <span class="pack-cat">Anime &amp; Manga</span>
+            </div>
+          </div>
+          <p class="pack-detail">Goku, Vegeta, Super Saiyans, Dragon Balls, Capsule Corporation, and Z-Fighters.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">06</span>
+            <div>
+              <h4 class="pack-name">Naruto Shippuden</h4>
+              <span class="pack-cat">Anime &amp; Manga</span>
+            </div>
+          </div>
+          <p class="pack-detail">Naruto, Sasuke, Akatsuki clouds, Sharingan glyphs, Hokage crests, and Hidden Leaf shinobi.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">07</span>
+            <div>
+              <h4 class="pack-name">Pokémon</h4>
+              <span class="pack-cat">Gaming &amp; Pop</span>
+            </div>
+          </div>
+          <p class="pack-detail">Starter Pokémon, Legendary creatures, Pokéball variations, and regional gym emblems.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">08</span>
+            <div>
+              <h4 class="pack-name">Attack on Titan</h4>
+              <span class="pack-cat">Anime &amp; Manga</span>
+            </div>
+          </div>
+          <p class="pack-detail">Wings of Freedom, Scout Regiment, Eren, Levi Ackerman, Mikasa, and Titan shifters.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">09</span>
+            <div>
+              <h4 class="pack-name">Jujutsu Kaisen</h4>
+              <span class="pack-cat">Anime &amp; Manga</span>
+            </div>
+          </div>
+          <p class="pack-detail">Satoru Gojo, Yuji Itadori, Megumi, Ryomen Sukuna, domain glyphs, and Tokyo Jujutsu High.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">10</span>
+            <div>
+              <h4 class="pack-name">Studio Ghibli</h4>
+              <span class="pack-cat">Cinema &amp; Art</span>
+            </div>
+          </div>
+          <p class="pack-detail">Spirited Away, My Neighbor Totoro, Soot Sprites, Princess Mononoke, and forest spirits.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">11</span>
+            <div>
+              <h4 class="pack-name">Cyberpunk &amp; Gaming</h4>
+              <span class="pack-cat">Gaming &amp; Retro</span>
+            </div>
+          </div>
+          <p class="pack-detail">Retro pixel consoles, neon synthwave motifs, gamepads, arcade cabinets, and cartridges.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+
+        <div class="pack-row">
+          <div class="pack-row-head">
+            <span class="pack-num">12</span>
+            <div>
+              <h4 class="pack-name">macOS Native Minimal</h4>
+              <span class="pack-cat">System Aesthetics</span>
+            </div>
+          </div>
+          <p class="pack-detail">Apple Cupertino folder geometry, monochrome dark accents, and developer color tints.</p>
+          <span class="pack-status">Bundled</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLI Terminal Section -->
+  <section class="cli-section" id="cli">
+    <div class="site-container">
+      <div class="section-lead">
+        <span class="lead-tag">Automation</span>
+        <h2 class="lead-title">Scriptable Command-Line Interface.</h2>
+        <p class="lead-desc">Automate folder customization in dotfiles, setup scripts, or CI build workflows with the standalone <code>mcons</code> binary.</p>
+      </div>
+
+      <div class="cli-terminal-window">
+        <div class="cli-header">
+          <div class="cli-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="cli-tabs">
+            <button class="cli-tab active" data-cmd="curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash">install (macOS)</button>
+            <button class="cli-tab" data-cmd="brew tap neel0210/mcons && brew install --cask mcons">brew cask</button>
+            <button class="cli-tab" data-cmd="cargo install --git https://github.com/neel0210/MCons.git --branch main mcons-cli">cargo</button>
+            <button class="cli-tab" data-cmd="mcons apply demon-slayer_Tanjiro ~/Projects --tint '#007AFF'">mcons apply</button>
+            <button class="cli-tab" data-cmd="mcons batch dev-tech_python ~/Developer">mcons batch</button>
+          </div>
+          <button class="cli-copy-btn" id="cliCopyBtn">
+            <span id="cliCopyText">Copy</span>
+          </button>
+        </div>
+        <div class="cli-screen">
+          <div class="cli-line">
+            <span class="cli-prompt">$</span>
+            <code id="cliCommandTarget">curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Hub -->
+  <section class="install-section" id="install">
+    <div class="site-container">
+      <div class="section-lead">
+        <span class="lead-tag">Distribution</span>
+        <h2 class="lead-title">Get MCons.</h2>
+        <p class="lead-desc">Open source, lightweight, and completely free under the MIT License.</p>
+      </div>
+
+      <div class="install-platforms-grid">
+        <!-- macOS Track -->
+        <div class="install-card">
+          <div class="install-card-head">
+            <div class="platform-badge">macOS</div>
+            <h3 class="platform-title">Terminal Installation</h3>
+            <p class="platform-sub">Installs the universal standalone binary and app to your user environment. Supports Apple Silicon (M1/M2/M3/M4) &amp; Intel.</p>
+          </div>
+
+          <div class="install-code-box">
+            <code>curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</code>
+          </div>
+
+          <button class="btn-primary-action" id="copyMacBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="copyMacText">Copy Terminal Command</span>
+          </button>
+        </div>
+
+        <!-- Windows Track -->
+        <div class="install-card">
+          <div class="install-card-head">
+            <div class="platform-badge">Windows</div>
+            <h3 class="platform-title">Portable Executable</h3>
+            <p class="platform-sub">Single-file standalone <code>MCons.exe</code>. Packed with all 20 icon collections. Runs without administrative rights or installer wizards.</p>
+          </div>
+
+          <div class="install-code-box">
+            <code>MCons.exe • 64-bit Windows 10 &amp; 11 • Portable</code>
+          </div>
+
+          <a href="https://github.com/neel0210/MCons/releases/latest" class="btn-primary-action" style="text-align:center;justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download MCons.exe</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq">
+    <div class="site-container">
+      <div class="section-lead">
+        <span class="lead-tag">Questions</span>
+        <h2 class="lead-title">Technical FAQ.</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-row">
+          <div class="faq-trigger">
+            <span>How does MCons set folder icons without administrator privileges?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-panel">
+            MCons uses native user-space filesystem metadata. On macOS, it creates a hidden <code>Icon\r</code> file inside the target directory and sets the custom icon flag in Finder's <code>com.apple.FinderInfo</code> extended attribute. On Windows, it generates a standard <code>desktop.ini</code> file referencing an embedded <code>.ico</code> file and sets the directory's read-only bit so Windows Explorer recognizes the customization.
+          </div>
+        </div>
+
+        <div class="faq-row">
+          <div class="faq-trigger">
+            <span>How can I revert a folder back to the system default icon?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-panel">
+            In the desktop UI, select the folder and click <strong>Reset to Default</strong>. From the command line, run <code>mcons reset /path/to/folder</code>. This removes the icon resource files and clears the filesystem flags, restoring default OS styling instantly.
+          </div>
+        </div>
+
+        <div class="faq-row">
+          <div class="faq-trigger">
+            <span>Can I build and import custom icon packs?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-panel">
+            Yes. The built-in Pack Builder allows you to drop any collection of SVG or PNG files, specify a collection name, and bundle them into your local library. The CLI also supports creating packs via <code>mcons pack create &lt;name&gt; &lt;dir&gt;</code>.
+          </div>
+        </div>
+
+        <div class="faq-row">
+          <div class="faq-trigger">
+            <span>How do I open MCons on macOS if Gatekeeper flags it?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-panel">
+            Because MCons is an open-source project without a paid Apple Developer signing certificate, macOS may prompt you on first launch. Right-click <code>MCons.app</code> and select <strong>Open</strong>, or run <code>xattr -cr /Applications/MCons.app</code> in Terminal to clear the quarantine flag.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="site-container footer-layout">
+      <div class="footer-meta">
+        <span class="footer-brand">MCons</span>
+        <span class="footer-copy">© 2026 Neel0210. Open source under the MIT License.</span>
+      </div>
+
+      <div class="footer-nav">
+        <a href="https://github.com/neel0210/MCons" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://github.com/neel0210/MCons/releases" target="_blank" rel="noopener noreferrer">Releases</a>
+        <a href="https://github.com/neel0210/MCons/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

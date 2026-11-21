@@ -1,0 +1,14 @@
+[package]
+name = "mcons-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "MCons command-line interface: the same apply/reset/batch/export operations as the Swift app, without the GUI"
+
+[[bin]]
+name = "mcons"
+path = "src/main.rs"
+
+[dependencies]
+mcons-core = { workspace = true }
+clap = { version = "4", features = ["derive"] }
