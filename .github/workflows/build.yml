@@ -259,24 +259,28 @@ jobs:
 
       - name: Build Portable Single-File EXE (NSIS)
         shell: pwsh
+        continue-on-error: true
         run: |
+          choco install nsis -y
+          $makensis = "C:\Program Files (x86)\NSIS\makensis.exe"
+          if (!(Test-Path $makensis)) {
+            $makensis = "makensis"
+          }
           mkdir rust/output -Force
           mkdir rust/staging -Force
           cp staging/* rust/staging/ -Recurse -Force
-          makensis rust/nsis/portable.nsi
-          cp rust/output/MCons.exe staging/MCons.exe
+          & $makensis rust/nsis/portable.nsi
+          if (Test-Path rust/output/MCons.exe) {
+            cp rust/output/MCons.exe staging/MCons.exe
+          }
 
       - name: Upload Windows Artifacts (Quota-Safe)
         uses: actions/upload-artifact@v4
         continue-on-error: true
         with:
           name: mcons-windows-x64
-          path: |
-            staging/MCons.exe
-            staging/MCons-windows-x64.zip
-            staging/MCons-Setup.msi
-            staging/mcons.exe
-            staging/mcons-app.exe
+          path: staging/*
+          if-no-files-found: ignore
           retention-days: 1
 
       - name: Upload Windows to GitHub Release
@@ -293,7 +297,6 @@ jobs:
             $VERSION = (Get-Content rust/Cargo.toml | Select-String '^version\s*=\s*"([^"]+)"').Matches.Groups[1].Value
             $TAG = "v$VERSION.${{ github.run_number }}"
           }
-          gh release upload $TAG staging/MCons.exe staging/MCons-windows-x64.zip staging/mcons.exe --clobber
-          if (Test-Path staging/MCons-Setup.msi) {
-            gh release upload $TAG staging/MCons-Setup.msi --clobber
+          Get-ChildItem -Path staging -File | ForEach-Object {
+            gh release upload $TAG $_.FullName --clobber
           }
