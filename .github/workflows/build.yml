@@ -65,26 +65,49 @@ jobs:
         working-directory: rust
         run: cargo test --workspace
 
-  build-macos:
-    name: Build macOS (${{ matrix.arch }})
+  init-release:
+    name: Prepare Release
     needs: test
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      matrix:
-        include:
-          - arch: arm64
-            runner: macos-latest
-            target: aarch64-apple-darwin
-          - arch: x86_64
-            runner: macos-13
-            target: x86_64-apple-darwin
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.release == 'true')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            TAG="${{ github.ref_name }}"
+          elif [[ -n "${{ github.event.inputs.tag_name }}" ]]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+          else
+            VERSION=$(grep '^version' rust/Cargo.toml | head -1 | sed 's/.*= *"\(.*\)"/\1/')
+            TAG="v${VERSION}.${{ github.run_number }}"
+          fi
+          PRERELEASE_FLAG=""
+          if [[ "${{ github.event.inputs.prerelease }}" == "true" ]]; then
+            PRERELEASE_FLAG="--prerelease"
+          fi
+          gh release create "$TAG" \
+            --title "MCons $TAG" \
+            --notes "## 🚀 MCons Release $TAG"$'\n\n'"Release assets for macOS & Windows." \
+            $PRERELEASE_FLAG || echo "Release already exists"
+
+  build-macos:
+    name: Build macOS (Universal)
+    needs: test
+    runs-on: macos-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.target }}
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
 
       - name: Cache cargo
         uses: actions/cache@v4
@@ -93,49 +116,20 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             rust/target
-          key: ${{ runner.os }}-${{ matrix.arch }}-cargo-${{ hashFiles('rust/Cargo.lock') }}
+          key: ${{ runner.os }}-macos-universal-${{ hashFiles('rust/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.arch }}-cargo-
+            ${{ runner.os }}-macos-universal-
 
-      - name: Build
+      - name: Build Universal Binaries
         working-directory: rust
-        run: cargo build --release --target ${{ matrix.target }}
-
-      - name: Upload binaries
-        uses: actions/upload-artifact@v4
-        with:
-          name: bins-${{ matrix.arch }}
-          path: |
-            rust/target/${{ matrix.target }}/release/mcons
-            rust/target/${{ matrix.target }}/release/mcons-app
-
-  package-macos:
-    name: Package macOS Universal
-    needs: build-macos
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download arm64 binaries
-        uses: actions/download-artifact@v4
-        with:
-          name: bins-arm64
-          path: bins/arm64/
-
-      - name: Download x86_64 binaries
-        uses: actions/download-artifact@v4
-        with:
-          name: bins-x86_64
-          path: bins/x86_64/
-
-      - name: Create universal binaries
         run: |
-          mkdir -p output
-          chmod +x bins/arm64/mcons bins/arm64/mcons-app bins/x86_64/mcons bins/x86_64/mcons-app
-          lipo -create -output output/mcons bins/arm64/mcons bins/x86_64/mcons
-          lipo -create -output output/mcons-app bins/arm64/mcons-app bins/x86_64/mcons-app
-          strip output/mcons output/mcons-app
-          file output/mcons output/mcons-app
+          cargo build --release --target aarch64-apple-darwin
+          cargo build --release --target x86_64-apple-darwin
+          mkdir -p ../output
+          lipo -create -output ../output/mcons target/aarch64-apple-darwin/release/mcons target/x86_64-apple-darwin/release/mcons
+          lipo -create -output ../output/mcons-app target/aarch64-apple-darwin/release/mcons-app target/x86_64-apple-darwin/release/mcons-app
+          strip ../output/mcons ../output/mcons-app
+          file ../output/mcons ../output/mcons-app
 
       - name: Create macOS App Bundle
         run: |
@@ -143,7 +137,6 @@ jobs:
           mkdir -p "$BUNDLE/MacOS" "$BUNDLE/Resources"
           cp output/mcons-app "$BUNDLE/MacOS/"
 
-          # Info.plist
           VERSION=$(grep '^version' rust/Cargo.toml | head -1 | sed 's/.*= *"\(.*\)"/\1/')
           cat > "$BUNDLE/Info.plist" <<PLIST
           <?xml version="1.0" encoding="UTF-8"?>
@@ -161,10 +154,8 @@ jobs:
           </dict></plist>
           PLIST
 
-          # Bundled Icon Packs
           cp -R MCons/Resources/IconPacks "$BUNDLE/Resources/" 2>/dev/null || true
 
-          # App Icon (.icns)
           if [ -f MCons/Resources/AppIcon.icns ]; then
             cp MCons/Resources/AppIcon.icns "$BUNDLE/Resources/AppIcon.icns"
           elif [ -f rust/crates/mcons-app/web/appicon.png ]; then
@@ -181,7 +172,6 @@ jobs:
             iconutil -c icns "$ICONSET" -o "$BUNDLE/Resources/AppIcon.icns" 2>/dev/null || true
           fi
 
-          # Ad-hoc sign
           codesign --force --deep --sign - output/MCons.app
 
       - name: Create DMG & ZIP
@@ -194,10 +184,10 @@ jobs:
 
           cd output
           ditto -c -k --sequesterRsrc --keepParent MCons.app MCons-release.zip
-          zip -u MCons-release.zip mcons 2>/dev/null || true
 
-      - name: Upload macOS artifacts
+      - name: Upload macOS Artifacts (Quota-Safe)
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: mcons-macos-universal
           path: |
@@ -206,10 +196,27 @@ jobs:
             output/mcons
           retention-days: 1
 
+      - name: Upload macOS to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.release == 'true')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            TAG="${{ github.ref_name }}"
+          elif [[ -n "${{ github.event.inputs.tag_name }}" ]]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+          else
+            VERSION=$(grep '^version' rust/Cargo.toml | head -1 | sed 's/.*= *"\(.*\)"/\1/')
+            TAG="v${VERSION}.${{ github.run_number }}"
+          fi
+          gh release upload "$TAG" output/MCons.dmg output/MCons-release.zip output/mcons --clobber
+
   build-windows:
     name: Build Windows (x64)
     needs: test
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -236,7 +243,7 @@ jobs:
       - name: Stage Windows Distribution
         shell: pwsh
         run: |
-          mkdir staging
+          mkdir staging -Force
           cp rust/target/x86_64-pc-windows-msvc/release/mcons.exe staging/
           cp rust/target/x86_64-pc-windows-msvc/release/mcons-app.exe staging/
           cp -r MCons/Resources/IconPacks staging/
@@ -244,10 +251,11 @@ jobs:
 
       - name: Build MSI Installer
         shell: pwsh
+        continue-on-error: true
         run: |
           dotnet tool install --global wix || true
           wix eula accept wix7 2>$null || true
-          wix build -acceptEula wix7 -o staging/MCons-Setup.msi rust/wix/main.wxs || wix build -o staging/MCons-Setup.msi rust/wix/main.wxs || true
+          wix build -acceptEula wix7 -o staging/MCons-Setup.msi rust/wix/main.wxs || true
 
       - name: Build Portable Single-File EXE (NSIS)
         shell: pwsh
@@ -258,8 +266,9 @@ jobs:
           makensis rust/nsis/portable.nsi
           cp rust/output/MCons.exe staging/MCons.exe
 
-      - name: Upload Windows artifacts
+      - name: Upload Windows Artifacts (Quota-Safe)
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: mcons-windows-x64
           path: |
@@ -270,91 +279,21 @@ jobs:
             staging/mcons-app.exe
           retention-days: 1
 
-  release:
-    name: Publish GitHub Release
-    needs: [package-macos, build-windows]
-    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.release == 'true')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download macOS packages
-        uses: actions/download-artifact@v4
-        with:
-          name: mcons-macos-universal
-          path: release-assets/
-
-      - name: Download Windows packages
-        uses: actions/download-artifact@v4
-        with:
-          name: mcons-windows-x64
-          path: release-assets/
-
-      - name: Extract metadata
-        id: meta
-        run: |
-          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
-            TAG="${{ github.ref_name }}"
-          elif [[ -n "${{ github.event.inputs.tag_name }}" ]]; then
-            TAG="${{ github.event.inputs.tag_name }}"
-          else
-            VERSION=$(grep '^version' rust/Cargo.toml | head -1 | sed 's/.*= *"\(.*\)"/\1/')
-            TAG="v${VERSION}.${{ github.run_number }}"
-          fi
-          VERSION="${TAG#v}"
-          echo "tag=${TAG}" >> $GITHUB_OUTPUT
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
-          echo "date=$(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_OUTPUT
-
-      - name: Rename release assets
-        run: |
-          TAG="${{ steps.meta.outputs.tag }}"
-          cd release-assets
-          [[ -f MCons-release.zip ]] && cp MCons-release.zip "MCons-${TAG}-release.zip"
-          [[ -f MCons.dmg ]] && cp MCons.dmg "MCons-${TAG}-release.dmg"
-          [[ -f MCons.exe ]] && cp MCons.exe "MCons-${TAG}-windows-portable.exe"
-          [[ -f MCons-windows-x64.zip ]] && cp MCons-windows-x64.zip "MCons-${TAG}-windows-x64.zip"
-          [[ -f MCons-Setup.msi ]] && cp MCons-Setup.msi "MCons-${TAG}-Setup.msi"
-
-      - name: Publish release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.meta.outputs.tag }}
-          name: "MCons ${{ steps.meta.outputs.tag }}"
-          generate_release_notes: true
-          prerelease: ${{ github.event.inputs.prerelease == 'true' }}
-          body: |
-            ## 🚀 MCons Release ${{ steps.meta.outputs.tag }}
-
-            ### 🍎 macOS (Universal: Apple Silicon & Intel)
-            - **`MCons.dmg`** / **`MCons-${{ steps.meta.outputs.tag }}-release.dmg`** — Drag-and-drop disk image
-            - **`MCons-release.zip`** / **`MCons-${{ steps.meta.outputs.tag }}-release.zip`** — Standalone .app bundle
-            - **`mcons`** — CLI binary (Universal)
-            > Note: On macOS, if prompted by Gatekeeper: run `xattr -cr /Applications/MCons.app`
-
-            ### 🪟 Windows (x64)
-            - **`MCons.exe`** / **`MCons-${{ steps.meta.outputs.tag }}-windows-portable.exe`** — Single portable executable (all bundled inside, no install needed)
-            - **`MCons-Setup.msi`** / **`MCons-${{ steps.meta.outputs.tag }}-Setup.msi`** — Windows MSI Installer
-            - **`MCons-windows-x64.zip`** / **`MCons-${{ steps.meta.outputs.tag }}-windows-x64.zip`** — Portable zip archive
-            - **`mcons.exe`** — Windows CLI binary
-
-            ---
-            *Built automatically via GitHub Actions at ${{ steps.meta.outputs.date }}*
-          files: |
-            release-assets/MCons.dmg
-            release-assets/MCons-*-release.dmg
-            release-assets/MCons-release.zip
-            release-assets/MCons-*-release.zip
-            release-assets/mcons
-            release-assets/MCons.exe
-            release-assets/MCons-*-windows-portable.exe
-            release-assets/MCons-Setup.msi
-            release-assets/MCons-*-Setup.msi
-            release-assets/MCons-windows-x64.zip
-            release-assets/MCons-*-windows-x64.zip
-            release-assets/mcons.exe
-            release-assets/mcons-app.exe
+      - name: Upload Windows to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.release == 'true')
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ("${{ github.ref }}".StartsWith("refs/tags/v")) {
+            $TAG = "${{ github.ref_name }}"
+          } elseif ("${{ github.event.inputs.tag_name }}") {
+            $TAG = "${{ github.event.inputs.tag_name }}"
+          } else {
+            $VERSION = (Get-Content rust/Cargo.toml | Select-String '^version\s*=\s*"([^"]+)"').Matches.Groups[1].Value
+            $TAG = "v$VERSION.${{ github.run_number }}"
+          }
+          gh release upload $TAG staging/MCons.exe staging/MCons-windows-x64.zip staging/mcons.exe --clobber
+          if (Test-Path staging/MCons-Setup.msi) {
+            gh release upload $TAG staging/MCons-Setup.msi --clobber
+          }
