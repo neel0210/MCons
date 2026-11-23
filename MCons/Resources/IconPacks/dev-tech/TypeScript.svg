@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="folderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#15293E"/>
+      <stop offset="100%" stop-color="#0D1A27"/>
+    </linearGradient>
+    <linearGradient id="tabGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E3956"/>
+      <stop offset="100%" stop-color="#15293E"/>
+    </linearGradient>
+    <filter id="folderShadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.38"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+    <filter id="logoShadow" x="-20%" y="-20%" width="140%" height="140%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Folder Back Tab -->
+  <path d="M 120 180 C 120 148 140 128 172 128 L 410 128 C 445 128 470 155 495 190 L 525 230 L 852 230 C 884 230 904 250 904 282 L 904 380 L 120 380 Z" fill="url(#tabGrad)"/>
+
+  <!-- Folder Main Body with Shadow -->
+  <g filter="url(#folderShadow)">
+    <rect x="76" y="220" width="872" height="660" rx="42" fill="url(#folderGrad)"/>
+    <!-- Subtle Top Rim Highlight -->
+    <path d="M 118 221 L 906 221" stroke="#3178C6" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <!-- Centered Developer Technology Logo -->
+  <g filter="url(#logoShadow)">
+    <!-- TypeScript Square Badge -->
+    <g transform="translate(312, 370) scale(0.78)">
+      <rect x="40" y="40" width="420" height="420" rx="36" fill="#3178C6"/>
+      <text x="350" y="380" font-family="-apple-system, BlinkMacSystemFont, Arial" font-size="230" font-weight="bold" fill="#FFFFFF" text-anchor="middle">TS</text>
+    </g>
+  </g>
+</svg>

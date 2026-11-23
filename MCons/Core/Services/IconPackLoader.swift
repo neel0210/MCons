@@ -1,0 +1,217 @@
+import AppKit
+import Foundation
+
+/// Loads icon packs from the app bundle's Resources/IconPacks directory
+final class IconPackLoader: Sendable {
+    
+    /// Loads all icon packs from the bundle and resource paths
+    /// - Returns: Array of IconPack models
+    func loadAllPacks() -> [IconPack] {
+        var candidateURLs: [URL] = []
+        
+        if let resURL = Bundle.main.resourceURL {
+            candidateURLs.append(resURL.appendingPathComponent("IconPacks"))
+            candidateURLs.append(resURL.appendingPathComponent("MCons_MCons.bundle/IconPacks"))
+        }
+        
+        if let bundlePath = Bundle.main.path(forResource: "MCons_MCons", ofType: "bundle"),
+           let bundle = Bundle(path: bundlePath),
+           let resURL = bundle.resourceURL {
+            candidateURLs.append(resURL.appendingPathComponent("IconPacks"))
+            candidateURLs.append(resURL)
+        }
+        
+        // Development path fallback
+        let currentDirURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        candidateURLs.append(currentDirURL.appendingPathComponent("MCons/Resources/IconPacks"))
+        
+        // User custom packs in Application Support
+        candidateURLs.append(Self.customPacksDirectory)
+        
+        var loadedPacks: [String: IconPack] = [:]
+        var checkedPaths = Set<String>()
+        
+        for packsURL in candidateURLs {
+            let standardizedPath = packsURL.standardizedFileURL.path
+            guard !checkedPaths.contains(standardizedPath),
+                  FileManager.default.fileExists(atPath: standardizedPath) else { continue }
+            checkedPaths.insert(standardizedPath)
+            
+            let fileManager = FileManager.default
+            guard let packDirs = try? fileManager.contentsOfDirectory(
+                at: packsURL,
+                includingPropertiesForKeys: [.isDirectoryKey],
+                options: [.skipsHiddenFiles]
+            ) else { continue }
+            
+            for dir in packDirs {
+                let isDir = (try? dir.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
+                guard isDir else { continue }
+                
+                let metadataURL = dir.appendingPathComponent("metadata.json")
+                var packId = dir.lastPathComponent.lowercased()
+                var name = dir.lastPathComponent.capitalized
+                var description = "Custom folder icon pack"
+                var emoji = "📁"
+                var accentColorHex = "#6C5CE7"
+                
+                if let data = try? Data(contentsOf: metadataURL),
+                   let metadata = try? JSONDecoder().decode(IconPackMetadata.self, from: data) {
+                    packId = metadata.id
+                    name = metadata.name
+                    description = metadata.description
+                    emoji = metadata.emoji
+                    accentColorHex = metadata.accentColorHex
+                }
+                
+                let icons = loadIcons(from: dir, packId: packId)
+                if !icons.isEmpty {
+                    let isCustomPack = dir.path.contains("CustomPacks")
+                    let pack = IconPack(
+                        id: packId,
+                        name: name,
+                        description: description,
+                        emoji: emoji,
+                        accentColorHex: accentColorHex,
+                        icons: icons,
+                        isCustom: isCustomPack
+                    )
+                    if loadedPacks[packId] == nil {
+                        loadedPacks[packId] = pack
+                    }
+                }
+            }
+        }
+        
+        var allPacks = Array(loadedPacks.values)
+        
+        // Combine with default color packs if not already present
+        for defaultPack in defaultPacks() {
+            if loadedPacks[defaultPack.id] == nil {
+                allPacks.append(defaultPack)
+            }
+        }
+        
+        return allPacks.sorted { $0.name < $1.name }
+    }
+    
+    // MARK: - Custom Pack Directory Management
+    
+    /// Directory for user-created custom packs in ~/Library/Application Support/MCons/CustomPacks
+    static var customPacksDirectory: URL {
+        let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            ?? URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Library/Application Support")
+        let dir = appSupport.appendingPathComponent("MCons/CustomPacks")
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir
+    }
+    
+    /// Deletes a custom pack from ~/Library/Application Support/MCons/CustomPacks
+    func deleteCustomPack(id: String) -> Bool {
+        let packDir = Self.customPacksDirectory.appendingPathComponent(id)
+        if FileManager.default.fileExists(atPath: packDir.path) {
+            do {
+                try FileManager.default.removeItem(at: packDir)
+                return true
+            } catch {
+                return false
+            }
+        }
+        return false
+    }
+    
+    /// Loads individual icons from a pack directory
+    private func loadIcons(from directory: URL, packId: String) -> [FolderIcon] {
+        let fileManager = FileManager.default
+        guard let files = try? fileManager.contentsOfDirectory(
+            at: directory,
+            includingPropertiesForKeys: nil,
+            options: [.skipsHiddenFiles]
+        ) else {
+            return []
+        }
+        
+        let imageExtensions = ["svg", "png", "jpg", "jpeg", "icns", "tiff"]
+        let validFiles = files.filter { imageExtensions.contains($0.pathExtension.lowercased()) }
+        
+        // Group by base name and prioritize svg > png > icns > jpg > jpeg > tiff
+        var iconsByBaseName: [String: URL] = [:]
+        let extPriority = ["svg", "png", "icns", "jpg", "jpeg", "tiff"]
+        
+        for file in validFiles {
+            let baseName = file.deletingPathExtension().lastPathComponent
+            if let existing = iconsByBaseName[baseName] {
+                let currentRank = extPriority.firstIndex(of: file.pathExtension.lowercased()) ?? 99
+                let existingRank = extPriority.firstIndex(of: existing.pathExtension.lowercased()) ?? 99
+                if currentRank < existingRank {
+                    iconsByBaseName[baseName] = file
+                }
+            } else {
+                iconsByBaseName[baseName] = file
+            }
+        }
+        
+        return iconsByBaseName.values
+            .sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
+            .map { fileURL in
+                FolderIcon(
+                    id: "\(packId)_\(fileURL.deletingPathExtension().lastPathComponent)",
+                    name: fileURL.deletingPathExtension().lastPathComponent
+                        .replacingOccurrences(of: "_", with: " ")
+                        .replacingOccurrences(of: "-", with: " ")
+                        .capitalized,
+                    packId: packId,
+                    fileURL: fileURL
+                )
+            }
+    }
+    
+    /// Returns default icon packs with programmatically generated icons
+    func defaultPacks() -> [IconPack] {
+        return [
+            IconPack(
+                id: "macos-native-plus",
+                name: "macOS Native+",
+                description: "Enhanced versions of Apple's native folder colors",
+                emoji: "🍎",
+                accentColorHex: "#007AFF",
+                icons: generateDefaultIcons(packId: "macos-native-plus", colors: [
+                    ("System Blue", "#007AFF"),
+                    ("System Purple", "#AF52DE"),
+                    ("System Pink", "#FF2D55"),
+                    ("System Red", "#FF3B30"),
+                    ("System Orange", "#FF9500"),
+                    ("System Yellow", "#FFCC00"),
+                    ("System Green", "#34C759"),
+                    ("System Teal", "#5AC8FA"),
+                    ("System Indigo", "#5856D6"),
+                    ("System Brown", "#A2845E"),
+                    ("System Mint", "#00C7BE"),
+                    ("System Graphite", "#8E8E93"),
+                ])
+            ),
+        ]
+    }
+    
+    /// Generates default folder icons using programmatic rendering
+    private func generateDefaultIcons(packId: String, colors: [(String, String)]) -> [FolderIcon] {
+        return colors.map { (name, hex) in
+            FolderIcon(
+                id: "\(packId)_\(name.lowercased().replacingOccurrences(of: " ", with: "-"))",
+                name: name,
+                packId: packId,
+                colorHex: hex
+            )
+        }
+    }
+}
+
+// MARK: - Pack Metadata for JSON
+
+struct IconPackMetadata: Codable {
+    let id: String
+    let name: String
+    let description: String
+    let emoji: String
+    let accentColorHex: String
+}

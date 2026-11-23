@@ -1,0 +1,282 @@
+<div align="center">
+  <img src="assets/icon.png" width="128" height="128" alt="MCons App Icon" />
+  <h1>MCons</h1>
+  <h3>Icons for macOS & Windows</h3>
+
+  <p>A native utility for creating and styling folders with custom icons on <b>macOS</b> and <b>Windows</b>.</p>
+
+  <p>Developed by <b>Neel0210</b></p>
+
+  <p>
+    <a href="https://mcons.pages.dev"><img src="https://img.shields.io/badge/Website-mcons.pages.dev-0051C3?logo=cloudflarepages&logoColor=white" alt="Website" /></a>
+    <img src="https://img.shields.io/badge/macOS-14.0%2B-blue?logo=apple" alt="macOS" />
+    <img src="https://img.shields.io/badge/Windows-10%2B-blue?logo=windows" alt="Windows" />
+    <img src="https://img.shields.io/badge/License-MIT-green" alt="License" />
+  </p>
+
+  <p>
+    🌐 <a href="https://mcons.pages.dev"><b>Official Website (mcons.pages.dev)</b></a> &nbsp;|&nbsp; 
+    <a href="https://t.me/MConsOfficial">📢 <b>Telegram Channel (@MConsOfficial)</b></a> &nbsp;|&nbsp; 
+    <a href="https://t.me/MConsupport">💬 <b>Telegram Support Group (@MConsupport)</b></a>
+  </p>
+</div>
+
+---
+
+## ✨ Features
+
+- 🎨 **Curated Vector & Anime Icon Packs** — High-resolution (1024×1024) SVG vector icons across popular series and modern desktop themes.
+- 📁 **Batch Folder Apply** — Select or drag-and-drop multiple folders at once and style them simultaneously with real-time progress.
+- 🛠️ **In-App Custom Pack Builder** — Design, configure, and install custom icon packs directly within the app without writing any code.
+- 🎯 **Menu Bar Quick Access** — Drag-and-drop folder drop target and 1-click favorite icons straight from the macOS menu bar.
+- 🖱️ **Finder Context Menu & URL Scheme** — Right-click any folder in Finder > Services > *Apply Icon with MCons*, or automate via `mcons://apply?path=...`.
+- 🌈 **Dynamic Color Tinting** — Recolor and tint vector icons in real-time with Apple system palettes or custom color pickers.
+- 🔍 **Global Icon Search & Filtering** — Search across all 20+ packs and 214+ characters instantly with theme and category filter chips.
+- 💾 **ICNS & PNG Export** — Right-click any icon to export in crisp 1024×1024 PNG, multi-resolution Apple `.icns`, or vector `.svg`.
+- ⭐ **Favorites System** — Bookmark frequently used icons for instant 1-click access.
+- 📁 **Create & Style** — Create new directories and apply icons in a single atomic workflow.
+- ✏️ **Smart Folder Renaming** — Option to rename target folder, use icon name, or keep original name with real-time preview.
+- ↩️ **Full Undo / Redo (Cmd+Z / Shift+Cmd+Z)** — Complete macOS `UndoManager` integration with automatic rollback if operations fail.
+- 🖼️ **Multi-Format Custom Import** — Import `.svg`, `.png`, `.jpg`, `.icns`, and `.tiff` files to use as custom folder icons.
+- 🔙 **Seamless Navigation** — Back button support across views with automatic state and pack detail restoration.
+- 🔄 **Reset to Default** — One-click restore to native macOS folder icon.
+- ⚡ **Silky Performance** — Dynamic icon loading, asynchronous cache preheating, and 120fps ProMotion animations.
+- 🌙 **Dark & Light Mode** — Sleek macOS design with Glassmorphism, card elevation, and responsive design tokens.
+
+---
+
+## 📦 Bundled Icon Packs
+
+| Pack | Theme | Icons | Format | Featured Characters / Styles |
+|:---|:---|:---:|:---:|:---|
+| **Attack on Titan** | *Shingeki no Kyojin* Scouts & Titans | 10 | 1024×1024 SVG | Eren Yeager, Mikasa, Armin, Levi, Erwin, Hange, Reiner, Annie, Attack Titan, Colossal Titan |
+| **Demon Slayer** | *Kimetsu no Yaiba* Hashira & Demons | 10 | 1024×1024 SVG | Tanjiro, Rengoku, Akaza, Douma, Gyomei, Kokushibo, Muichiro, Muzan, Sanemi, Yoriichi |
+| **One Piece** | Straw Hat Pirates & Legends | 10 | 1024×1024 SVG | Luffy, Zoro, Sanji, Nami, Robin, Chopper, Ace, Law, Shanks, Whitebeard |
+| **Pokémon** | Iconic & Legendary Pokémon | 10 | 1024×1024 SVG | Pikachu, Mewtwo, Rayquaza, Charizard, Charizard X, Charizard Y, Greninja, Snorlax, Tyranitar, Salamence |
+| **Solo Leveling** | *Na Honjaman Rebeleob* Hunters & Shadows | 10 | 1024×1024 SVG | Sung Jinwoo, Igris, Beru, Iron, Tank, Cha Hae-In, Baek Yoonho, Choi Jong-In, Go Gunhee, Thomas Andre |
+| **Dragon Ball Super** | Gods, Angels, and Super Saiyans | 13 | 1024×1024 SVG | Mastered Ultra Instinct Goku, Vegeta Ultra Ego, Gogeta Blue, Vegito Blue, Full Power Broly, Lord Beerus God of Destruction, Whis, Golden Frieza, Goku Black Rose, Jiren, Gohan Beast, Orange Piccolo, Hit |
+| **Fullmetal Alchemist: Brotherhood** | State Alchemists, Homunculi & Warriors | 10 | 1024×1024 SVG | Edward Elric, Alphonse Elric, Roy Mustang, Riza Hawkeye, Alex Armstrong, Olivier Armstrong, Greed Ling, King Bradley, Pride, Scar |
+| **Black Clover** | Magic Knights, Captains & Black Bulls | 12 | 1024×1024 SVG | Asta, Yuno, Noelle Silva, Yami Sukehiro, Julius Novachrono, Fuegoleon, Mereoleona, Luck Voltia, Magna Swing, Nacht Faust, Licht, Charmy |
+| **Dandadan** | Spiritual Mediums, Cursed Yokai & Aliens | 8 | 1024×1024 SVG | Momo Ayase, Okarun, Turbo Granny, Seiko Ayase, Aira Shiratori, Jin Enjoji, Vamola, Peeny Weeny |
+| **Kaiju No. 8** | Japan Anti-Kaiju Defense Force & Monsters | 8 | 1024×1024 SVG | Kaiju No. 8, Mina Ashiro, Reno Ichikawa, Kikoru Shinomiya, Soshiro Hoshina, Gen Narumi, Kaiju No. 9, Isao Shinomiya |
+| **Jujutsu Kaisen** | Jujutsu High Sorcerers & Cursed Spirits | 10 | 1024×1024 SVG | Satoru Gojo, Ryomen Sukuna, Yuji Itadori, Megumi Fushiguro, Nobara Kugisaki, Toji Fushiguro, Kento Nanami, Yuta Okkotsu, Suguru Geto, Mahito |
+| **My Hero Academia** | *Boku no Hero Academia* Heroes & Villains | 10 | 1024×1024 SVG | Izuku Midoriya (Deku), Katsuki Bakugo, Shoto Todoroki, All Might, Ochaco Uraraka, Tomura Shigaraki, Dabi, Hawks, Shota Aizawa, Endeavor |
+| **Chainsaw Man** | Public Safety Devil Hunters, Fiends & Devils | 10 | 1024×1024 SVG | Denji, Makima, Power, Aki Hayakawa, Pochita, Kishibe, Reze, Kobeni Higashiyama, Himeno, Katana Man |
+| **Death Note** | Kira, L & Shinigami | 3 | 1024×1024 SVG | Light Yagami, L Lawliet, Ryuk |
+| **Naruto** | Hidden Leaf Shinobi & Akatsuki | 30 | 1024×1024 SVG | Naruto, Sasuke, Sakura, Kakashi, Itachi, Madara, Minato, Jiraiya, Tsunade, Pain, Obito, Gaara, etc. |
+| **Google** | Official Google App Icons for Folders | 10 | 1024×1024 SVG | Google Camera, Notes, Files, Chrome, Drive, Maps, Photos, Gmail, Calendar, YouTube |
+| **Developer & Tech** | Languages, Frameworks & Coding Tools | 12 | 1024×1024 Vector SVG | VS Code, Terminal, GitHub, Git, Docker, Python, Rust, Swift, Go, TypeScript, React, Node.js |
+| **Cameras** | DSLR, Mirrorless & Action Cameras | 2 | 1024×1024 SVG | Nikon D5300, Insta360 ONE RS |
+| **Marvel** | Superheroes, Mutants & Cosmic Villains | 18 | 1024×1024 SVG | Spider-Man, Iron Man, Captain America, Thor, Hulk, Black Widow, Hawkeye, Black Panther, Doctor Strange, Captain Marvel, Ant-Man, Wasp, Scarlet Witch, Vision, Falcon, Winter Soldier, Thanos, Dr Doom |
+| **macOS Native+** | Enhanced Apple system colors | 12 | CoreGraphics Vector | Cupertino Blue, Deep Purple, Rose Pink, Crimson Red, Sunset Orange, Emerald Green, etc. |
+
+---
+
+## 🛠️ Adding Custom Icon Packs & Icons
+
+Want to add your own custom icon packs to MCons? Follow this simple guide:
+
+### 1. Icon Specifications
+- **Recommended Resolution**: **1024×1024** or **512×512** pixels (1:1 square ratio)
+- **Supported Formats**: `.svg` (recommended vector format), `.png` (transparent background), `.jpg`, `.icns`, or `.tiff`
+- **Color Profile**: sRGB or Display P3 with alpha channel transparency
+
+### 2. File Structure
+Create a subfolder for your pack inside `MCons/Resources/IconPacks/`:
+
+```text
+MCons/Resources/IconPacks/my-pack/
+├── metadata.json
+├── Icon1.svg
+├── Icon2.svg
+└── Icon3.svg
+```
+
+### 3. Add `metadata.json`
+Inside your pack folder, create a `metadata.json` file:
+
+```json
+{
+    "id": "my-pack",
+    "name": "My Custom Pack",
+    "description": "My awesome custom folder icons",
+    "emoji": "🎨",
+    "accentColorHex": "#6C5CE7"
+}
+```
+
+### 4. Automatic Discovery
+No Swift code changes are needed! The dynamic `IconPackLoader` automatically scans and registers all pack folders:
+1. Run `./build.sh` (or `swift build`)
+2. Launch MCons — your new icon pack will automatically appear in the **Icon Packs** tab!
+
+---
+
+## 💻 Requirements
+
+- **macOS**: 14.0 (Sonoma) or later (compatible with macOS 15 Sequoia)
+- **Architecture**: Apple Silicon (M1/M2/M3/M4) or Intel Mac
+- **Xcode**: 15.0+ / Swift 6.0+ (for building from source)
+
+---
+
+## 🚀 Installation & Quick Start
+
+### 🍏 macOS (macOS 14.0+)
+
+#### 💿 Disk Image Installer (.dmg) — Recommended
+
+Download the pre-built Universal disk image (Apple Silicon M1/M2/M3/M4 & Intel):
+
+[![Download MCons.dmg](https://img.shields.io/badge/Download-MCons.dmg-2479D4?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/neel0210/MCons/releases/latest/download/MCons.dmg)
+
+**Installation Steps:**
+1. Download **[MCons.dmg](https://github.com/neel0210/MCons/releases/latest/download/MCons.dmg)**.
+2. Double-click to mount the `.dmg` disk image.
+3. Drag **`MCons.app`** into your **`Applications`** folder.
+4. **First Launch (macOS Gatekeeper)**:
+   - **Easiest:** Double-click `Open_MCons.command` inside the DMG disk image.
+   - **Manual:** Right-click `MCons.app` in `/Applications` → click **Open** → confirm **Open**.
+   - **Terminal:** Run:
+     ```bash
+     xattr -cr /Applications/MCons.app
+     ```
+
+---
+
+### 🍺 Homebrew Cask
+
+Install via Homebrew:
+
+```bash
+brew install --cask neel0210/mcons/mcons
+```
+
+Or directly using the bundled Cask formula:
+
+```bash
+brew install --cask Casks/mcons.rb
+```
+
+---
+
+### ⚡ 1-Line Terminal Installer
+
+Install and launch directly in one command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash
+```
+
+The script automatically downloads the latest release, installs it to `/Applications`, clears macOS Gatekeeper quarantine, and launches MCons.
+
+---
+
+### 🛠️ Developer Build & Run
+
+#### Debug via Swift CLI
+```bash
+swift build
+.build/debug/MCons
+```
+
+#### Release Build (.app Bundle)
+```bash
+chmod +x build.sh
+./build.sh
+open "output/MCons.app"
+```
+
+#### Open in Xcode
+The project includes both a `Package.swift` (SPM) and an `.xcodeproj` (generated via XcodeGen):
+```bash
+# Regenerate the Xcode project
+xcodegen generate
+
+# Open in Xcode
+open MCons.xcodeproj
+```
+
+---
+
+## 📂 Project Structure
+
+```text
+MCons/
+├── App/                        # Application lifecycle & AppState (MConsApp.swift)
+├── Features/
+│   ├── Home/                   # Dashboard, quick actions, recent folders (HomeView.swift)
+│   ├── IconPacks/              # Pack browsing, search, and detail grid (IconPacksView.swift)
+│   ├── IconApply/              # Icon selection, folder drop zone, atomic apply (IconApplyView.swift)
+│   └── Settings/               # Preferences, cache controls, and about info (SettingsView.swift)
+├── Core/
+│   ├── Services/               # IconService, FolderService, IconPackLoader, IconImageCache, SecurityBookmarkManager
+│   ├── Models/                 # IconPack, FolderIcon, AppFolder, FolderIconRenderer
+│   ├── Extensions/             # Color hex helpers, NSImage utilities, View modifiers
+│   └── Theme/                  # Design tokens, typography, gradients, and animations
+└── Resources/
+    ├── Assets.xcassets/        # App icons & asset catalogs
+    └── IconPacks/              # Bundled icon pack SVG vectors & metadata
+```
+
+---
+
+## ⚙️ How It Works
+
+**MCons** uses Apple's native `NSWorkspace.setIcon(_:forFile:options:)` API to apply custom folder icons. This is the official macOS method that:
+
+- ✅ Persists across system reboots and Finder restarts
+- ✅ Renders smoothly across Finder, Dock, Quick Look, and Spotlight
+- ✅ Supports clean one-click restoration to default macOS folder icons
+- ✅ Handles atomic folder rename and icon application with complete `UndoManager` rollback support (Cmd+Z)
+- ✅ Employs `SecurityBookmarkManager` to preserve sandboxed folder access permissions
+
+---
+
+## ⚖️ Fair Use & Intellectual Property Notice
+
+All character designs, vector artwork, logos, and trademarks bundled or referenced in MCons remain the intellectual property and copyright of their respective owners and creators:
+
+- **⚡ Pokémon**: © Nintendo / Creatures Inc. / GAME FREAK inc. / The Pokémon Company
+- **⚔️ Attack on Titan (*Shingeki no Kyojin*)**: © Hajime Isayama / Kodansha / "ATTACK ON TITAN" Production Committee / MAPPA / WIT Studio
+- **⚔️ Demon Slayer (*Kimetsu no Yaiba*)**: © Koyoharu Gotouge / SHUEISHA / Aniplex / ufotable
+- **🏴‍☠️ One Piece**: © Eiichiro Oda / SHUEISHA / Toei Animation
+- **🗡️ Solo Leveling (*Na Honjaman Rebeleob*)**: Story by Chugong, Art by DUBU (REDICE STUDIO), © D&C Media / KakaoPage / A-1 Pictures
+- **🐉 Dragon Ball Super**: © Bird Studio / Shueisha, Toei Animation, Akira Toriyama, Toyotarou
+- **💥 My Hero Academia (*Boku no Hero Academia*)**: © Kohei Horikoshi / SHUEISHA, "My Hero Academia" Production Committee, BONES
+- **🦾 Fullmetal Alchemist: Brotherhood**: © Hiromu Arakawa / Square Enix, "FULLMETAL ALCHEMIST" Production Committee, MBS, BONES
+- **🍀 Black Clover**: © Yuki Tabata / SHUEISHA, TV TOKYO, Black Clover Production Committee, Studio Pierrot
+- **👽 Dandadan**: © Yukinobu Tatsu / SHUEISHA, "Dandadan" Production Committee, Science SARU
+- **💥 Kaiju No. 8**: © Naoya Matsumoto / SHUEISHA, Defense Force Division 3, Production I.G
+- **🤞 Jujutsu Kaisen**: © Gege Akutami / SHUEISHA, "JUJUTSU KAISEN" Production Committee, MAPPA
+- **🪚 Chainsaw Man**: © Tatsuki Fujimoto / SHUEISHA, MAPPA
+- **🍎 Death Note**: © Tsugumi Ohba, Takeshi Obata / SHUEISHA, VAP, Madhouse, NTV, D.N. Dream Partner
+- **🍃 Naruto**: © Masashi Kishimoto, Scott / SHUEISHA, TV TOKYO, Pierrot
+- **🌐 Google**: Google, Chrome, Gmail, Drive, Maps, Photos, and YouTube are trademarks of Google LLC
+- **💻 Developer & Tech**: VS Code and GitHub are trademarks of Microsoft Corporation; Docker, Python, Rust, Swift, Go, TypeScript, React, and Node.js logos/trademarks are property of their respective owners and foundations
+- **📷 Cameras**: Nikon is a trademark of Nikon Corporation; Insta360 is a trademark of Arashi Vision Inc.
+- **🦸‍♂️ Marvel**: Spider-Man, Iron Man, Captain America, Thor, Hulk, Black Panther, Thanos, and related characters are trademarks and copyright of Marvel Characters, Inc. / Marvel Entertainment, LLC / The Walt Disney Company
+- **🍎 Apple & macOS**: macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.
+
+### Fair Use Statement
+> **Fair Use Notice:** MCons is a free, non-profit, open-source personal customization utility provided for personal desktop aesthetics, non-commercial commentary, fan tribute, and organizational use.
+>
+> In accordance with **Title 17 U.S.C. Section 107 (Fair Use Doctrine)** and international copyright exceptions:
+> - The software is distributed free of charge with **zero monetization, advertising, or commercial intent**.
+> - Icons and vector assets are included for **transformative desktop interface customization** by individual end-users.
+> - No copyright or trademark infringement is intended. If you are a copyright holder and wish to have specific material removed, please contact the author or open an issue on GitHub.
+
+---
+
+## 📄 License
+
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for more information.
+
+---
+
+## 👨‍💻 Author
+
+Made with ❤️ by **Neel0210**.
+
+- Telegram Channel: [@MConsOfficial](https://t.me/MConsOfficial)
+- Telegram Support: [@MConsupport](https://t.me/MConsupport)

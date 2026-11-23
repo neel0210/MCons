@@ -1,0 +1,278 @@
+import AppKit
+import Foundation
+import SwiftUI
+
+// MARK: - App State & Central Business Logic
+
+@MainActor
+final class AppState: ObservableObject {
+    @Published var previousSidebarItem: SidebarItem?
+    @Published var selectedSidebarItem: SidebarItem = .home {
+        didSet {
+            if oldValue != selectedSidebarItem {
+                previousSidebarItem = oldValue
+            }
+        }
+    }
+    @Published var selectedIconPack: IconPack?
+    @Published var selectedIcon: FolderIcon?
+    @Published var targetFolderURL: URL? {
+        didSet {
+            if let url = targetFolderURL {
+                SecurityBookmarkManager.shared.saveBookmark(for: url)
+            }
+        }
+    }
+    @Published var recentFolders: [URL] = []
+    @Published var showSuccessAnimation: Bool = false
+    @Published var statusMessage: String = ""
+    @Published var currentError: IconServiceError?
+    @Published var showErrorAlert: Bool = false
+    @Published var cachedIconPacks: [IconPack] = []
+    @Published var favoriteIconIds: Set<String> = []
+    
+    let iconService = IconService()
+    let folderService = FolderService()
+    let iconPackLoader = IconPackLoader()
+    
+    init() {
+        // Load saved favorites
+        let saved = UserDefaults.standard.stringArray(forKey: "MCons_Favorites") ?? []
+        self.favoriteIconIds = Set(saved)
+        
+        // Instant synchronous first-pass pack metadata loading
+        let packs = iconPackLoader.loadAllPacks()
+        self.cachedIconPacks = packs
+        
+        // Background async preheating of icon thumbnails for silky smooth UI
+        IconImageCache.shared.preheat(packs: packs)
+        
+        // Background silent check for updates
+        Task {
+            await UpdateService.shared.checkForUpdates(silent: true)
+        }
+    }
+    
+    // MARK: - Favorites Management
+    
+    func isFavorite(icon: FolderIcon) -> Bool {
+        favoriteIconIds.contains(icon.id)
+    }
+    
+    func toggleFavorite(icon: FolderIcon) {
+        if favoriteIconIds.contains(icon.id) {
+            favoriteIconIds.remove(icon.id)
+        } else {
+            favoriteIconIds.insert(icon.id)
+        }
+        UserDefaults.standard.set(Array(favoriteIconIds), forKey: "MCons_Favorites")
+    }
+    
+    func favoriteIcons() -> [FolderIcon] {
+        let allIcons = cachedIconPacks.flatMap { $0.icons }
+        return allIcons.filter { favoriteIconIds.contains($0.id) }
+    }
+    
+    /// Returns cached icon packs instantly without disk re-scanning
+    func loadIconPacks() -> [IconPack] {
+        if !cachedIconPacks.isEmpty {
+            return cachedIconPacks
+        }
+        let packs = iconPackLoader.loadAllPacks()
+        cachedIconPacks = packs
+        IconImageCache.shared.preheat(packs: packs)
+        return packs
+    }
+    
+    /// Force refreshes packs and updates the image cache
+    func refreshIconPacks() {
+        let packs = iconPackLoader.loadAllPacks()
+        cachedIconPacks = packs
+        IconImageCache.shared.preheat(packs: packs)
+    }
+    
+    /// Deletes a custom pack
+    func deleteCustomPack(_ pack: IconPack) -> Bool {
+        guard pack.isCustom else { return false }
+        let success = iconPackLoader.deleteCustomPack(id: pack.id)
+        if success {
+            refreshIconPacks()
+        }
+        return success
+    }
+    
+    // MARK: - Atomic Folder Operations & Rollback (Cmd+Z / Shift+Cmd+Z)
+    
+    /// Executes folder rename and icon application as an atomic operation with UndoManager and Tint support
+    func applyAtomicOperation(
+        icon: FolderIcon,
+        targetFolder: URL,
+        desiredName: String,
+        tintColor: NSColor? = nil,
+        undoManager: UndoManager? = nil
+    ) -> Bool {
+        let originalURL = targetFolder
+        let originalName = targetFolder.lastPathComponent
+        let isApp = folderService.isApplication(url: originalURL)
+        let targetType = isApp ? "App" : "Folder"
+        let hadCustomIcon = iconService.hasCustomIcon(for: originalURL)
+        let originalIconImage: NSImage? = hadCustomIcon ? iconService.getIcon(for: originalURL) : nil
+        
+        var cleanName = desiredName.trimmingCharacters(in: .whitespacesAndNewlines)
+        if isApp && !cleanName.isEmpty && !cleanName.lowercased().hasSuffix(".app") {
+            cleanName += ".app"
+        }
+        let newName = cleanName.isEmpty ? originalName : cleanName
+        
+        var currentURL = originalURL
+        var didRename = false
+        
+        // Step 1: Perform Rename if requested
+        if newName != originalName {
+            if let renamedURL = folderService.renameFolder(at: originalURL, to: newName) {
+                currentURL = renamedURL
+                didRename = true
+            } else {
+                let err = IconServiceError.unknown("Failed to rename \(targetType.lowercased()) from '\(originalName)' to '\(newName)'.")
+                currentError = err
+                showErrorAlert = true
+                statusMessage = "Rename failed"
+                return false
+            }
+        }
+        
+        // Step 2: Load and Apply Icon with Rollback on failure
+        guard let image = icon.loadImage() else {
+            if didRename {
+                _ = folderService.renameFolder(at: currentURL, to: originalName)
+            }
+            let err = IconServiceError.invalidImage
+            currentError = err
+            showErrorAlert = true
+            statusMessage = "Failed to load icon"
+            return false
+        }
+        
+        do {
+            try iconService.setIcon(image: image, for: currentURL, tintColor: tintColor)
+        } catch {
+            // Rollback rename if setIcon fails
+            if didRename {
+                _ = folderService.renameFolder(at: currentURL, to: originalName)
+            }
+            if let iconErr = error as? IconServiceError {
+                currentError = iconErr
+            } else {
+                currentError = IconServiceError.unknown(error.localizedDescription)
+            }
+            showErrorAlert = true
+            statusMessage = currentError?.errorDescription ?? "Failed to apply icon"
+            return false
+        }
+        
+        // Step 3: Success state updates
+        self.targetFolderURL = currentURL
+        self.statusMessage = didRename ? "\(targetType) renamed & icon applied!" : "\(targetType) icon applied successfully!"
+        self.showSuccessAnimation = true
+        
+        if !recentFolders.contains(currentURL) {
+            recentFolders.insert(currentURL, at: 0)
+            if recentFolders.count > 10 {
+                recentFolders.removeLast()
+            }
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            self?.showSuccessAnimation = false
+        }
+        
+        // Step 4: Register Undo action with UndoManager
+        if let undoManager = undoManager {
+            undoManager.registerUndo(withTarget: self) { [weak self] _ in
+                self?.performRollback(
+                    currentURL: currentURL,
+                    originalURL: originalURL,
+                    didRename: didRename,
+                    originalName: originalName,
+                    hadCustomIcon: hadCustomIcon,
+                    originalIconImage: originalIconImage,
+                    redoIcon: icon,
+                    redoDesiredName: desiredName,
+                    redoTintColor: tintColor,
+                    undoManager: undoManager
+                )
+            }
+            undoManager.setActionName(didRename ? "Apply Icon & Rename" : "Apply Icon")
+        }
+        
+        return true
+    }
+    
+    /// Reverses an atomic folder operation (Undo / Redo execution)
+    private func performRollback(
+        currentURL: URL,
+        originalURL: URL,
+        didRename: Bool,
+        originalName: String,
+        hadCustomIcon: Bool,
+        originalIconImage: NSImage?,
+        redoIcon: FolderIcon,
+        redoDesiredName: String,
+        redoTintColor: NSColor?,
+        undoManager: UndoManager
+    ) {
+        // 1. Restore previous icon
+        if hadCustomIcon, let prevImage = originalIconImage {
+            try? iconService.setIcon(image: prevImage, for: currentURL)
+        } else {
+            try? iconService.resetIcon(for: currentURL)
+        }
+        
+        // 2. Restore original folder name if it was renamed
+        var restoredURL = currentURL
+        if didRename {
+            if let unrenamedURL = folderService.renameFolder(at: currentURL, to: originalName) {
+                restoredURL = unrenamedURL
+            }
+        }
+        
+        // Update AppState UI
+        self.targetFolderURL = restoredURL
+        self.statusMessage = "Undid icon & rename operation (Cmd+Z)"
+        
+        // 3. Register Redo operation
+        undoManager.registerUndo(withTarget: self) { [weak self] _ in
+            _ = self?.applyAtomicOperation(
+                icon: redoIcon,
+                targetFolder: restoredURL,
+                desiredName: redoDesiredName,
+                tintColor: redoTintColor,
+                undoManager: undoManager
+            )
+        }
+        undoManager.setActionName(didRename ? "Apply Icon & Rename" : "Apply Icon")
+    }
+    
+    func applyIcon(_ icon: FolderIcon, to folderURL: URL) -> Bool {
+        return applyAtomicOperation(icon: icon, targetFolder: folderURL, desiredName: folderURL.lastPathComponent)
+    }
+    
+    func resetIcon(for folderURL: URL) -> Bool {
+        do {
+            try iconService.resetIcon(for: folderURL)
+            statusMessage = "Icon reset to default"
+            return true
+        } catch let err as IconServiceError {
+            currentError = err
+            showErrorAlert = true
+            statusMessage = err.errorDescription ?? "Failed to reset icon"
+            return false
+        } catch {
+            let err = IconServiceError.unknown(error.localizedDescription)
+            currentError = err
+            showErrorAlert = true
+            statusMessage = err.errorDescription ?? "Failed to reset icon"
+            return false
+        }
+    }
+}

@@ -1,0 +1,3181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCons — Icons for macOS</title>
+  <style>
+    /* ============ MCons JetBlack design system (AppTheme.swift) ============ */
+    :root {
+      --jet: #090A0F;
+      --bg: #0C0E14;
+      --sidebar: #08090D;
+      --card: #13151F;
+      --elevated: #1A1D2A;
+      --surface: #1A1D2A;
+      --accent: #6366F1;
+      --accent2: #8B5CF6;
+      --violet: #6C5CE7;
+      --cyan1: #00D2FF;
+      --cyan2: #3A7BD5;
+      --border: rgba(255, 255, 255, .08);
+      --border-hover: rgba(255, 255, 255, .18);
+      --subtitle: #94A3B8;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --error: #F43F5E;
+      --text: #F5F7FA;
+      --secondary: rgba(235, 235, 245, .60);
+      --tertiary: rgba(235, 235, 245, .30);
+      --blue: #0984E3;
+      --green-new: #00B894;
+      --yellow: #FFD200;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Rounded", "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      background: none;
+      border: 0;
+      cursor: pointer
+    }
+
+    input,
+    select,
+    textarea {
+      font: inherit;
+      color: inherit
+    }
+
+    a {
+      color: var(--violet);
+      text-decoration: none
+    }
+
+    img {
+      display: block
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, .12);
+      border-radius: 5px;
+      border: 2px solid var(--bg)
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent
+    }
+
+    .app {
+      display: flex;
+      height: 100vh;
+      width: 100vw
+    }
+
+    /* ============ Sidebar (ContentView SidebarView) ============ */
+    .sidebar {
+      width: 228px;
+      flex: 0 0 228px;
+      background: var(--sidebar);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 12px 8px
+    }
+
+    .brand img {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      box-shadow: 0 1.5px 3px rgba(0, 0, 0, .25)
+    }
+
+    .brand .bname {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.1
+    }
+
+    .brand .bsub {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--secondary);
+      line-height: 1.2
+    }
+
+    .brand .vpill {
+      margin-left: auto;
+      font: 700 9px ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--secondary);
+      background: rgba(255, 255, 255, .07);
+      padding: 2px 6px;
+      border-radius: 999px;
+      white-space: nowrap
+    }
+
+    .side-div {
+      height: 1px;
+      background: rgba(255, 255, 255, .12);
+      opacity: .3;
+      margin: 0 12px 4px
+    }
+
+    .nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px 8px
+    }
+
+    .nav::-webkit-scrollbar {
+      width: 0
+    }
+
+    .nav-group {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .35);
+      padding: 0 12px 3px;
+      margin-top: 16px;
+      letter-spacing: .02em
+    }
+
+    .nav-group:first-child {
+      margin-top: 8px
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      text-align: left;
+      padding: 6px 8px 6px 0;
+      border-radius: 6px;
+      color: var(--secondary);
+      position: relative
+    }
+
+    .nav-row:hover {
+      background: rgba(255, 255, 255, .04);
+      color: var(--text)
+    }
+
+    .nav-row.sel {
+      background: rgba(255, 255, 255, .08);
+      color: var(--text)
+    }
+
+    .nav-row .bar {
+      width: 3px;
+      height: 16px;
+      border-radius: 2px;
+      background: transparent;
+      flex: 0 0 3px
+    }
+
+    .nav-row.sel .bar {
+      background: linear-gradient(135deg, var(--accent), var(--accent2))
+    }
+
+    .nav-row .ic {
+      width: 18px;
+      display: flex;
+      justify-content: center;
+      color: var(--secondary);
+      flex: 0 0 18px
+    }
+
+    .nav-row.sel .ic {
+      color: var(--accent)
+    }
+
+    .nav-row .lbl {
+      font-size: 13px;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .nav-row.sel .lbl {
+      font-weight: 600
+    }
+
+    .nav-row .badge {
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, .06);
+      color: var(--secondary);
+      padding: 1.5px 6px;
+      border-radius: 999px
+    }
+
+    .nav-row.sel .badge {
+      background: rgba(255, 255, 255, .15);
+      color: #fff
+    }
+
+    .nav-row .newbadge {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(0, 184, 148, .12);
+      padding: 2px 5px;
+      border-radius: 999px
+    }
+
+    .nav-row .newbadge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00B894
+    }
+
+    .nav-row .newbadge span {
+      font-size: 8px;
+      font-weight: 800;
+      color: #00B894
+    }
+
+    .side-foot {
+      padding: 8px
+    }
+
+    .side-foot .status {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, .25);
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 11px;
+      color: var(--secondary);
+      white-space: nowrap;
+      overflow: hidden
+    }
+
+    .side-foot .status span {
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .quick-link {
+      width: 100%;
+      text-align: left;
+      font-size: 11px;
+      color: var(--secondary);
+      padding: 6px 8px;
+      border-radius: 6px
+    }
+
+    .quick-link:hover {
+      background: rgba(255, 255, 255, .04);
+      color: var(--text)
+    }
+
+    /* ============ Detail ============ */
+    .detail {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg);
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch
+    }
+
+    .detail-inner {
+      padding: 32px 40px;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .fade {
+      animation: fadein .12s ease-in-out
+    }
+
+    @keyframes fadein {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg)
+      }
+
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    h1.title {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.15
+    }
+
+    h2.title2 {
+      font-size: 18px;
+      font-weight: 600
+    }
+
+    .headline {
+      font-size: 15px;
+      font-weight: 600
+    }
+
+    .sub {
+      font-size: 13px;
+      color: var(--secondary)
+    }
+
+    .body {
+      font-size: 14px
+    }
+
+    .callout {
+      font-size: 13px
+    }
+
+    .cap {
+      font-size: 11px;
+      color: var(--secondary)
+    }
+
+    .capb {
+      font-size: 11px;
+      font-weight: 600
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace
+    }
+
+    .grad-text {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent
+    }
+
+    /* ============ Cards, buttons, inputs ============ */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px
+    }
+
+    .card-lift {
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease
+    }
+
+    .card-lift:hover {
+      transform: scale(1.018);
+      border-color: var(--accc, #6366F1);
+      box-shadow: 0 5px 16px rgba(0, 0, 0, .25), 0 0 0 1px transparent
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+      padding: 8px 16px;
+      border: 1px solid transparent
+    }
+
+    .btn:active {
+      transform: scale(.96)
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .btn-primary:disabled {
+      background: rgba(128, 128, 128, .4);
+      color: rgba(255, 255, 255, .7);
+      cursor: default;
+      transform: none
+    }
+
+    .btn-accent {
+      background: var(--violet);
+      color: #fff
+    }
+
+    .btn-bordered {
+      background: transparent;
+      border-color: rgba(255, 255, 255, .14);
+      color: var(--text)
+    }
+
+    .btn-bordered:hover {
+      background: rgba(255, 255, 255, .05)
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--violet)
+    }
+
+    .btn-ghost:hover {
+      background: rgba(108, 92, 231, .1)
+    }
+
+    .btn-block {
+      width: 100%;
+      justify-content: center;
+      height: 44px;
+      font-size: 14px
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 999px;
+      white-space: nowrap
+    }
+
+    .pill-blue {
+      background: rgba(0, 122, 255, .2);
+      color: #3A9BFF
+    }
+
+    .pill-purple {
+      background: rgba(139, 92, 246, .2);
+      color: #B79CFF
+    }
+
+    .pill-green {
+      background: #00B894;
+      color: #fff
+    }
+
+    .pill-yellow {
+      background: rgba(255, 210, 0, .2);
+      color: var(--yellow)
+    }
+
+    .input {
+      background: var(--surface);
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 10px 12px;
+      width: 100%;
+      outline: none;
+      font-size: 14px
+    }
+
+    .input:focus {
+      border-color: var(--accent)
+    }
+
+    .input::placeholder {
+      color: var(--tertiary)
+    }
+
+    .searchbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px
+    }
+
+    .searchbar input {
+      flex: 1;
+      background: none;
+      border: 0;
+      outline: none;
+      font-size: 14px
+    }
+
+    .searchbar input::placeholder {
+      color: var(--tertiary)
+    }
+
+    .chip {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--text);
+      white-space: nowrap
+    }
+
+    .chip.sel {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700
+    }
+
+    .seg {
+      display: flex;
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px
+    }
+
+    .seg button {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--secondary)
+    }
+
+    .seg button.sel {
+      background: rgba(255, 255, 255, .14);
+      color: #fff;
+      font-weight: 600
+    }
+
+    .switch {
+      position: relative;
+      width: 38px;
+      height: 22px;
+      flex: 0 0 38px;
+      cursor: pointer
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0
+    }
+
+    .switch .tr {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, .25);
+      border-radius: 999px;
+      transition: .15s
+    }
+
+    .switch .tr:before {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 2px;
+      top: 2px;
+      background: #fff;
+      border-radius: 50%;
+      transition: .15s
+    }
+
+    .switch input:checked+.tr {
+      background: var(--accent)
+    }
+
+    .switch input:checked+.tr:before {
+      transform: translateX(16px)
+    }
+
+    .stepper {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--surface);
+      border-radius: 8px;
+      width: 120px;
+      justify-content: space-between
+    }
+
+    .stepper button {
+      width: 32px;
+      height: 28px;
+      font-size: 15px;
+      color: var(--text)
+    }
+
+    .stepper span {
+      font-size: 14px
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(255, 255, 255, .08)
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, .06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 16px
+    }
+
+    .dropzone {
+      border: 1px dashed rgba(255, 255, 255, .25);
+      border-radius: 10px;
+      text-align: center;
+      padding: 24px 12px;
+      color: var(--secondary)
+    }
+
+    .dropzone.hot {
+      border-color: var(--violet);
+      border-width: 2px;
+      background: rgba(108, 92, 231, .05)
+    }
+
+    .tintdot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, .6);
+      cursor: pointer;
+      flex: 0 0 16px
+    }
+
+    .tintdot.sel {
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px #fff
+    }
+
+    /* icon cells / grids */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 140px));
+      gap: 16px;
+      content-visibility: auto;
+      contain-intrinsic-size: 140px
+    }
+
+    .icon-cell {
+      background: rgba(19, 21, 31, .6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: border-color .15s, background .15s
+    }
+
+    .icon-cell:hover {
+      background: var(--elevated);
+      border-color: var(--acccb, rgba(108, 92, 231, .4))
+    }
+
+    .icon-cell.sel {
+      background: color-mix(in srgb, var(--accc, #6366F1) 18%, transparent);
+      border: 1.5px solid var(--accc, #6366F1)
+    }
+
+    .icon-cell img {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 8px;
+      object-fit: contain
+    }
+
+    .icon-cell .nm {
+      font-size: 11px;
+      color: var(--secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .icon-cell.sel .nm {
+      color: var(--text)
+    }
+
+    .icon-cell .favstar {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(19, 21, 31, .95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: var(--yellow)
+    }
+
+    .icon-cell:hover .favstar,
+    .icon-cell.faved .favstar {
+      display: flex
+    }
+
+    .pack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px
+    }
+
+    .pack-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      min-width: 0
+    }
+
+    .pack-banner {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 16px;
+      overflow: hidden
+    }
+
+    .pack-banner img {
+      height: 108px;
+      max-height: 108px;
+      width: auto;
+      max-width: calc(25% - 10px);
+      min-width: 0;
+      flex: 1 1 0;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, .28))
+    }
+
+    .pack-info {
+      padding: 16px
+    }
+
+    .pack-info .desc {
+      font-size: 13px;
+      color: var(--secondary);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-top: 8px
+    }
+
+    .count-pill {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--secondary);
+      background: rgba(255, 255, 255, .08);
+      padding: 4px 8px;
+      border-radius: 999px
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100
+    }
+
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      max-width: 90vw;
+      max-height: 88vh;
+      overflow: auto;
+      padding: 24px
+    }
+
+    .success-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200
+    }
+
+    .success-card {
+      text-align: center;
+      padding: 48px;
+      min-width: 340px
+    }
+
+    .progress {
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, .12);
+      overflow: hidden
+    }
+
+    .progress>div {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 3px;
+      transition: width .2s
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px
+    }
+
+    pre.code {
+      background: rgba(0, 0, 0, .4);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font: 12px ui-monospace, Menlo, monospace;
+      color: var(--cyan1);
+      overflow-x: auto;
+      white-space: nowrap
+    }
+
+    .section-label {
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .row-hover:hover {
+      background: var(--card)
+    }
+
+    .link-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      text-align: left;
+      padding: 4px 0
+    }
+
+    .link-row:hover {
+      opacity: .85
+    }
+  </style>
+  <style>
+    /* ============ Liquid Glass + iOS polish (iOS 26 language; Glisse tokens) ============
+   Glisse recipe (gitgems-unite WebUI, user-approved Nov 4): dark glass tokens,
+   3px frost + saturate, specular top-edge highlight, hairline rim, press glow.
+   Here the frost is stronger (20px blur + saturate 180%) for the iOS 26
+   liquid-glass read, on top of the JetBlack palette — never a light theme. */
+    :root {
+      --pad: 32px;
+      --spring: cubic-bezier(0.32, 0.72, 0, 1);
+      --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --lg-edge: rgba(255, 255, 255, .09);
+      --lg-specular: rgba(255, 255, 255, .16);
+    }
+
+    .detail-inner {
+      padding: var(--pad)
+    }
+
+    /* --- liquid glass surfaces --- */
+    .glass {
+      background:
+        radial-gradient(130% 100% at 18% 0%, rgba(255, 255, 255, .12), rgba(255, 255, 255, 0) 55%),
+        radial-gradient(120% 130% at 85% 115%, rgba(139, 92, 246, .12), rgba(255, 255, 255, 0) 55%),
+        rgba(40, 40, 46, .55);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--lg-edge);
+      border-radius: 20px;
+      box-shadow:
+        inset 0 1px 0 var(--lg-specular),
+        inset 0 0 0 .5px rgba(255, 255, 255, .06),
+        inset 0 -1px 0 rgba(0, 0, 0, .18),
+        0 8px 28px rgba(0, 0, 0, .45);
+    }
+
+    /* frosted sticky bars: view headers + pack-detail bottom action bar */
+    .frost-bar {
+      background: linear-gradient(180deg, rgba(12, 14, 20, .80), rgba(12, 14, 20, .64));
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, .09);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .10);
+    }
+
+    .frost-bar-bottom {
+      border-bottom: 0;
+      border-top: 1px solid rgba(255, 255, 255, .09);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .10), 0 -10px 28px rgba(0, 0, 0, .40);
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, rgba(10, 11, 16, .88), rgba(8, 9, 13, .96));
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      backdrop-filter: blur(20px) saturate(160%);
+      border-right: 1px solid rgba(255, 255, 255, .07);
+      box-shadow: inset -1px 0 0 rgba(255, 255, 255, .04);
+    }
+
+    /* glass pills / badges */
+    .pill,
+    .count-pill,
+    .badge,
+    .newbadge {
+      -webkit-backdrop-filter: blur(8px) saturate(160%);
+      backdrop-filter: blur(8px) saturate(160%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), inset 0 0 0 .5px rgba(255, 255, 255, .10);
+    }
+
+    /* rounded continuous corners */
+    .card {
+      border-radius: 20px;
+      position: relative;
+      contain: layout style paint;
+      will-change: transform
+    }
+
+    .pack-card {
+      border-radius: 20px;
+      position: relative;
+      contain: layout style paint;
+      will-change: transform
+    }
+
+    .icon-cell {
+      border-radius: 14px;
+      contain: layout style paint;
+      will-change: transform
+    }
+
+    .input,
+    .searchbar {
+      border-radius: 14px
+    }
+
+    /* --- springs: view transitions, staggered entrances, press states --- */
+    .fade {
+      animation: viewin .12s ease-in-out, viewrise .34s var(--spring-bounce)
+    }
+
+    @keyframes viewin {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    @keyframes viewrise {
+      from {
+        transform: translateY(8px)
+      }
+
+      to {
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(.98)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+      }
+    }
+
+    .stagger>* {
+      animation: rise .5s var(--spring-bounce) both;
+      animation-delay: calc(min(var(--i, 0), 12)*26ms)
+    }
+
+    .btn {
+      transition: transform .22s var(--spring), background-color .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease
+    }
+
+    .btn:active {
+      transform: scale(.96)
+    }
+
+    .card-lift {
+      transition: transform .28s var(--spring), border-color .28s ease, box-shadow .28s ease;
+      overflow: hidden
+    }
+
+    .card-lift:hover {
+      transform: scale(1.018)
+    }
+
+    .card-lift::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, .09) 50%, transparent 58%);
+      transform: translateX(-130%);
+      transition: transform .8s var(--spring);
+      opacity: 0
+    }
+
+    .card-lift:hover::before {
+      opacity: 1;
+      transform: translateX(130%)
+    }
+
+    /* cursor-tracked specular highlight on glass cards (pointer position via JS) */
+    .card::after,
+    .pack-card::after,
+    .icon-cell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .09), rgba(255, 255, 255, 0) 65%);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+
+    .card:hover::after,
+    .pack-card:hover::after,
+    .icon-cell:hover::after {
+      opacity: 1
+    }
+
+    /* skeleton shimmer + thumbnail fade-in */
+    @keyframes shimmer {
+      from {
+        background-position: 200% 0
+      }
+
+      to {
+        background-position: -200% 0
+      }
+    }
+
+    .icon-cell:not(.cell-loaded)::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .07) 50%, transparent 70%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s linear infinite;
+    }
+
+    .icon-cell.cell-loaded::before {
+      display: none
+    }
+
+    .icon-cell img,
+    .pack-banner img {
+      opacity: 0;
+      transition: opacity .35s ease
+    }
+
+    .icon-cell img.img-in,
+    .pack-banner img.img-in {
+      opacity: 1
+    }
+
+    /* sidebar rows: gradient bar slides in */
+    .nav-row {
+      transition: background .2s ease, color .2s ease, transform .18s var(--spring)
+    }
+
+    .nav-row:active {
+      transform: scale(.97)
+    }
+
+    .nav-row .bar {
+      transition: transform .3s var(--spring), background .2s ease, opacity .2s ease;
+      transform: translateX(-4px);
+      opacity: 0
+    }
+
+    .nav-row.sel .bar {
+      transform: translateX(0);
+      opacity: 1
+    }
+
+    /* --- iOS toggle switches (pill track + sliding knob, accent fill) --- */
+    .switch {
+      width: 51px;
+      height: 31px;
+      flex: 0 0 51px
+    }
+
+    .switch .tr {
+      background: rgba(120, 120, 128, .36);
+      transition: background .3s var(--spring);
+      box-shadow: inset 0 0 0 .5px rgba(255, 255, 255, .08)
+    }
+
+    .switch .tr:before {
+      width: 27px;
+      height: 27px;
+      left: 2px;
+      top: 2px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .4), 0 0 0 .5px rgba(0, 0, 0, .08);
+      transition: transform .3s var(--spring-bounce)
+    }
+
+    .switch input:checked+.tr {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25)
+    }
+
+    .switch input:checked+.tr:before {
+      transform: translateX(20px)
+    }
+
+    .switch:active .tr:before {
+      transform: scaleX(1.08)
+    }
+
+    .switch input:checked:active+.tr:before {
+      transform: translateX(20px) scaleX(1.08)
+    }
+
+    /* --- iOS segmented control with sliding frosted indicator --- */
+    .seg {
+      position: relative
+    }
+
+    .seg-thumb {
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      border-radius: 6px;
+      pointer-events: none;
+      z-index: 0;
+      background: rgba(255, 255, 255, .14);
+      -webkit-backdrop-filter: blur(8px) saturate(160%);
+      backdrop-filter: blur(8px) saturate(160%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), inset 0 0 0 .5px rgba(255, 255, 255, .10), 0 1px 4px rgba(0, 0, 0, .35);
+      transition: left .32s var(--spring), width .32s var(--spring), opacity .2s ease;
+    }
+
+    .seg button {
+      position: relative;
+      z-index: 1
+    }
+
+    .seg button.sel {
+      background: transparent
+    }
+
+    .packs-seg {
+      width: 170px;
+      flex: 0 0 170px
+    }
+
+    /* --- iOS sheets: slide up from bottom, drag handle, dimmed backdrop --- */
+    .modal-overlay {
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(0, 0, 0, .45);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      animation: fadein .22s ease
+    }
+
+    .modal-overlay.closing {
+      animation: fadeout .22s var(--spring) forwards
+    }
+
+    .modal-overlay.closing .modal {
+      animation: sheetdown .22s var(--spring) forwards
+    }
+
+    .modal {
+      position: relative;
+      width: min(640px, 100%);
+      max-width: 100%;
+      max-height: 86vh;
+      border-radius: 24px 24px 0 0;
+      padding-top: 32px;
+      background:
+        radial-gradient(130% 100% at 18% 0%, rgba(255, 255, 255, .10), rgba(255, 255, 255, 0) 55%),
+        var(--card);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-bottom: 0;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), 0 -12px 40px rgba(0, 0, 0, .5);
+      animation: sheetup .4s var(--spring-bounce);
+    }
+
+    .modal::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, .28)
+    }
+
+    @keyframes sheetup {
+      from {
+        transform: translateY(64px);
+        opacity: .5
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1
+      }
+    }
+
+    @keyframes sheetdown {
+      to {
+        transform: translateY(64px);
+        opacity: 0
+      }
+    }
+
+    @keyframes fadeout {
+      to {
+        opacity: 0
+      }
+    }
+
+    .success-card {
+      animation: pop .45s var(--spring-bounce)
+    }
+
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(.9) translateY(12px)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0)
+      }
+    }
+
+    /* progress + scroll frost edge */
+    .progress>div {
+      background: linear-gradient(90deg, var(--blue), #5AA9FF);
+      transition: width .35s var(--spring)
+    }
+
+    .detail {
+      transition: box-shadow .3s ease
+    }
+
+    .detail.scrolled {
+      box-shadow: inset 0 26px 26px -26px rgba(0, 0, 0, .7)
+    }
+
+    /* layout helpers for responsive stacking */
+    .qa-row {
+      display: flex
+    }
+
+    .home-packs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px
+    }
+
+    .apply-cols {
+      display: flex;
+      align-items: flex-start
+    }
+
+    .batch-cols {
+      display: flex;
+      align-items: flex-start
+    }
+
+    /* --- iOS floating glass tab bar (phone only) --- */
+    .tabbar {
+      display: none
+    }
+
+    @media (max-width: 1060px) {
+      .detail-inner {
+        padding: 24px 20px;
+      }
+
+      .apply-cols,
+      .batch-cols {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+
+      .apply-cols > div,
+      .batch-cols > div {
+        max-width: 100% !important;
+        flex: 1 1 100% !important;
+        width: 100% !important;
+      }
+
+      .qa-row {
+        flex-wrap: wrap;
+      }
+
+      .qa-row > * {
+        flex: 1 1 200px !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        --pad: 16px;
+      }
+
+      .sidebar {
+        width: 68px;
+        flex: 0 0 68px;
+      }
+
+      .sidebar .brand .bname,
+      .sidebar .brand .bsub,
+      .sidebar .brand .vpill,
+      .sidebar .nav-group,
+      .sidebar .nav-row .lbl,
+      .sidebar .nav-row .badge,
+      .sidebar .nav-row .newbadge,
+      .sidebar .side-foot {
+        display: none !important;
+      }
+
+      .sidebar .nav-row {
+        justify-content: center;
+        padding: 10px 0;
+      }
+
+      .sidebar .nav-row .bar {
+        position: absolute;
+        left: 0;
+        top: 8px;
+        bottom: 8px;
+      }
+
+      .qa-row {
+        flex-direction: column;
+      }
+
+      .pack-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      }
+    }
+
+    @media (max-width: 580px) {
+      .sidebar {
+        display: none;
+      }
+
+      .detail {
+        padding-bottom: 96px;
+      }
+
+      .detail-inner {
+        padding: 16px 12px;
+      }
+
+      h1.title {
+        font-size: 24px;
+      }
+
+      .pack-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .icon-grid {
+        grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+        gap: 10px;
+      }
+
+      .searchbar {
+        flex-wrap: wrap;
+      }
+
+      .packs-seg {
+        width: 100%;
+        flex: 1 1 100%;
+      }
+    }
+
+      .modal {
+        max-height: 92vh
+      }
+
+      .tabbar {
+        display: flex;
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+        z-index: 60;
+        background: rgba(28, 28, 34, .62);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 24px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), 0 8px 28px rgba(0, 0, 0, .5);
+        padding: 6px 4px;
+      }
+
+      .tabbar .tab {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        padding: 6px 0 4px;
+        color: var(--secondary);
+        position: relative;
+        border-radius: 16px
+      }
+
+      .tabbar .tab.sel {
+        color: var(--accent)
+      }
+
+      .tabbar .tlab {
+        font-size: 10px;
+        font-weight: 600
+      }
+
+      .tabbar .tdot {
+        position: absolute;
+        top: 2px;
+        right: calc(50% - 20px);
+        font-size: 8px;
+        font-weight: 700;
+        background: rgba(255, 255, 255, .14);
+        padding: 1px 4px;
+        border-radius: 999px
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important
+      }
+
+      .stagger>* {
+        animation: none;
+        opacity: 1
+      }
+
+      .icon-cell img,
+      .pack-banner img {
+        opacity: 1
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="detail" id="detail">
+      <div class="detail-inner fade" id="view"></div>
+    </main>
+  </div>
+  <div id="modal-root"></div>
+  <div id="overlay-root"></div>
+  <nav class="tabbar" id="tabbar" aria-label="Primary"></nav>
+  <script>
+    "use strict";
+    /* ================= SF Symbol stand-ins (inline SVG) ================= */
+    const ICONS = {
+      "house.fill": '<path d="M12 3.2 21 11v9.2a1.5 1.5 0 0 1-1.5 1.5h-4.9v-6.2h-5.2v6.2H4.5A1.5 1.5 0 0 1 3 20.2V11Z"/>',
+      "square.grid.3x3.fill": '<g><rect x="3" y="3" width="5.4" height="5.4" rx="1.2"/><rect x="9.3" y="3" width="5.4" height="5.4" rx="1.2"/><rect x="15.6" y="3" width="5.4" height="5.4" rx="1.2"/><rect x="3" y="9.3" width="5.4" height="5.4" rx="1.2"/><rect x="9.3" y="9.3" width="5.4" height="5.4" rx="1.2"/><rect x="15.6" y="9.3" width="5.4" height="5.4" rx="1.2"/><rect x="3" y="15.6" width="5.4" height="5.4" rx="1.2"/><rect x="9.3" y="15.6" width="5.4" height="5.4" rx="1.2"/><rect x="15.6" y="15.6" width="5.4" height="5.4" rx="1.2"/></g>',
+      "star.fill": '<path d="M12 2.6l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17l-5.7 3.1 1.2-6.4L2.8 9.3l6.4-.8Z"/>',
+      "star": '<path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" d="M12 3.4l2.6 5.5 6 .7-4.4 4.1 1.1 5.9L12 16.7l-5.3 2.9 1.1-5.9L3.4 9.6l6-.7Z"/>',
+      "star.slash": '<path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" d="M12 3.4l2.6 5.5 6 .7-4.4 4.1 1.1 5.9L12 16.7l-5.3 2.9 1.1-5.9L3.4 9.6l6-.7Z"/><path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M4 4l16 16"/>',
+      "star.slash.fill": '<path d="M12 2.6l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17l-5.7 3.1 1.2-6.4L2.8 9.3l6.4-.8Z"/><path stroke="#0C0E14" stroke-width="1.8" stroke-linecap="round" d="M4.5 4.5l15 15"/>',
+      "folder.badge.plus": '<path d="M3.5 6.5A2.5 2.5 0 0 1 6 4h3.4l2 2.5H18a2.5 2.5 0 0 1 2.5 2.5v8A2.5 2.5 0 0 1 18 19.5h-12A2.5 2.5 0 0 1 3.5 17Z"/><g fill="#0C0E14"><circle cx="17.5" cy="17.5" r="5.2"/></g><path stroke="#fff" stroke-width="1.6" stroke-linecap="round" d="M17.5 14.8v5.4M14.8 17.5h5.4"/>',
+      "square.stack.3d.up.fill": '<path d="M12 3 21 8l-9 5-9-5Z"/><path d="M4.5 12.5 12 16.7l7.5-4.2v3.3L12 20l-7.5-4.2Z"/><path d="M4.5 16.5 12 20.7l7.5-4.2" fill="none" stroke="currentColor" stroke-width="1.4"/>',
+      "wrench.and.screwdriver.fill": '<path d="M20.6 4.2a4.6 4.6 0 0 1-5.9 5.6L7 17.5a2.2 2.2 0 0 1-3.1-3.1l7.7-7.7A4.6 4.6 0 0 1 17.2 1l-2.7 2.7 2.4 2.4 2.7-2.7c.6.5 1 1.1 1 1.8ZM14.5 9.5l-5 5"/>',
+      "arrow.triangle.2.circlepath": '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 3.5v4h-4"/>',
+      "gearshape.fill": '<g><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8l1 2.2 2.4-.6 1 2.1 2.4.5.2 2.4 2 1.4-1 2.2.9 2.3-1.8 1.5-.4 2.4-2.3.7-1.4 2-2.4-.3-2 1.4-2.2-1-2.4-.3-1.6-2-.3-2.3-1.5-1.9 1-2.2-1.4-2 .6-2.4 2.1-1 .5-2.4 2.2-1Z" opacity=".92"/></g>',
+      "info.circle.fill": '<circle cx="12" cy="12" r="9.2"/><rect x="11" y="10.4" width="2" height="6.4" rx="1" fill="#0C0E14"/><circle cx="12" cy="7.6" r="1.2" fill="#0C0E14"/>',
+      "magnifyingglass": '<circle cx="10.5" cy="10.5" r="6.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M15.2 15.2 20.5 20.5"/>',
+      "xmark.circle.fill": '<circle cx="12" cy="12" r="9.2"/><path stroke="#0C0E14" stroke-width="1.8" stroke-linecap="round" d="M8.5 8.5l7 7M15.5 8.5l-7 7"/>',
+      "chevron.left": '<path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M14.5 5 8 12l6.5 7"/>',
+      "chevron.right": '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9.5 5 16 12l-6.5 7"/>',
+      "folder.fill": '<path d="M3.5 6.5A2.5 2.5 0 0 1 6 4h3.4l2 2.5H18a2.5 2.5 0 0 1 2.5 2.5v8A2.5 2.5 0 0 1 18 19.5h-12A2.5 2.5 0 0 1 3.5 17Z"/>',
+      "folder": '<path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M3.5 6.5A2.5 2.5 0 0 1 6 4h3.4l2 2.5H18a2.5 2.5 0 0 1 2.5 2.5v8A2.5 2.5 0 0 1 18 19.5h-12A2.5 2.5 0 0 1 3.5 17Z"/>',
+      "folder.badge.gearshape": '<path d="M3.5 6.5A2.5 2.5 0 0 1 6 4h3.4l2 2.5H18a2.5 2.5 0 0 1 2.5 2.5v8A2.5 2.5 0 0 1 18 19.5h-12A2.5 2.5 0 0 1 3.5 17Z"/><circle cx="17.5" cy="17" r="4.4" fill="#0C0E14"/><circle cx="17.5" cy="17" r="1.6" fill="#fff"/>',
+      "folder.fill.badge.plus": '<path d="M3.5 6.5A2.5 2.5 0 0 1 6 4h3.4l2 2.5H18a2.5 2.5 0 0 1 2.5 2.5v8A2.5 2.5 0 0 1 18 19.5h-12A2.5 2.5 0 0 1 3.5 17Z"/><circle cx="17.5" cy="17.5" r="5.2" fill="#0C0E14"/><path stroke="#fff" stroke-width="1.6" stroke-linecap="round" d="M17.5 14.8v5.4M14.8 17.5h5.4"/>',
+      "photo": '<rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="10" r="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M4.5 17.5 10 12l3.5 3.5L17 12l3.5 3.5"/>',
+      "photo.on.rectangle.angled": '<rect x="3" y="7" width="15" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 3.5 20.5 5.5v11l-5.5-2Z" fill="none" stroke="currentColor" stroke-width="1.6"/>',
+      "photo.badge.plus": '<rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="10" r="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.7" d="M4.5 17.5 10 12l3.5 3.5L17 12l2 2"/><circle cx="18" cy="17" r="4.6" fill="#0C0E14"/><path stroke="#fff" stroke-width="1.5" stroke-linecap="round" d="M18 14.8v4.4M15.8 17h4.4"/>',
+      "checkmark": '<path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.5 9.5 17.5 19.5 6.5"/>',
+      "checkmark.circle.fill": '<circle cx="12" cy="12" r="9.2"/><path fill="none" stroke="#0C0E14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7.5 12.3l3 3 6-6.6"/>',
+      "sparkles": '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/><path d="M18.5 15.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9Z"/>',
+      "terminal": '<rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M7 9.5 10 12l-3 2.5M12.5 14.5H17"/>',
+      "terminal.fill": '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path fill="#0C0E14" d="M7 9.5 10 12l-3 2.5M12.5 14.5H17" stroke="#0C0E14" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+      "link": '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M10 14a4.5 4.5 0 0 0 6.4.4l2.4-2.4a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2M14 10a4.5 4.5 0 0 0-6.4-.4l-2.4 2.4a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/>',
+      "shield.lefthalf.filled": '<path d="M12 2.8 19 5.5v6c0 4.8-3 8.4-7 10-4-1.6-7-5.2-7-10v-6Z"/><path d="M12 2.8v18.7c-4-1.6-7-5.2-7-10v-6Z" fill="#0C0E14" opacity=".35"/>',
+      "person.fill": '<circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0Z"/>',
+      "person.crop.circle.fill": '<circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.5" r="3" fill="#0C0E14"/><path d="M6 19.5a6.5 6.5 0 0 1 12 0Z" fill="#0C0E14"/>',
+      "scalemass.fill": '<path d="M12 4v16M8 20h8M12 6L5 8m7-2 7 2M5 8l-2.5 6a3 3 0 0 0 5 0Zm14 0-2.5 6a3 3 0 0 0 5 0Z"/>',
+      "arrow.up.right": '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/>',
+      "square.and.arrow.up": '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 13.5v6a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 19.5v-6"/>',
+      "arrow.clockwise": '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 3.5v4h-4"/>',
+      "arrow.counterclockwise": '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 3.5v4h4"/>',
+      "plus.square.fill": '<rect x="3" y="3" width="18" height="18" rx="4"/><path stroke="#0C0E14" stroke-width="2" stroke-linecap="round" d="M12 8v8M8 12h8"/>',
+      "arrow.right": '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 12h15M13.5 6 19.5 12l-6 6"/>',
+      "questionmark.folder.fill": '<path d="M3.5 6.5A2.5 2.5 0 0 1 6 4h3.4l2 2.5H18a2.5 2.5 0 0 1 2.5 2.5v8A2.5 2.5 0 0 1 18 19.5h-12A2.5 2.5 0 0 1 3.5 17Z"/><text x="12" y="16.5" font-size="9" font-weight="700" text-anchor="middle" fill="#0C0E14">?</text>',
+      "pencil": '<path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19Z"/>',
+      "trash": '<path d="M5 7h14M10 7V5a1.5 1.5 0 0 1 1.5-1.5h1A1.5 1.5 0 0 1 14 5v2M6.5 7l.8 12a2 2 0 0 0 2 1.9h5.4a2 2 0 0 0 2-1.9l.8-12M10 11v6M14 11v6"/>',
+      "clock": '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 7v5l3.5 2"/>',
+      "textformat": '<path d="M5 6V4.5h14V6M12 4.5V20M9 20h6"/>',
+      "externaldrive.fill": '<rect x="3" y="8" width="18" height="10" rx="2.5"/><path stroke="#0C0E14" stroke-width="1.6" stroke-linecap="round" d="M7 13h.01M17 13h.01"/>',
+      "app.fill": '<rect x="3" y="3" width="18" height="18" rx="4.5"/><g fill="#0C0E14"><circle cx="8.5" cy="8.5" r="1.6"/><circle cx="15.5" cy="8.5" r="1.6"/><circle cx="8.5" cy="15.5" r="1.6"/><circle cx="15.5" cy="15.5" r="1.6"/></g>',
+      "app.dashed": '<rect x="3" y="3" width="18" height="18" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-dasharray="3.5 3"/>',
+      "square.grid.2x2": '<rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="1.5"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="13" width="7.5" height="7.5" rx="1.5"/>',
+      "exclamationmark.triangle.fill": '<path d="M12 3.5 22 20.5H2Z"/><path stroke="#0C0E14" stroke-width="1.8" stroke-linecap="round" d="M12 9.5v5"/><circle cx="12" cy="17.2" r="1.1" fill="#0C0E14"/>',
+      "doc.on.doc": '<path d="M8 3.5h9.5A1.5 1.5 0 0 1 19 5v12.5a1.5 1.5 0 0 1-1.5 1.5H8A1.5 1.5 0 0 1 6.5 17.5V5A1.5 1.5 0 0 1 8 3.5Z"/><path fill="none" stroke="currentColor" stroke-width="1.6" d="M5 8.5v9A1.5 1.5 0 0 0 6.5 19h9"/>',
+      "bubble.left.and.bubble.right.fill": '<rect x="2.5" y="6" width="11" height="9" rx="3"/><rect x="10.5" y="10" width="11" height="9" rx="3" opacity=".75"/>',
+      "apple.logo": '<path d="M16.7 12.6c0-3 2.5-4.5 2.6-4.6-1.4-2.1-3.6-2.4-4.4-2.4-1.9-.2-3.7 1.1-4.6 1.1-.9 0-2.4-1.1-3.9-1.1-2 0-3.9 1.2-4.9 3-2.1 3.6-.5 9 1.5 11.9.9 1.4 2.1 2.9 3.6 2.8 1.5-.1 2-.9 3.8-.9s2.3.9 3.8.9c1.6 0 2.6-1.4 3.6-2.8.9-1.3 1.2-2 1.2-2.1-.9-.4-1.7-2.3-1.7-4.8ZM14.2 4.6c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.6.8-3.5 1.8-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.6-1.7Z"/>',
+      "plus.circle.fill": '<circle cx="12" cy="12" r="9.2"/><path stroke="#0C0E14" stroke-width="1.8" stroke-linecap="round" d="M12 8v8M8 12h8"/>',
+      "arrow.up.forward.app": '<path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M9 7h8v8"/><rect x="3" y="13" width="10" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>',
+      "xmark.circle": '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M8.5 8.5l7 7M15.5 8.5l-7 7"/>',
+      "square.and.arrow.down.on.square.fill": '<rect x="3" y="3" width="18" height="18" rx="4"/><path fill="#0C0E14" d="M12 7v8M8.5 11.5 12 15l3.5-3.5M7 17.5h10" stroke="#0C0E14" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+      "checkmark.seal.fill": '<path d="M12 2.5 14 4.6l2.6-.6 1 2.5 2.5 1-.6 2.6 1.5 2.2-1.5 2.2.6 2.6-2.5 1-1 2.5-2.6-.6L12 21.5 10 19.4l-2.6.6-1-2.5-2.5-1 .6-2.6L3 12.1l1.5-2.2-.6-2.6 2.5-1 1-2.5 2.6.6Z"/><path fill="#0C0E14" d="M8.5 12.2l2.4 2.4 4.6-4.8" stroke="#0C0E14" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>',
+    };
+    function ic(name, size) {
+      size = size || 16;
+      const inner = ICONS[name] || ICONS["info.circle.fill"];
+      return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${inner}</svg>`;
+    }
+    /* ================= helpers ================= */
+    const $ = s => document.querySelector(s);
+    const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    function hexA(hex, a) {
+      const h = String(hex || "#6366F1").replace("#", "");
+      const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+      return `rgba(${r},${g},${b},${a})`;
+    }
+    function packGrad(hex) { return `linear-gradient(135deg, ${hexA(hex, .75)}, ${hexA(hex, .25)})`; }
+    function thumb(id, size) { return `/api/thumb?id=${encodeURIComponent(id)}&size=${size || 128}`; }
+    async function api(method, path, body) {
+      const r = await fetch(path, { method, headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+      return r.json();
+    }
+    function cap(s) { return String(s || "").replace(/(^|[\s-])\S/g, c => c.toUpperCase()); }
+    function displayName(path) { const p = String(path || "").replace(/\/+$/, ""); return p.split("/").pop() || p; }
+    function parentPath(path) { const p = String(path || "").replace(/\/+$/, ""); const i = p.lastIndexOf("/"); return i > 0 ? p.slice(0, i) : "/"; }
+
+    /* ================= state & router ================= */
+    let S = null;            // server state snapshot
+    let V = {};              // view-local state, reset on route change
+    const ROUTES = {
+      "home": { nav: "Home", icon: "house.fill" },
+      "packs": { nav: "Icon Packs", icon: "square.grid.3x3.fill" },
+      "favorites": { nav: "Favorites", icon: "star.fill" },
+      "apply": { nav: "Apply Icon", icon: "folder.badge.plus" },
+      "batch": { nav: "Batch Apply", icon: "square.stack.3d.up.fill" },
+      "builder": { nav: "Pack Builder", icon: "wrench.and.screwdriver.fill" },
+      "updates": { nav: "Updates", icon: "arrow.triangle.2.circlepath" },
+      "settings": { nav: "Settings", icon: "gearshape.fill" },
+      "about": { nav: "About", icon: "info.circle.fill" },
+      "quick": { nav: "Quick Apply", icon: "folder.badge.gearshape" },
+    };
+    function curRoute() {
+      const h = location.hash.replace(/^#\/?/, "");
+      const [name, arg] = h.split("/");
+      return { name: ROUTES[name] ? name : "home", arg: arg || null };
+    }
+    function go(route) { location.hash = "#/" + route; }
+    async function refresh() {
+      try { S = await (await fetch("/api/state")).json(); } catch (e) { S = S || { packs: [], favorites: [], settings: {}, recents: [], statusMessage: "" }; }
+      renderSidebar();
+      renderView(true);
+    }
+    function renderSidebar() {
+      if (!S) return;
+      const favN = (S.favorites || []).length;
+      const row = (key, shortcut) => {
+        const r = ROUTES[key];
+        const sel = curRoute().name === key;
+        let badge = "";
+        if (key === "packs") badge = `<span class="badge">${Math.max(S.packCount || 0, 6)}</span>`;
+        if (key === "favorites" && favN > 0) badge = `<span class="badge">${favN}</span>`;
+        if (key === "updates" && S.updateAvailable) badge = `<span class="newbadge"><span class="dot"></span><span>NEW</span></span>`;
+        return `<button class="nav-row${sel ? " sel" : ""}" data-go="${key}"><span class="bar"></span><span class="ic">${ic(r.icon, 13)}</span><span class="lbl">${r.nav}</span>${badge}</button>`;
+      };
+      const status = S.statusMessage ? `<div class="status">${ic(S.showSuccess ? "checkmark.circle.fill" : "info.circle.fill", 12)}<span>${esc(S.statusMessage)}</span></div>` : "";
+      $("#sidebar").innerHTML = `
+    <div class="brand">
+      <img src="/appicon.png" alt="MCons">
+      <div><div class="bname">MCons</div><div class="bsub">Folder Icons</div></div>
+      <span class="vpill">v${esc(S.version || "1.0.0")}</span>
+    </div>
+    <div class="side-div"></div>
+    <nav class="nav">
+      <div class="nav-group">DISCOVER</div>
+      ${row("home")}${row("packs")}${row("favorites")}${row("apply")}${row("batch")}${row("builder")}
+      <div class="nav-group">PREFERENCES</div>
+      ${row("updates")}${row("settings")}${row("about")}
+    </nav>
+    <div class="side-foot">
+      <button class="quick-link" data-go="quick">⚡ Quick Apply</button>
+      ${status}
+    </div>`;
+      document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+      renderTabbar();
+    }
+    function renderView(keep) {
+      const r = curRoute();
+      const el = $("#view");
+      const html = VIEWS[r.name] ? VIEWS[r.name](r.arg) : VIEWS.home();
+      if (!keep) { el.classList.remove("fade"); void el.offsetWidth; el.classList.add("fade"); }
+      el.innerHTML = html;
+      if (VIEWS[r.name + "Bind"]) VIEWS[r.name + "Bind"](r.arg);
+      initSegThumbs();
+    }
+    /* ================= modals ================= */
+    function openModal(html, width) {
+      $("#modal-root").innerHTML = `<div class="modal-overlay" id="modal-ov"><div class="modal" style="${width ? `width:${width}px;` : ""}">${html}</div></div>`;
+      $("#modal-ov").addEventListener("click", e => { if (e.target.id === "modal-ov") closeModal(); });
+    }
+    function closeModal() {
+      const ov = $("#modal-ov");
+      if (ov) { ov.classList.add("closing"); setTimeout(() => { if ($("#modal-ov") === ov) $("#modal-root").innerHTML = ""; }, 220); }
+      else { $("#modal-root").innerHTML = ""; }
+    }
+    /* iOS segmented control: sliding frosted thumb follows the selected segment */
+    function initSegThumbs() {
+      document.querySelectorAll(".seg").forEach(seg => {
+        let thumb = seg.querySelector(":scope > .seg-thumb");
+        if (!thumb) { thumb = document.createElement("span"); thumb.className = "seg-thumb"; seg.prepend(thumb); }
+        const sel = seg.querySelector("button.sel");
+        if (!sel) { thumb.style.opacity = "0"; return; }
+        thumb.style.opacity = "1";
+        thumb.style.left = sel.offsetLeft + "px";
+        thumb.style.width = sel.offsetWidth + "px";
+      });
+    }
+    window.addEventListener("resize", initSegThumbs);
+    /* iOS floating glass tab bar (phone widths only — see .tabbar CSS) */
+    const TABS = [["home", "house.fill", "Home"], ["packs", "square.grid.3x3.fill", "Packs"], ["favorites", "star.fill", "Favorites"], ["apply", "folder.badge.plus", "Apply"], ["more", "square.grid.2x2", "More"]];
+    function renderTabbar() {
+      const el = $("#tabbar"); if (!el) return;
+      const cur = curRoute().name;
+      el.innerHTML = TABS.map(([k, icn, label]) => {
+        const sel = cur === k || (k === "more" && ["batch", "builder", "updates", "settings", "about", "quick"].includes(cur));
+        return `<button class="tab${sel ? " sel" : ""}" data-tab="${k}"><span class="tic">${ic(icn, 22)}</span><span class="tlab">${label}</span>${k === "packs" ? `<span class="tdot">${Math.max(S.packCount || 0, 6)}</span>` : ""}</button>`;
+      }).join("");
+      el.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => {
+        if (b.dataset.tab === "more") { openMoreSheet(); } else go(b.dataset.tab);
+      }));
+    }
+    function openMoreSheet() {
+      const items = [["batch", "square.stack.3d.up.fill", "Batch Apply"], ["builder", "wrench.and.screwdriver.fill", "Pack Builder"], ["updates", "arrow.triangle.2.circlepath", "Updates"], ["settings", "gearshape.fill", "Settings"], ["about", "info.circle.fill", "About"], ["quick", "folder.badge.gearshape", "Quick Apply"]];
+      openModal(`<div style="display:flex;flex-direction:column;gap:4px">${items.map(([k, icn, label]) => `<button class="link-row" data-more="${k}" style="padding:12px 8px;border-radius:10px"><span style="color:var(--accent)">${ic(icn, 18)}</span><span class="body">${label}</span><span style="margin-left:auto;color:var(--tertiary)">${ic("chevron.right", 12)}</span></button>`).join("")}</div>`, 420);
+      document.querySelectorAll("[data-more]").forEach(b => b.addEventListener("click", () => { closeModal(); go(b.dataset.more); }));
+    }
+    function showAlert(title, msg, okLabel) {
+      openModal(`<h2 class="title2" style="margin-bottom:12px">${esc(title)}</h2><div class="body" style="color:var(--secondary);white-space:pre-wrap">${esc(msg)}</div><div style="display:flex;justify-content:flex-end;margin-top:24px"><button class="btn btn-primary" id="alert-ok">${esc(okLabel || "OK")}</button></div>`, 420);
+      $("#alert-ok").addEventListener("click", closeModal);
+    }
+    function showSuccessOverlay() {
+      $("#overlay-root").innerHTML = `<div class="success-overlay" id="succ-ov"><div class="glass success-card">
+    <div style="color:var(--success);display:flex;justify-content:center">${ic("checkmark.circle.fill", 64)}</div>
+    <div class="title" style="font-size:22px;margin-top:24px">Icon Applied!</div>
+    <div class="body" style="color:rgba(255,255,255,.8);margin-top:8px">Your ${V.isApp ? "application" : "folder"} now has a custom icon</div>
+    <div style="margin-top:24px"><button class="btn btn-primary" style="background:#00B894" id="succ-done">Done</button></div>
+  </div></div>`;
+      const hide = () => { $("#overlay-root").innerHTML = ""; };
+      $("#succ-done").addEventListener("click", hide);
+      $("#succ-ov").addEventListener("click", e => { if (e.target.id === "succ-ov") hide(); });
+      setTimeout(hide, 3000);
+    }
+    /* ---- folder browse modal (adapts NSOpenPanel) ---- */
+    function openBrowseModal(opts) {
+      // opts: {title, multi, onPick(paths), onPickOne(path)}
+      let cur = opts.start || (S && S.recents && S.recents[0] ? parentPath(S.recents[0]) : "");
+      const picked = new Set();
+      const draw = async () => {
+        const d = await api("POST", "/api/browse", { dir: cur });
+        const rows = d.entries.map(e => {
+          const on = picked.has(e.path);
+          return `<div class="row-hover" style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;cursor:pointer" data-path="${esc(e.path)}">
+        ${opts.multi ? `<input type="checkbox" ${on ? "checked" : ""} data-ck="${esc(e.path)}" style="accent-color:var(--accent)">` : ""}
+        <span style="color:var(--accent)">${ic("folder.fill", 16)}</span>
+        <span class="body">${esc(e.name)}</span>
+        <span class="cap" style="margin-left:auto">${esc(e.path)}</span></div>`;
+        }).join("");
+        openModal(`
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div><div class="title2">${esc(opts.title || "Choose Folder")}</div><div class="cap">${esc(d.current)}</div></div>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button class="btn btn-bordered" id="br-native">${ic("folder.fill", 12)} OS Dialog</button>
+          ${d.parent ? `<button class="btn btn-bordered" id="br-up">↑ Parent</button>` : ""}
+          <button class="btn btn-bordered" id="br-home">Home</button>
+        </div>
+      </div>
+      <div style="max-height:340px;overflow-y:auto">${rows || '<div class="cap" style="padding:24px;text-align:center">No subfolders here.</div>'}</div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+        <button class="btn btn-bordered" id="br-cancel">Cancel</button>
+        ${opts.multi ? `<button class="btn btn-primary" id="br-add">Add Selected</button>` : ""}
+        <button class="btn btn-primary" id="br-this">Use This Folder</button>
+      </div>`, 560);
+        $("#br-cancel").addEventListener("click", closeModal);
+        const brNative = $("#br-native");
+        if (brNative) brNative.addEventListener("click", async () => {
+          try {
+            const res = await api("POST", "/api/pick-folder", {});
+            if (res && res.path) {
+              closeModal();
+              opts.multi ? opts.onPick([res.path]) : opts.onPickOne(res.path);
+            }
+          } catch(e) {}
+        });
+        $("#br-home").addEventListener("click", () => { cur = d.home; draw(); });
+        const up = $("#br-up"); if (up) up.addEventListener("click", () => { cur = d.parent; draw(); });
+        document.querySelectorAll("[data-path]").forEach(rowEl => rowEl.addEventListener("click", e => {
+          if (e.target.tagName === "INPUT") return;
+          cur = rowEl.dataset.path; draw();
+        }));
+        document.querySelectorAll("[data-ck]").forEach(cb => cb.addEventListener("click", e => {
+          e.stopPropagation();
+          if (cb.checked) picked.add(cb.dataset.ck); else picked.delete(cb.dataset.ck);
+        }));
+        const addBtn = $("#br-add"); if (addBtn) addBtn.addEventListener("click", () => { closeModal(); opts.onPick([...picked]); });
+        $("#br-this").addEventListener("click", () => { closeModal(); opts.multi ? opts.onPick([cur]) : opts.onPickOne(cur); });
+      };
+      draw();
+    }
+    /* ---- export menu ---- */
+    function exportMenu(anchorBtn, iconId, tint) {
+      const old = $("#export-pop"); if (old) old.remove();
+      const r = anchorBtn.getBoundingClientRect();
+      const pop = document.createElement("div");
+      pop.id = "export-pop";
+      pop.style.cssText = `position:fixed;z-index:150;left:${r.left}px;top:${r.bottom + 4}px;background:var(--elevated);border:1px solid var(--border);border-radius:10px;padding:6px;min-width:230px;box-shadow:0 8px 24px rgba(0,0,0,.5)`;
+      pop.innerHTML = [
+        ["png", "Export PNG (1024×1024)...", "photo"],
+        ["icns", "Export macOS Icon (.icns)...", "app.fill"],
+        ["svg", "Export Original Vector (.svg)...", "square.and.arrow.up"],
+      ].map(([f, l, icn]) => `<button class="link-row" data-f="${f}" style="padding:8px;border-radius:6px"><span style="color:var(--secondary)">${ic(icn, 14)}</span><span class="body">${l}</span></button>`).join("");
+      document.body.appendChild(pop);
+      pop.querySelectorAll("[data-f]").forEach(b => b.addEventListener("click", () => {
+        pop.remove();
+        const a = document.createElement("a");
+        a.href = `/api/export?id=${encodeURIComponent(iconId)}&format=${b.dataset.f}${tint ? "&tint=" + encodeURIComponent(tint) : ""}`;
+        a.click();
+      }));
+      const off = e => { if (!pop.contains(e.target) && e.target !== anchorBtn) { pop.remove(); document.removeEventListener("click", off); } };
+      setTimeout(() => document.addEventListener("click", off), 0);
+    }
+
+    /* ================= shared view bits ================= */
+    function iconCell(icon, accent, selected, idx) {
+      const fav = (S.favorites || []).includes(icon.id);
+      return `<div class="icon-cell${selected ? " sel" : ""}${fav ? " faved" : ""}" data-icon="${esc(icon.id)}" style="--i:${(idx || 0) % 12};--accc:${accent};--acccb:${hexA(accent, .4)}">
+    <img src="${thumb(icon.id)}" alt="${esc(icon.name)}" loading="lazy" decoding="async">
+    <div class="nm">${esc(icon.name)}</div>
+    <button class="favstar" data-fav="${esc(icon.id)}" title="${fav ? "Remove Favorite" : "Add to Favorites"}">${ic(fav ? "star.fill" : "star", 12)}</button>
+  </div>`;
+    }
+    function bindIconCells(container, onPick, accent) {
+      container.querySelectorAll("[data-icon]").forEach(cell => {
+        cell.addEventListener("click", e => { if (e.target.closest("[data-fav]")) return; onPick(cell.dataset.icon); });
+      });
+      container.querySelectorAll("[data-fav]").forEach(btn => {
+        btn.addEventListener("click", async e => {
+          e.stopPropagation();
+          await api("POST", "/api/favorite", { id: btn.dataset.fav });
+          await refresh();
+        });
+      });
+    }
+    function actionBar(icon, accent, opts) {
+      // opts: {onApply, applyLabel, showUnfav}
+      const fav = (S.favorites || []).includes(icon.id);
+      return `<div class="frost-bar frost-bar-bottom" style="position:sticky;bottom:0;margin:0 calc(var(--pad)*-1) calc(var(--pad)*-1);padding:16px var(--pad);display:flex;align-items:center;gap:16px">
+    <img src="${thumb(icon.id)}" style="width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 2px 6px ${hexA(accent, .4)})">
+    <div><div class="headline">${esc(icon.name)}</div><div class="cap" style="color:${accent}">${opts && opts.subLabel ? esc(opts.subLabel) : "Selected Icon"}</div></div>
+    <div style="margin-left:auto;display:flex;gap:12px;align-items:center">
+      <button class="btn btn-bordered" id="ab-export">${ic("square.and.arrow.up", 14)} Export</button>
+      <button class="btn btn-bordered" id="ab-fav" style="color:${fav ? "var(--yellow)" : "var(--text)"}">${ic(fav ? "star.fill" : "star", 14)} ${fav ? (opts && opts.showUnfav ? "Unfavorite" : "Favorited") : "Favorite"}</button>
+      <button class="btn btn-primary" id="ab-apply" style="background:${accent};padding:12px 24px;font-size:15px">${esc((opts && opts.applyLabel) || "Apply to Folder")}</button>
+    </div>
+  </div>`;
+    }
+    function bindActionBar(icon, accent, handlers) {
+      const ex = $("#ab-export"); if (ex) ex.addEventListener("click", () => exportMenu(ex, icon.id, handlers.tint));
+      const fv = $("#ab-fav"); if (fv) fv.addEventListener("click", async () => { await api("POST", "/api/favorite", { id: icon.id }); await refresh(); });
+      const ap = $("#ab-apply"); if (ap) ap.addEventListener("click", handlers.onApply);
+    }
+    /* ================= views ================= */
+    const VIEWS = {};
+    VIEWS.home = () => {
+      const packs = (S.packs || []).slice(0, 3);
+      const recents = (S.recents || []).slice(0, 5);
+      const qa = (icon, title, sub, grad, route) => `
+    <button class="card card-lift" style="flex:1;padding:24px;text-align:center;--accc:#6C5CE7" data-go="${route}">
+      <div style="width:56px;height:56px;border-radius:10px;background:${grad};display:flex;align-items:center;justify-content:center;color:#fff;margin:0 auto 12px;box-shadow:0 3px 6px rgba(0,0,0,.15)">${ic(icon, 28)}</div>
+      <div class="headline">${title}</div><div class="cap" style="margin-top:2px">${sub}</div>
+    </button>`;
+      return `
+  <div style="text-align:center;padding:24px 0">
+    <img src="/appicon.png" style="width:96px;height:96px;margin:0 auto;filter:drop-shadow(0 5px 10px rgba(0,0,0,.2))">
+    <div class="title" style="margin-top:16px">MCons</div>
+    <div style="font-size:18px;font-weight:600;margin-top:8px"><span class="grad-text">Custom Folder Icons</span></div>
+    <div class="body" style="color:var(--secondary);margin-top:8px">Customize your folders with stunning icon packs</div>
+  </div>
+  <div style="margin-top:32px">
+    <h2 class="title2" style="margin-bottom:16px">Quick Actions</h2>
+    <div class="qa-row" style="gap:16px">
+      ${qa("folder.badge.plus", "Create & Style", "New folder with icon", "linear-gradient(135deg,#6C5CE7,#A29BFE)", "apply")}
+      ${qa("square.grid.3x3.fill", "Browse Packs", `${S.packCount || 0} packs available`, "linear-gradient(135deg,#00B894,#55EFC4)", "packs")}
+      ${qa("photo.on.rectangle.angled", "Custom Icon", "Use your own image", "linear-gradient(135deg,#E17055,#FDCB6E)", "apply")}
+    </div>
+  </div>
+  <div style="margin-top:32px">
+    <div style="display:flex;align-items:baseline"><h2 class="title2">Icon Packs</h2><button class="btn-ghost" style="margin-left:auto;font-size:13px" data-go="packs">View All</button></div>
+    <div class="home-packs stagger" style="gap:16px;margin-top:16px">
+      ${packs.map((p, idx) => `
+      <button class="card card-lift" style="--i:${idx % 12};text-align:left;padding:16px;--accc:${p.accentColorHex};min-width:0" data-pack="${esc(p.id)}">
+        <div style="display:flex;gap:8px;padding:8px 8px 12px;border-radius:10px;background:${packGrad(p.accentColorHex)};overflow:hidden">
+          ${p.icons.slice(0, 3).map(i => `<img src="${thumb(i.id)}" style="flex:1 1 0;min-width:0;max-width:33.33%;height:60px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))">`).join("")}
+        </div>
+        <div class="headline" style="margin-top:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(p.name)}</div>
+        <div class="cap" style="margin-top:2px">${p.icons.length} icons</div>
+      </button>`).join("")}
+    </div>
+  </div>
+  ${recents.length ? `<div style="margin-top:32px">
+    <h2 class="title2" style="margin-bottom:16px">Recent Folders</h2>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${recents.map(f => `
+      <button class="row-hover" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;text-align:left" data-recent="${esc(f)}">
+        <span style="color:var(--accent)">${ic("folder.fill", 32)}</span>
+        <span><span class="body" style="display:block">${esc(displayName(f))}</span><span class="cap" style="display:block">${esc(parentPath(f))}</span></span>
+        <span style="margin-left:auto;color:var(--tertiary)">${ic("chevron.right", 12)}</span>
+      </button>`).join("")}
+    </div>
+  </div>` : ""}
+  <div style="height:32px"></div>`;
+    };
+    VIEWS.homeBind = () => {
+      document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+      document.querySelectorAll("[data-pack]").forEach(b => b.addEventListener("click", () => go("packs/" + b.dataset.pack)));
+      document.querySelectorAll("[data-recent]").forEach(b => b.addEventListener("click", async () => {
+        await api("POST", "/api/select-target", { path: b.dataset.recent });
+        await refresh(); go("apply");
+      }));
+    };
+    /* ---- Icon Packs ---- */
+    VIEWS.packs = (arg) => {
+      if (arg) { V.packDetail = (S.packs || []).find(p => p.id === arg) || null; }
+      else { V.packDetail = null; }
+      if (V.packDetail) return packDetailHtml(V.packDetail);
+      const q = (V.packsQ || "").toLowerCase();
+      const cat = V.packsCat || "All";
+      const scope = V.packsScope || "packs";
+      const cats = ["All", "Anime", "Dev & Tech", "Apps", "System", "Custom"];
+      let packs = S.packs || [];
+      if (cat !== "All") packs = packs.filter(p => packCategory(p) === cat);
+      if (q) packs = packs.filter(p => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.icons.some(i => i.name.toLowerCase().includes(q)));
+      const totalIcons = (S.packs || []).reduce((a, p) => a + p.icons.length, 0);
+      const matching = (S.packs || []).flatMap(p => p.icons).filter(i => !q || i.name.toLowerCase().includes(q) || i.packId.toLowerCase().includes(q));
+      return `
+  <div style="display:flex;align-items:flex-start;gap:16px">
+    <div><h1 class="title">Icon Packs</h1><div class="body" style="color:var(--secondary);margin-top:8px">Choose a pack or search across ${totalIcons}+ vector desktop icons</div></div>
+    <button class="btn btn-primary" style="margin-left:auto;border-radius:999px;padding:7px 12px;font-size:11px" data-go="builder">${ic("plus.square.fill", 13)} Create Pack</button>
+  </div>
+  <div class="searchbar" style="margin-top:24px">
+    <span style="color:var(--secondary);display:flex">${ic("magnifyingglass", 16)}</span>
+    <input id="packs-search" placeholder="${scope === "packs" ? "Search packs or characters..." : "Search all individual icons (e.g. Gojo, Python, Chrome)..."} " value="${esc(V.packsQ || "")}">
+    ${q ? `<button id="packs-clear" style="color:var(--secondary);display:flex">${ic("xmark.circle.fill", 16)}</button>` : ""}
+    <div style="width:1px;height:18px;background:rgba(255,255,255,.14)"></div>
+    <div class="seg packs-seg">
+      <button class="${scope === "packs" ? "sel" : ""}" data-scope="packs" style="flex:1">Packs</button>
+      <button class="${scope === "allIcons" ? "sel" : ""}" data-scope="allIcons" style="flex:1">All Icons</button>
+    </div>
+  </div>
+  ${scope === "packs" ? `<div style="display:flex;gap:8px;margin-top:16px;overflow-x:auto">${cats.map(c => `<button class="chip${cat === c ? " sel" : ""}" data-cat="${c}">${c}</button>`).join("")}</div>` : ""}
+  ${scope === "allIcons" ? `
+    <div class="headline" style="color:var(--secondary);margin-top:24px">Matching Icons (${matching.length})</div>
+    <div class="icon-grid stagger" style="margin-top:12px">
+      ${matching.map((i, idx) => `<div style="--i:${idx % 12};background:var(--surface);border-radius:10px;padding:8px;text-align:center;cursor:pointer" data-apply-icon="${esc(i.id)}">
+        <div style="background:var(--card);border-radius:10px;height:100px;display:flex;align-items:center;justify-content:center;padding:10px"><img src="${thumb(i.id)}" alt="${esc(i.name)}" loading="lazy" decoding="async" style="max-width:80px;max-height:80px;object-fit:contain"></div>
+        <div class="capb" style="margin-top:6px;color:var(--text)">${esc(i.name)}</div>
+        <div style="font-size:9px;color:var(--secondary)">${esc(i.packId)}</div>
+      </div>`).join("")}
+    </div>` : `
+    <div class="pack-grid stagger" style="margin-top:24px">
+      ${packs.map((p, idx) => `
+      <button class="pack-card card-lift" data-pack="${esc(p.id)}" style="--i:${idx % 12};--accc:${p.accentColorHex}">
+        <div class="pack-banner" style="background:${packGrad(p.accentColorHex)}">
+          ${p.icons.slice(0, 4).map(i => `<img src="${thumb(i.id)}" alt="${esc(i.name)}" loading="lazy">`).join("")}
+        </div>
+        <div class="pack-info">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:18px;font-weight:600">${esc(p.name)}</span>
+            ${p.isCustom ? `<span class="pill" style="background:rgba(139,92,246,.2);color:#B79CFF">USER</span>` : ""}
+            <span class="count-pill" style="margin-left:auto">${p.icons.length}</span>
+          </div>
+          <div class="desc">${esc(p.description)}</div>
+          ${p.isCustom ? `<div style="margin-top:8px"><button class="btn btn-bordered" style="color:var(--error);border-color:rgba(244,63,94,.4);font-size:11px;padding:4px 10px" data-del-pack="${esc(p.id)}">Delete Pack</button></div>` : ""}
+        </div>
+      </button>`).join("")}
+    </div>`}`;
+    };
+    function packCategory(p) {
+      if (p.isCustom) return "Custom";
+      const anime = ["attack-on-titan", "black-clover", "chainsaw-man", "dandadan", "death-note", "demon-slayer", "dragon-ball-super", "fullmetal-alchemist-brotherhood", "jujutsu-kaisen", "kaiju-no-8", "my-hero-academia", "naruto", "one-piece", "pokemon", "solo-leveling"];
+      if (anime.includes(p.id)) return "Anime";
+      if (p.id === "dev-tech" || p.id === "developer-tech") return "Dev & Tech";
+      if (p.id === "google") return "Apps";
+      if (p.id === "macos-native-plus") return "System";
+      return "Other";
+    }
+    VIEWS.packsBind = () => {
+      if (V.packDetail) {
+        const pack = V.packDetail;
+        $("#detail-back").addEventListener("click", () => { V.packDetail = null; V.detailSel = null; V.detailQ = ""; go("packs"); });
+        const ds = $("#detail-search");
+        if (ds) ds.addEventListener("input", () => { V.detailQ = ds.value; renderView(true); const n = $("#detail-search"); n.focus(); n.setSelectionRange(n.value.length, n.value.length); });
+        const dc = $("#detail-clear"); if (dc) dc.addEventListener("click", () => { V.detailQ = ""; renderView(true); });
+        bindIconCells($("#detail-grid"), async id => { V.detailSel = id; renderView(true); }, pack.accentColorHex);
+        if (V.detailSel) {
+          const sel = pack.icons.find(i => i.id === V.detailSel);
+          if (sel) bindActionBar(sel, pack.accentColorHex, { onApply: async () => { await api("POST", "/api/select-icon", { id: sel.id }); await refresh(); go("apply"); } });
+        }
+        return;
+      }
+      const s = $("#packs-search");
+      if (s) s.addEventListener("input", () => { V.packsQ = s.value; renderView(true); const n = $("#packs-search"); n.focus(); n.setSelectionRange(n.value.length, n.value.length); });
+      const cl = $("#packs-clear"); if (cl) cl.addEventListener("click", () => { V.packsQ = ""; renderView(true); });
+      document.querySelectorAll("[data-scope]").forEach(b => b.addEventListener("click", () => { V.packsScope = b.dataset.scope; renderView(true); }));
+      document.querySelectorAll("[data-cat]").forEach(b => b.addEventListener("click", () => { V.packsCat = b.dataset.cat; renderView(true); }));
+      document.querySelectorAll("[data-pack]").forEach(b => b.addEventListener("click", () => go("packs/" + b.dataset.pack)));
+      document.querySelectorAll("[data-apply-icon]").forEach(b => b.addEventListener("click", async () => {
+        await api("POST", "/api/select-icon", { id: b.dataset.applyIcon }); await refresh(); go("apply");
+      }));
+      document.querySelectorAll("[data-del-pack]").forEach(b => b.addEventListener("click", async e => {
+        e.stopPropagation();
+        const pack = (S.packs || []).find(p => p.id === b.dataset.delPack);
+        openModal(`<h2 class="title2">Delete Custom Pack</h2><p class="body" style="color:var(--secondary);margin-top:12px">Are you sure you want to delete this custom pack? The files in Application Support will be removed.</p>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:24px"><button class="btn btn-bordered" id="del-cancel">Cancel</button><button class="btn btn-primary" style="background:var(--error)" id="del-ok">Delete '${esc(pack ? pack.name : "")}'</button></div>`, 420);
+        $("#del-cancel").addEventListener("click", closeModal);
+        $("#del-ok").addEventListener("click", async () => { await api("POST", "/api/delete-pack", { id: b.dataset.delPack }); closeModal(); await refresh(); });
+      }));
+      document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+    };
+    /* ---- Pack detail ---- */
+    function packDetailHtml(pack) {
+      const q = (V.detailQ || "").toLowerCase();
+      const icons = q ? pack.icons.filter(i => i.name.toLowerCase().includes(q)) : pack.icons;
+      const selId = V.detailSel || (S.selectedIcon && pack.icons.some(i => i.id === S.selectedIcon.id) ? S.selectedIcon.id : null);
+      const sel = selId ? pack.icons.find(i => i.id === selId) : null;
+      return `
+  <div class="frost-bar" style="position:sticky;top:calc(var(--pad)*-1);margin:calc(var(--pad)*-1) calc(var(--pad)*-1) 0;padding:24px var(--pad);z-index:5">
+    <div style="display:flex;align-items:center;gap:16px">
+      <button class="btn-ghost" id="detail-back" style="display:flex;align-items:center;gap:4px;font-size:14px;color:${pack.accentColorHex}">${ic("chevron.left", 14)} Packs</button>
+      <div style="width:1px;height:20px;background:rgba(255,255,255,.14)"></div>
+      <div><div style="font-size:18px;font-weight:600">${esc(pack.name)}</div><div class="cap">${esc(pack.description)}</div></div>
+      <span class="count-pill" style="margin-left:auto">${pack.icons.length} icons</span>
+    </div>
+  </div>
+  <div style="margin-top:24px">
+    <div class="searchbar">
+      <span style="color:var(--secondary);display:flex">${ic("magnifyingglass", 16)}</span>
+      <input id="detail-search" placeholder="Search icons in ${esc(pack.name)}..." value="${esc(V.detailQ || "")}">
+      ${q ? `<button id="detail-clear" style="color:var(--secondary);display:flex">${ic("xmark.circle.fill", 16)}</button>` : ""}
+    </div>
+    <div class="icon-grid stagger" style="margin-top:24px" id="detail-grid">
+      ${icons.map((i, idx) => iconCell(i, pack.accentColorHex, sel && sel.id === i.id, idx)).join("")}
+    </div>
+    <div style="height:48px"></div>
+  </div>
+  ${sel ? actionBar(sel, pack.accentColorHex, { onApply: async () => { await api("POST", "/api/select-icon", { id: sel.id }); await refresh(); go("apply"); } }) : ""}`;
+    }
+    VIEWS.packsBindDetail = null;
+
+    /* ---- Favorites ---- */
+    VIEWS.favorites = () => {
+      const favs = S.favoriteIcons || [];
+      const q = (V.favQ || "").toLowerCase();
+      const icons = q ? favs.filter(i => i.name.toLowerCase().includes(q) || i.packId.toLowerCase().includes(q)) : favs;
+      const favSelId = V.favSel || (S.selectedIcon && favs.some(i => i.id === S.selectedIcon.id) ? S.selectedIcon.id : null);
+      const sel = favSelId ? favs.find(i => i.id === favSelId) : null;
+      return `
+  <div class="frost-bar" style="position:sticky;top:calc(var(--pad)*-1);margin:calc(var(--pad)*-1) calc(var(--pad)*-1) 0;padding:24px var(--pad);z-index:5">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:24px">⭐</span>
+      <span style="font-size:22px;font-weight:700">Favorite Icons</span>
+      ${favs.length ? `<span class="pill pill-yellow">${favs.length}</span>` : ""}
+    </div>
+    <div class="sub" style="margin-top:4px">Your personal curated bookmarks for 1-click folder customization</div>
+  </div>
+  ${favs.length === 0 ? `
+  <div style="text-align:center;padding:48px 32px">
+    <div style="width:96px;height:96px;border-radius:50%;background:rgba(255,210,0,.12);display:flex;align-items:center;justify-content:center;margin:0 auto;color:var(--yellow)">${ic("star.slash.fill", 40)}</div>
+    <div class="headline" style="margin-top:16px">No Favorite Icons Yet</div>
+    <div class="sub" style="max-width:320px;margin:4px auto 0">Star any icon while browsing packs to keep it bookmarked here.</div>
+    <button class="btn btn-primary" style="margin-top:24px;padding:12px 24px;font-size:15px" data-go="packs">${ic("square.grid.3x3.fill", 14)} Explore Icon Packs</button>
+  </div>` : `
+  <div style="margin-top:24px">
+    <div class="searchbar">
+      <span style="color:var(--secondary);display:flex">${ic("magnifyingglass", 16)}</span>
+      <input id="fav-search" placeholder="Search your favorites..." value="${esc(V.favQ || "")}">
+      ${q ? `<button id="fav-clear" style="color:var(--secondary);display:flex">${ic("xmark.circle.fill", 16)}</button>` : ""}
+    </div>
+    <div class="icon-grid stagger" style="margin-top:24px" id="fav-grid">
+      ${icons.map((i, idx) => iconCell(i, "#FFD200", sel && sel.id === i.id, idx)).join("")}
+    </div>
+    <div style="height:48px"></div>
+  </div>
+  ${sel ? actionBar(sel, "#FFD200", { subLabel: `Pack: ${cap(sel.packId.replace(/-/g, " "))}`, applyLabel: "Apply to Folder", showUnfav: true }) : ""}`}`;
+    };
+    VIEWS.favoritesBind = () => {
+      document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+      const s = $("#fav-search");
+      if (s) s.addEventListener("input", () => { V.favQ = s.value; renderView(true); const n = $("#fav-search"); n.focus(); n.setSelectionRange(n.value.length, n.value.length); });
+      const cl = $("#fav-clear"); if (cl) cl.addEventListener("click", () => { V.favQ = ""; renderView(true); });
+      const grid = $("#fav-grid");
+      if (grid) bindIconCells(grid, async id => { V.favSel = id; renderView(true); }, "#FFD200");
+      if (V.favSel) {
+        const sel = (S.favoriteIcons || []).find(i => i.id === V.favSel);
+        if (sel) {
+          // Swift's Favorites action bar has an Unfavorite button, not Favorite —
+          // bind it directly (bindActionBar would add a second toggle handler).
+          const ex = $("#ab-export"); if (ex) ex.addEventListener("click", () => exportMenu(ex, sel.id, null));
+          const fv = $("#ab-fav");
+          if (fv) {
+            fv.innerHTML = `${ic("star.slash", 14)} Unfavorite`; fv.style.color = "var(--secondary)";
+            fv.addEventListener("click", async () => { await api("POST", "/api/favorite", { id: sel.id }); V.favSel = null; await refresh(); });
+          }
+          const ap = $("#ab-apply");
+          if (ap) ap.addEventListener("click", async () => { await api("POST", "/api/select-icon", { id: sel.id }); await refresh(); go("apply"); });
+        }
+      }
+    };
+    /* ---- Apply ---- */
+    const TINT_PRESETS = [["#007AFF", "Blue"], ["#AF52DE", "Purple"], ["#FF2D55", "Pink"], ["#FF3B30", "Red"], ["#FF9500", "Orange"], ["#34C759", "Green"], ["#00C7BE", "Mint"], ["#8E8E93", "Graphite"]];
+    VIEWS.apply = () => {
+      // Selection lives server-side (AppState), like Swift's @EnvironmentObject.
+      const icon = S.selectedIcon || null;
+      const folder = S.targetFolder || null;
+      if (V.applyNameFor !== folder) { V.applyNameFor = folder; V.applyName = folder ? displayName(folder) : ""; }
+      const name = V.applyName;
+      const isApp = folder ? String(folder).toLowerCase().endsWith(".app") : false;
+      const tintOn = !!V.applyTintOn;
+      const tint = V.applyTint || "#007AFF";
+      const origName = folder ? displayName(folder) : "";
+      V.isApp = isApp;
+      const hasCustom = V.applyHasCustomFor === folder && !!V.applyHasCustom;
+      return `
+  <div style="display:flex;align-items:center;gap:16px">
+    <button class="btn-ghost" id="apply-back" style="display:flex;align-items:center;gap:4px;font-size:14px;color:var(--violet)">${ic("chevron.left", 14)} Back</button>
+    <div style="width:1px;height:24px;background:rgba(255,255,255,.14)"></div>
+    <div><h1 class="title">Apply Icon</h1><div class="body" style="color:var(--secondary);margin-top:2px">Select an icon and a target folder or application (.app), option to rename, then apply</div></div>
+  </div>
+  <div class="apply-cols" style="gap:32px;margin-top:32px">
+    <div style="min-width:280px;max-width:320px;flex:0 0 300px">
+      <h2 class="title2">Selected Icon</h2>
+      <div class="card" style="margin-top:16px;box-shadow:0 4px 8px rgba(0,0,0,.1)">
+        ${icon ? `<div style="text-align:center;padding:24px">
+          <img src="${thumb(icon.id)}" style="width:200px;height:200px;object-fit:contain;margin:0 auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2))">
+          <div class="headline" style="margin-top:12px">${esc(icon.name)}</div>
+          <div class="cap" style="margin-top:4px">From: ${esc(cap(icon.packId.replace(/-/g, " ")))}</div>
+        </div>` : `<div style="text-align:center;padding:32px;color:var(--tertiary)">
+          <div style="display:flex;justify-content:center">${ic("photo", 48)}</div>
+          <div class="body" style="color:var(--secondary);margin-top:12px">No icon selected</div>
+          <div class="cap" style="margin-top:4px">Choose from Icon Packs or import your own</div>
+        </div>`}
+        <div class="divider"></div>
+        <div style="padding:16px 24px 24px;display:flex;flex-direction:column;gap:8px">
+          <button class="btn btn-bordered" style="justify-content:flex-start;background:rgba(19,21,31,.5);border:0" data-go="packs">${ic("square.grid.3x3.fill", 15)} Browse Icon Packs</button>
+          <button class="btn btn-bordered" style="justify-content:flex-start;background:rgba(19,21,31,.5);border:0" id="apply-import">${ic("photo.badge.plus", 15)} Import Custom Image</button>
+          <input type="file" id="apply-file" accept=".png,.jpeg,.jpg,.icns,.tiff,.svg" style="display:none">
+        </div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:24px">
+      <div>
+        <div style="display:flex;align-items:center"><h2 class="title2">${isApp ? "Target Application" : "Target Folder"}</h2>
+        ${folder ? `<span class="pill" style="margin-left:auto;background:${hexA(isApp ? "#0984E3" : "#6C5CE7", .15)};color:${isApp ? "#0984E3" : "#6C5CE7"};font-size:10px">${ic(isApp ? "app.fill" : "folder.fill", 10)} ${isApp ? "APPLICATION" : "FOLDER"}</span>` : ""}</div>
+        <div class="card" style="margin-top:16px;box-shadow:0 4px 8px rgba(0,0,0,.1)">
+          <div class="dropzone" id="apply-drop" style="margin:16px;border-style:dashed">
+            ${folder ? `<div style="text-align:left;padding:8px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="color:var(--accent)">${ic("folder.fill", 48)}</span>
+                <span style="min-width:0"><span class="headline" style="display:block">${esc(displayName(folder))}</span><span class="cap" style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(parentPath(folder))}</span></span>
+                <button id="apply-clear-target" style="margin-left:auto;color:var(--secondary);display:flex">${ic("xmark.circle.fill", 16)}</button>
+              </div>
+              <div class="divider" style="margin:16px 0"></div>
+              <div>
+                <div style="display:flex;align-items:center"><span class="capb" style="color:var(--secondary)">${isApp ? "App Name" : "Folder Name"}</span>
+                  ${name !== origName ? `<button class="btn-ghost" id="apply-keep-name" style="margin-left:auto;font-size:11px">Keep Original Name</button>` : ""}
+                  ${icon && name !== icon.name ? `<button class="btn-ghost" id="apply-use-icon-name" style="font-size:11px;color:#00B894">Use Icon Name</button>` : ""}
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid ${name !== origName ? hexA("#6C5CE7", .8) : "rgba(255,255,255,.12)"};border-width:${name !== origName ? "1.5px" : "1px"};border-radius:10px;padding:12px;margin-top:4px">
+                  <span style="color:var(--secondary);display:flex">${ic("pencil", 14)}</span>
+                  <input id="apply-name" value="${esc(name)}" placeholder="${isApp ? "Enter app name" : "Enter folder name"}" style="flex:1;background:none;border:0;outline:none;font-size:14px">
+                </div>
+                ${name !== origName && name ? `<div style="display:flex;gap:4px;color:var(--violet);margin-top:4px;padding:0 4px"><span style="display:flex">${ic("info.circle.fill", 12)}</span><span class="cap" style="color:var(--violet)">${isApp ? "App" : "Folder"} will be renamed from '${esc(origName)}' to '${esc(name)}' upon applying</span></div>` : ""}
+              </div>
+            </div>` : `<div style="padding:16px">
+              <div style="display:flex;justify-content:center;color:var(--tertiary)">${ic("folder.badge.gearshape", 40)}</div>
+              <div class="body" style="color:var(--secondary);margin-top:12px">Drop a folder or application (.app) here</div>
+              <div class="cap" style="margin-top:4px">or use the selection buttons below</div>
+              <div style="margin-top:12px"><input id="apply-path" class="input" placeholder="Paste a folder path, e.g. /Users/neel/Desktop/My Folder" style="text-align:left"></div>
+            </div>`}
+          </div>
+          <div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;gap:12px">
+              <button class="btn btn-bordered" style="flex:1;justify-content:center" id="apply-choose-folder">${ic("folder", 15)} Choose Folder</button>
+              <button class="btn btn-bordered" style="flex:1;justify-content:center" id="apply-choose-app">${ic("app.dashed", 15)} Choose App</button>
+            </div>
+            <div style="display:flex;gap:12px">
+              <button class="btn btn-bordered" style="flex:1;justify-content:center" id="apply-installed">${ic("square.grid.2x2", 15)} Installed Apps</button>
+              <button class="btn btn-bordered" style="flex:1;justify-content:center" id="apply-create">${ic("folder.badge.plus", 15)} Create New</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2 class="title2">Preview &amp; Apply</h2>
+        <div class="card" style="margin-top:16px;box-shadow:0 4px 8px rgba(0,0,0,.1)">
+          <div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:24px">
+            <div style="text-align:center"><div class="capb" style="color:var(--secondary)">BEFORE</div>
+              <div style="width:128px;height:128px;display:flex;align-items:center;justify-content:center;opacity:${folder ? 1 : .3}"><span style="color:var(--accent)">${ic("folder.fill", 96)}</span></div>
+              <div class="cap">${esc(folder ? displayName(folder) : "No folder")}</div></div>
+            <span style="color:var(--accent)">${ic("arrow.right", 24)}</span>
+            <div style="text-align:center"><div class="capb" style="color:var(--secondary)">AFTER</div>
+              ${icon ? `<img src="${thumb(icon.id)}" style="width:128px;height:128px;object-fit:contain;${tintOn ? `filter:sepia(1) hue-rotate(${tintHue(tint)}deg) saturate(3)` : ""}">` : `<div style="width:128px;height:128px;display:flex;align-items:center;justify-content:center;color:var(--tertiary)">${ic("questionmark.folder.fill", 48)}</div>`}
+              <div class="cap">${esc(icon ? icon.name : "No icon")}</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:0 24px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><span class="switch"><input type="checkbox" id="apply-tint-on" ${tintOn ? "checked" : ""}><span class="tr"></span></span><span class="capb">Dynamic Color Tint</span></label>
+            ${tintOn ? `<input type="color" id="apply-tint-color" value="${esc(tint)}" style="width:32px;height:28px;padding:0;border:0;background:none;cursor:pointer">
+            <span style="display:flex;gap:6px">${TINT_PRESETS.map(([h, n]) => `<span class="tintdot${tint === h ? " sel" : ""}" data-tint="${h}" title="${n}" style="background:${h}"></span>`).join("")}</span>` : ""}
+            <span style="flex:1"></span>
+          </div>
+          <div class="divider" style="margin:16px 0"></div>
+          <div style="display:flex;gap:12px;align-items:center;padding:0 16px 16px">
+            ${icon ? `<button class="btn btn-bordered" id="apply-export">${ic("square.and.arrow.up", 14)} Export...</button>` : ""}
+            ${folder && hasCustom ? `<button class="btn btn-bordered" id="apply-reset">${ic("arrow.counterclockwise", 14)} Reset to Default</button>` : ""}
+            <span style="flex:1"></span>
+            <button class="btn btn-primary" id="apply-do" ${(!icon || !folder) ? "disabled" : ""} style="background:#6C5CE7;padding:12px 24px;font-size:15px;opacity:${(!icon || !folder) ? .5 : 1}">Apply Icon</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+    };
+    function tintHue(hex) {
+      // Rough hue rotation for the live tint preview (server applies the real tint).
+      const h = hex.replace("#", ""); const r = parseInt(h.slice(0, 2), 16) / 255, g = parseInt(h.slice(2, 4), 16) / 255, b = parseInt(h.slice(4, 6), 16) / 255;
+      const mx = Math.max(r, g, b), mn = Math.min(r, g, b); let hue = 0;
+      if (mx !== mn) {
+        const d = mx - mn;
+        if (mx === r) hue = ((g - b) / d) % 6; else if (mx === g) hue = (b - r) / d + 2; else hue = (r - g) / d + 4;
+        hue = Math.round(hue * 60); if (hue < 0) hue += 360;
+      }
+      return hue - 220;
+    }
+    VIEWS.applyBind = () => {
+      const icon = S.selectedIcon || null;
+      const folder = S.targetFolder || null;
+      const back = $("#apply-back");
+      if (back) back.addEventListener("click", () => { go(V.prevRoute || "packs"); });
+      document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+      const setTarget = async p => {
+        const r = await api("POST", "/api/select-target", { path: p });
+        if (!r.ok) { showAlert("Error", r.error || "Not a folder", "OK"); return; }
+        await refresh();
+      };
+      // Reset-to-Default only shows when the folder already has a custom icon
+      // (Swift: `appState.iconService.hasCustomIcon(for:)`).
+      if (folder && V.applyHasCustomFor !== folder) {
+        V.applyHasCustomFor = folder;
+        api("POST", "/api/has-custom-icon", { folder }).then(hc => { V.applyHasCustom = hc.has; renderView(true); });
+      }
+      const ad = $("#apply-drop");
+      if (ad) {
+        ad.addEventListener("dragover", e => { e.preventDefault(); ad.classList.add("dragover"); });
+        ad.addEventListener("dragleave", e => { e.preventDefault(); ad.classList.remove("dragover"); });
+        ad.addEventListener("drop", async e => {
+          e.preventDefault();
+          ad.classList.remove("dragover");
+          if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+            const f = e.dataTransfer.files[0];
+            const p = f.path || f.name;
+            if (p) await setTarget(p);
+          }
+        });
+      }
+      const pathInput = $("#apply-path");
+      if (pathInput) pathInput.addEventListener("change", () => { if (pathInput.value.trim()) setTarget(pathInput.value.trim()); });
+      const ct = $("#apply-clear-target");
+      if (ct) ct.addEventListener("click", async () => { await api("POST", "/api/clear-target", {}); V.applyHasCustomFor = null; await refresh(); });
+      const nm = $("#apply-name");
+      if (nm) nm.addEventListener("input", () => { V.applyName = nm.value; });
+      const kn = $("#apply-keep-name");
+      if (kn) kn.addEventListener("click", () => { V.applyName = displayName(folder); renderView(true); });
+      const un = $("#apply-use-icon-name");
+      if (un) un.addEventListener("click", () => { V.applyName = icon.name; renderView(true); });
+      const cf = $("#apply-choose-folder");
+      if (cf) cf.addEventListener("click", async () => {
+        try {
+          const res = await api("POST", "/api/pick-folder", {});
+          if (res && res.path) {
+            await setTarget(res.path);
+            return;
+          }
+        } catch(e) {}
+        openBrowseModal({ title: "Select a folder to apply the icon to", onPickOne: setTarget });
+      });
+      const ca = $("#apply-choose-app");
+      if (ca) ca.addEventListener("click", () => openBrowseModal({ title: "Select an Application (.app) to apply the icon to", start: "/Applications", onPickOne: setTarget }));
+      const ia = $("#apply-installed");
+      if (ia) ia.addEventListener("click", async () => {
+        const d = await api("GET", "/api/installed-apps");
+        const apps = d.apps || [];
+        openModal(`<div style="display:flex;align-items:flex-start"><div><div style="font-size:22px;font-weight:700">Installed Applications</div><div class="cap">Select any macOS app to customize its icon</div></div><button class="btn btn-bordered" style="margin-left:auto" id="ia-done">Done</button></div>
+      <div class="searchbar" style="margin-top:16px"><span style="color:var(--secondary);display:flex">${ic("magnifyingglass", 16)}</span><input id="ia-search" placeholder="Search applications..."></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,110px));gap:12px;margin-top:16px;max-height:340px;overflow-y:auto" id="ia-grid">
+      ${apps.length ? apps.map(a => `<button style="padding:8px;border-radius:10px;text-align:center" data-app="${esc(a)}"><span style="display:flex;justify-content:center;color:var(--accent)">${ic("app.fill", 48)}</span><span class="cap" style="display:block;margin-top:4px;height:28px;overflow:hidden">${esc(displayName(a).replace(/\.app$/i, ""))}</span></button>`).join("") : `<div class="cap" style="grid-column:1/-1;text-align:center;padding:32px">No installed applications found on this system.</div>`}
+      </div>`, 520);
+        $("#ia-done").addEventListener("click", closeModal);
+        $("#ia-search").addEventListener("input", e => {
+          const q = e.target.value.toLowerCase();
+          document.querySelectorAll("[data-app]").forEach(b => { b.style.display = b.dataset.app.toLowerCase().includes(q) ? "" : "none"; });
+        });
+        document.querySelectorAll("[data-app]").forEach(b => b.addEventListener("click", async () => { closeModal(); await setTarget(b.dataset.app); }));
+      });
+      const cr = $("#apply-create");
+      if (cr) cr.addEventListener("click", () => {
+        openModal(`<div style="text-align:center"><div style="font-size:22px;font-weight:700">Create New Folder</div>
+      <input id="cf-name" class="input" placeholder="Folder name" style="width:300px;margin-top:24px">
+      <div class="cap" style="margin-top:8px">Location: ${esc(folder ? parentPath(folder) : (S.recents[0] ? parentPath(S.recents[0]) : ""))}</div>
+      <div style="display:flex;gap:12px;justify-content:center;margin-top:24px"><button class="btn btn-bordered" id="cf-cancel">Cancel</button><button class="btn btn-primary" id="cf-ok" style="background:#6C5CE7">Create</button></div></div>`, 400);
+        $("#cf-cancel").addEventListener("click", closeModal);
+        $("#cf-ok").addEventListener("click", async () => {
+          const name = $("#cf-name").value.trim(); if (!name) return;
+          const parent = folder ? parentPath(folder) : (S.recents[0] ? parentPath(S.recents[0]) : "/tmp");
+          const r = await api("POST", "/api/create-folder", { name, parent });
+          closeModal();
+          if (r.ok) { await refresh(); }
+          else showAlert("Error", r.error || "Could not create folder", "OK");
+        });
+      });
+      const imp = $("#apply-import");
+      if (imp) imp.addEventListener("click", () => $("#apply-file").click());
+      const file = $("#apply-file");
+      if (file) file.addEventListener("change", async () => {
+        const f = file.files[0]; if (!f) return;
+        const data = await new Promise(res => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.readAsDataURL(f); });
+        const r = await api("POST", "/api/upload", { name: f.name, data });
+        if (r.ok) { await refresh(); } else showAlert("Error", r.error || "Import failed", "OK");
+      });
+      const ton = $("#apply-tint-on");
+      if (ton) ton.addEventListener("change", () => { V.applyTintOn = ton.checked; renderView(true); });
+      const tc = $("#apply-tint-color");
+      if (tc) tc.addEventListener("input", () => { V.applyTint = tc.value; renderView(true); });
+      document.querySelectorAll("[data-tint]").forEach(d => d.addEventListener("click", () => { V.applyTint = d.dataset.tint; renderView(true); }));
+      const ex = $("#apply-export");
+      if (ex) ex.addEventListener("click", () => exportMenu(ex, icon.id, V.applyTintOn ? V.applyTint : null));
+      const rs = $("#apply-reset");
+      if (rs) rs.addEventListener("click", async () => {
+        const r = await api("POST", "/api/reset", { folder });
+        if (!r.ok) showAlert("Error", r.error || "Reset failed", "OK");
+        await refresh();
+      });
+      const doBtn = $("#apply-do");
+      if (doBtn) doBtn.addEventListener("click", async () => {
+        const r = await api("POST", "/api/apply", { icon_id: icon.id, folder, name: V.applyName || displayName(folder), tint: V.applyTintOn ? V.applyTint : "" });
+        if (r.ok) { showSuccessOverlay(); await refresh(); }
+        else showAlert("Error", r.error || "Apply failed", "OK");
+      });
+    };
+
+    /* ---- Batch ---- */
+    VIEWS.batch = () => {
+      const folders = S.batchFolders || [];
+      const statuses = Object.fromEntries((S.batchStatus || []).map(s => [s.folder, s.status]));
+      const icon = S.selectedIcon || null;
+      const tintOn = !!V.batchTintOn;
+      const tint = V.batchTint || "#007AFF";
+      const canApply = folders.length > 0 && icon;
+      const processing = !!V.batchProcessing;
+      const progress = V.batchProgress || 0;
+      const curFolder = V.batchCurrentFolder || "";
+
+      return `
+  <div style="margin-bottom:28px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:28px;filter:drop-shadow(0 2px 8px rgba(99,102,241,.3))">📁</span>
+      <h1 class="title">Batch Folder Apply</h1>
+      <span class="pill pill-blue" style="font-size:10px;padding:3px 8px">BULK STYLER</span>
+    </div>
+    <div class="sub" style="margin-top:6px">Select or drag-and-drop multiple folders to style them simultaneously with custom icons.</div>
+  </div>
+
+  <div class="batch-cols" style="gap:28px;display:flex;align-items:flex-start">
+    <!-- Left Column: Folders -->
+    <div class="card" style="flex:1 1 480px;min-width:320px;padding:24px;border-radius:18px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span class="headline" style="display:flex;align-items:center;gap:8px">Target Folders <span class="pill pill-blue">${folders.length}</span></span>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+          <input type="file" id="batch-file-input" webkitdirectory directory multiple style="display:none">
+          <button class="btn btn-primary" id="batch-add-native" style="padding:6px 12px;font-size:12px;border-radius:8px">
+            ${ic("folder.badge.plus", 14)} Add Folders...
+          </button>
+          ${folders.length ? `<button class="btn-ghost" id="batch-clear" style="font-size:12px;color:var(--secondary);padding:6px 8px">Clear All</button>` : ""}
+        </div>
+      </div>
+
+      <div class="divider" style="margin:16px 0"></div>
+
+      <!-- Drop Zone -->
+      <div class="dropzone" id="batch-drop" style="cursor:pointer;padding:28px 16px;border-radius:14px;background:rgba(255,255,255,.02);border:2px dashed rgba(255,255,255,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:all .2s ease">
+        <span style="color:var(--accent);filter:drop-shadow(0 2px 8px rgba(99,102,241,.3))">${ic("folder.fill.badge.plus", 36)}</span>
+        <div class="body" style="font-weight:600;font-size:15px;color:var(--text)">Drop Folders Here</div>
+        <div class="cap" style="color:var(--secondary);font-size:12px;text-align:center">Drag folders directly from Windows Explorer, or click anywhere to browse</div>
+      </div>
+
+      <!-- Manual Input -->
+      <div style="margin-top:14px;display:flex;gap:8px">
+        <input id="batch-path" class="input" placeholder="Paste a folder path (e.g. C:\\Projects) and press Enter" style="font-size:13px;padding:8px 12px;background:var(--surface);border-radius:8px;flex:1">
+        <button class="btn btn-bordered" id="batch-path-btn" style="padding:8px 14px;font-size:12px;white-space:nowrap">Add</button>
+      </div>
+
+      <!-- Folder List -->
+      <div style="margin-top:20px">
+        ${folders.length === 0 ? `
+          <div style="text-align:center;padding:36px 16px;background:rgba(255,255,255,.01);border-radius:12px;border:1px dashed rgba(255,255,255,.08)">
+            <span style="font-size:32px;display:block;opacity:.6">📂</span>
+            <div class="body" style="margin-top:8px;font-weight:500;color:var(--secondary)">No folders added yet</div>
+            <div class="cap" style="margin-top:4px">Drop one or more folders above to get started</div>
+          </div>` : `
+          <div style="display:flex;flex-direction:column;gap:8px;max-height:360px;overflow-y:auto;padding-right:4px">
+            ${folders.map(f => {
+              const isCurr = processing && curFolder === f;
+              const st = isCurr ? "Applying..." : (statuses[f] || "Pending");
+              const isApplied = st === "Applied";
+              const isFailed = st.startsWith("Failed");
+              const pillBg = isApplied ? "rgba(16,185,129,.18)" : isFailed ? "rgba(244,63,94,.18)" : isCurr ? "rgba(0,122,255,.2)" : "rgba(255,255,255,.08)";
+              const pillCol = isApplied ? "#10B981" : isFailed ? "#F43F5E" : isCurr ? "#3A9BFF" : "var(--secondary)";
+              const pillBorder = isApplied ? "rgba(16,185,129,.35)" : isFailed ? "rgba(244,63,94,.35)" : isCurr ? "rgba(0,122,255,.35)" : "transparent";
+              return `
+                <div style="display:flex;align-items:center;gap:12px;background:rgba(26,29,42,.7);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 14px;transition:all .15s ease">
+                  <span style="color:#3A9BFF;display:flex;flex-shrink:0">${ic("folder.fill", 22)}</span>
+                  <span style="min-width:0;flex:1">
+                    <span class="body" style="font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(displayName(f))}</span>
+                    <span style="font-size:11px;color:var(--secondary);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:ui-monospace,monospace">${esc(f)}</span>
+                  </span>
+                  <span class="status-pill" style="margin-left:auto;background:${pillBg};color:${pillCol};border:1px solid ${pillBorder};font-size:10px;font-weight:700">
+                    ${isCurr ? `<span style="display:inline-block;animation:spin 1s linear infinite">⚡</span> ` : ""}${esc(st)}
+                  </span>
+                  <button data-batch-rm="${esc(f)}" style="color:var(--secondary);display:flex;padding:4px;border-radius:4px" title="Remove" ${processing ? "disabled" : ""}>${ic("xmark.circle", 16)}</button>
+                </div>`;
+            }).join("")}
+          </div>
+        `}
+      </div>
+    </div>
+
+    <!-- Right Column: Icon & Style -->
+    <div style="min-width:320px;max-width:380px;flex:0 0 340px;display:flex;flex-direction:column;gap:20px">
+      <!-- Selected Icon Card -->
+      <div class="card" style="padding:22px;border-radius:18px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div class="headline">Selected Icon</div>
+          ${icon ? `<button class="btn-ghost" id="batch-change-icon" style="font-size:12px;padding:0;color:var(--accent)">Change...</button>` : ""}
+        </div>
+        <div class="divider" style="margin:12px 0 16px"></div>
+        ${icon ? `
+          <div style="display:flex;gap:16px;align-items:center">
+            <div style="width:72px;height:72px;padding:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.3)">
+              <img src="${thumb(icon.id)}" style="max-width:64px;max-height:64px;object-fit:contain;${tintOn ? `filter:drop-shadow(0 2px 6px ${tint}40)` : ""}">
+            </div>
+            <div style="min-width:0;flex:1">
+              <div class="body" style="font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(icon.name)}</div>
+              <div class="cap" style="color:var(--secondary);margin-top:2px;text-transform:capitalize">${esc(icon.packId.replace(/-/g, " "))}</div>
+              <span class="pill pill-purple" style="margin-top:6px;font-size:9px">READY TO APPLY</span>
+            </div>
+          </div>
+        ` : `
+          <button id="batch-choose-icon" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;padding:24px 16px;background:rgba(99,102,241,.08);border:1.5px dashed rgba(99,102,241,.4);border-radius:12px;color:#3A9BFF;cursor:pointer;transition:all .2s ease">
+            <span style="color:var(--accent)">${ic("plus.circle.fill", 28)}</span>
+            <span style="font-size:13px;font-weight:600;color:var(--text)">Choose Icon from Packs...</span>
+          </button>
+        `}
+      </div>
+
+      <!-- Color Tint Card -->
+      <div class="card" style="padding:22px;border-radius:18px">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none">
+          <span class="switch"><input type="checkbox" id="batch-tint-on" ${tintOn ? "checked" : ""}><span class="tr"></span></span>
+          <span class="headline" style="font-size:14px">Dynamic Color Tint</span>
+        </label>
+        ${tintOn ? `
+          <div style="margin-top:16px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <input type="color" id="batch-tint-color" value="${esc(tint)}" style="width:34px;height:30px;padding:0;border:0;background:none;cursor:pointer;border-radius:6px">
+              <span class="mono" style="font-size:12px;color:var(--secondary)">${esc(tint.toUpperCase())}</span>
+            </div>
+            <div style="display:flex;gap:7px;margin-top:12px;flex-wrap:wrap">
+              ${TINT_PRESETS.map(([h, n]) => `<span class="tintdot${tint === h ? " sel" : ""}" data-batch-tint="${h}" title="${n}" style="background:${h};width:18px;height:18px"></span>`).join("")}
+            </div>
+          </div>
+        ` : ""}
+      </div>
+
+      <!-- Apply Action & Live Progress -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        ${processing ? `
+          <div class="card" style="padding:16px;border-radius:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span class="capb" style="color:#3A9BFF">Styling Folders...</span>
+              <span class="mono" style="font-size:11px;color:var(--secondary)">${progress} / ${folders.length}</span>
+            </div>
+            <div class="progress" style="height:8px;border-radius:4px;background:rgba(255,255,255,.1)">
+              <div style="width:${folders.length ? Math.round(progress / folders.length * 100) : 0}%;background:linear-gradient(90deg,#007AFF,#8B5CF6);border-radius:4px;transition:width .25s ease"></div>
+            </div>
+          </div>
+        ` : ""}
+
+        <button class="btn btn-block" id="batch-do" ${(!canApply || processing) ? "disabled" : ""} style="background:${canApply ? "linear-gradient(135deg,#6366F1,#8B5CF6)" : "rgba(128,128,128,.3)"};color:#fff;border-radius:12px;font-size:15px;font-weight:700;box-shadow:${canApply ? "0 4px 16px rgba(99,102,241,.4)" : "none"};transition:all .2s ease">
+          ${processing ? `<span style="display:inline-block;animation:spin 1s linear infinite">⚡</span> Applying...` : `✓ Apply to ${folders.length} ${folders.length === 1 ? "Folder" : "Folders"}`}
+        </button>
+
+        ${V.batchMessage ? `
+          <div style="padding:12px 16px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);border-radius:10px;color:#10B981;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px">
+            <span>✓</span> <span>${esc(V.batchMessage)}</span>
+          </div>
+        ` : ""}
+      </div>
+    </div>
+  </div>
+  <div style="height:48px"></div>`;
+    };
+    VIEWS.batchBind = () => {
+      const addPath = async p => {
+        const r = await api("POST", "/api/batch-add", { folders: [p] });
+        if (r.ok) await refresh(); else showAlert("Error", r.error || "Not a folder", "OK");
+        if (r.ok) await refresh(); else showAlert("Error", r.error || "Not a valid folder", "OK");
+      };
+      const ba = $("#batch-add");
+      if (ba) ba.addEventListener("click", () => openBrowseModal({
+        title: "Select Folders to Style", multi: true, onPick: async ps => {
+          if (ps.length) { await api("POST", "/api/batch-add", { folders: ps }); await refresh(); }
+        }
+      }));
+      const cl = $("#batch-clear"); if (cl) cl.addEventListener("click", async () => { await api("POST", "/api/batch-clear", {}); V.batchMessage = ""; await refresh(); });
+
+      const dropArea = $("#batch-drop");
+      if (dropArea) {
+        dropArea.addEventListener("click", async () => {
+          const r = await api("POST", "/api/pick-folder", {});
+          if (r.ok && r.path) {
+            await api("POST", "/api/batch-add", { folders: [r.path] });
+            await refresh();
+            return;
+          }
+          const bfi = $("#batch-file-input");
+          if (bfi) bfi.click();
+        });
+
+        ["dragenter", "dragover"].forEach(evt => {
+          dropArea.addEventListener(evt, e => {
+            e.preventDefault(); e.stopPropagation();
+            dropArea.classList.add("hot");
+          });
+        });
+        ["dragleave", "dragend"].forEach(evt => {
+          dropArea.addEventListener(evt, e => {
+            e.preventDefault(); e.stopPropagation();
+            dropArea.classList.remove("hot");
+          });
+        });
+        dropArea.addEventListener("drop", async e => {
+          e.preventDefault(); e.stopPropagation();
+          dropArea.classList.remove("hot");
+          const paths = [];
+          if (e.dataTransfer && e.dataTransfer.files) {
+            for (let i = 0; i < e.dataTransfer.files.length; i++) {
+              const file = e.dataTransfer.files[i];
+              if (file.path) paths.push(file.path);
+            }
+          }
+          if (paths.length) {
+            await api("POST", "/api/batch-add", { folders: paths });
+            await refresh();
+          }
+        });
+      }
+
+      const bfi = $("#batch-file-input");
+      if (bfi) {
+        bfi.addEventListener("change", async () => {
+          const paths = [];
+          for (let i = 0; i < bfi.files.length; i++) {
+            const f = bfi.files[i];
+            if (f.path) paths.push(f.path);
+          }
+          if (paths.length) {
+            await api("POST", "/api/batch-add", { folders: paths });
+            await refresh();
+          }
+        });
+      }
+
+      const ban = $("#batch-add-native");
+      if (ban) {
+        ban.addEventListener("click", async () => {
+          const r = await api("POST", "/api/pick-folder", {});
+          if (r.ok && r.path) {
+            await api("POST", "/api/batch-add", { folders: [r.path] });
+            await refresh();
+          } else {
+            openBrowseModal({
+              title: "Select Folders to Style", multi: true, onPick: async ps => {
+                if (ps.length) { await api("POST", "/api/batch-add", { folders: ps }); await refresh(); }
+              }
+            });
+          }
+        });
+      }
+
+      const bp = $("#batch-path");
+      if (bp) bp.addEventListener("change", () => { if (bp.value.trim()) addPath(bp.value.trim()); });
+      document.querySelectorAll("[data-batch-rm]").forEach(b => b.addEventListener("click", async () => { await api("POST", "/api/batch-remove", { folder: b.dataset.batchRm }); await refresh(); }));
+      const bpb = $("#batch-path-btn");
+      if (bp) bp.addEventListener("keydown", e => { if (e.key === "Enter" && bp.value.trim()) addPath(bp.value.trim()); });
+      if (bpb && bp) bpb.addEventListener("click", () => { if (bp.value.trim()) addPath(bp.value.trim()); });
+
+      const openPicker = () => {
+        let cat = "All";
+        let search = "";
+        const allPacks = S.packs || [];
+        const selId = (S.selectedIcon || {}).id;
+        const categories = ["All", "Anime", "Dev & Tech", "Apps", "System", "Custom"];
+
+        openModal(`
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div class="title2">Choose Icon</div>
+              <div class="cap" style="color:var(--secondary);margin-top:2px">Select an icon to apply across all batch folders</div>
+            </div>
+            <button class="btn btn-bordered" id="pk-done">Done</button>
+          </div>
+          <div class="searchbar" style="margin-top:16px">
+            <span style="color:var(--secondary);display:flex">${ic("magnifyingglass", 16)}</span>
+            <input id="pk-search" placeholder="Search icons, anime, dev, tools...">
+          </div>
+          <div style="display:flex;gap:6px;margin-top:12px;overflow-x:auto;padding-bottom:4px" id="pk-cats">
+            ${categories.map(c => `<button class="chip${c === cat ? " sel" : ""}" data-cat="${c}">${c}</button>`).join("")}
+          </div>
+          <div class="divider" style="margin:12px 0"></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,116px));gap:10px;max-height:380px;overflow-y:auto;padding:2px" id="pk-grid"></div>
+        `, 640);
+
+        const renderGrid = () => {
+          let filtered = [];
+          allPacks.forEach(p => {
+            if (cat !== "All" && p.category !== cat) return;
+            p.icons.forEach(i => {
+              if (search && !i.name.toLowerCase().includes(search) && !p.name.toLowerCase().includes(search)) return;
+              filtered.push({ icon: i, pack: p });
+            });
+          });
+
+          const gridEl = $("#pk-grid");
+          if (!gridEl) return;
+          if (filtered.length === 0) {
+            gridEl.innerHTML = `<div class="cap" style="grid-column:1/-1;text-align:center;padding:36px;color:var(--secondary)">No matching icons found.</div>`;
+            return;
+          }
+          gridEl.innerHTML = filtered.map(({ icon: i }) => `
+            <button style="text-align:center;padding:8px;border-radius:10px;background:rgba(255,255,255,.02);border:${selId === i.id ? "2px solid var(--accent)" : "1px solid rgba(255, 255, 255, .08)"};transition:all .15s ease;cursor:pointer" data-pk="${esc(i.id)}">
+              <span style="display:block;width:56px;height:56px;padding:4px;margin:0 auto"><img src="${thumb(i.id)}" style="width:100%;height:100%;object-fit:contain"></span>
+              <span style="font-size:11px;font-weight:600;display:block;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(i.name)}</span>
+            </button>
+          `).join("");
+
+          gridEl.querySelectorAll("[data-pk]").forEach(b => b.addEventListener("click", async () => {
+            await api("POST", "/api/select-icon", { id: b.dataset.pk });
+            closeModal();
+            await refresh();
+          }));
+        };
+
+        $("#pk-done").addEventListener("click", closeModal);
+        $("#pk-search").addEventListener("input", e => { search = e.target.value.toLowerCase().trim(); renderGrid(); });
+        document.querySelectorAll("[data-cat]").forEach(btn => btn.addEventListener("click", () => {
+          cat = btn.dataset.cat;
+          document.querySelectorAll("[data-cat]").forEach(b => b.classList.toggle("sel", b.dataset.cat === cat));
+          renderGrid();
+        }));
+        renderGrid();
+      };
+
+      const ch = $("#batch-change-icon"); if (ch) ch.addEventListener("click", openPicker);
+      const ci = $("#batch-choose-icon"); if (ci) ci.addEventListener("click", openPicker);
+
+      const ton = $("#batch-tint-on");
+      if (ton) ton.addEventListener("change", () => { V.batchTintOn = ton.checked; renderView(true); });
+      const tc = $("#batch-tint-color");
+      if (tc) tc.addEventListener("input", () => { V.batchTint = tc.value; });
+      document.querySelectorAll("[data-batch-tint]").forEach(d => d.addEventListener("click", () => {
+        V.batchTint = d.dataset.batchTint;
+        renderView(true);
+      }));
+
+      const doBtn = $("#batch-do");
+      if (doBtn) doBtn.addEventListener("click", async () => {
+        const folders = S.batchFolders || [];
+        if (!folders.length || !S.selectedIcon) return;
+        V.batchProcessing = true;
+        V.batchProgress = 0;
+        V.batchMessage = "";
+        renderView(true);
+
+        const iconId = S.selectedIcon.id;
+        const tint = V.batchTintOn ? V.batchTint : "";
+
+        for (let i = 0; i < folders.length; i++) {
+          V.batchCurrentFolder = folders[i];
+          V.batchProgress = i + 1;
+          renderView(true);
+          await api("POST", "/api/batch-step", { icon_id: iconId, folder: folders[i], tint });
+        }
+
+        V.batchProcessing = false;
+        V.batchCurrentFolder = "";
+        V.batchMessage = `Successfully styled ${folders.length} folders!`;
+        await refresh();
+      });
+    };
+    /* ---- Pack Builder ---- */
+    const EMOJI_PRESETS = ["📁", "🚀", "💻", "🎨", "⚡", "🎮", "🦄", "🌟", "👾", "🛠️", "📦", "🏷️", "🔥", "🔮", "✨"];
+    VIEWS.builder = () => {
+      const name = V.bName || "";
+      const desc = V.bDesc || "";
+      const emoji = V.bEmoji || "📁";
+      const accent = V.bAccent || "#6C5CE7";
+      const slug = slugify(name);
+      const files = V.bFiles || [];
+      const valid = name.trim() && files.length && slug;
+      return `
+  <div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:26px">🛠️</span><h1 class="title">Pack Builder</h1><span class="pill pill-purple">NEW</span></div>
+    <div class="sub" style="margin-top:4px">Create, package, and install custom folder icon collections into MCons</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:24px;margin-top:32px">
+    <div class="card" style="padding:24px">
+      <div style="display:flex;align-items:center"><span class="headline">Pack Information</span><span class="cap" style="margin-left:auto;background:var(--surface);padding:3px 8px;border-radius:999px">Slug: ${esc(slug || "custom-pack")}</span></div>
+      <div class="divider" style="margin:16px 0"></div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div><div class="cap" style="color:var(--secondary);margin-bottom:4px">Pack Name</div><input id="b-name" class="input" placeholder="e.g. My Minimalist Workspace" value="${esc(name)}"></div>
+        <div><div class="cap" style="color:var(--secondary);margin-bottom:4px">Description</div><input id="b-desc" class="input" placeholder="e.g. Curated vector icons for developer workspaces" value="${esc(desc)}"></div>
+        <div style="display:flex;gap:32px">
+          <div><div class="cap" style="color:var(--secondary);margin-bottom:4px">Pack Emoji</div>
+            <div style="display:flex;gap:6px">${EMOJI_PRESETS.slice(0, 8).map(e => `<button data-emoji="${e}" style="font-size:18px;width:32px;height:32px;border-radius:6px;background:${emoji === e ? hexA(accent, .25) : "transparent"};border:1.5px solid ${emoji === e ? accent : "transparent"}">${e}</button>`).join("")}</div></div>
+          <div style="margin-left:auto"><div class="cap" style="color:var(--secondary);margin-bottom:4px">Accent Color</div>
+            <input type="color" id="b-accent" value="${esc(accent)}" style="width:56px;height:32px;padding:0;border:0;background:none;cursor:pointer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="padding:24px">
+      <div style="display:flex;align-items:flex-start">
+        <div><div class="headline">Pack Icons (${files.length})</div><div class="cap" style="margin-top:2px">Supports SVG, PNG, ICNS, JPG, and TIFF (1024×1024 recommended)</div></div>
+        <button class="btn" id="b-add" style="margin-left:auto;color:${accent};background:${hexA(accent, .15)};border-radius:999px;padding:6px 12px;font-size:11px">${ic("photo.badge.plus", 12)} Add Images...</button>
+        <input type="file" id="b-file" accept=".svg,.png,.jpg,.jpeg,.icns,.tiff" multiple style="display:none">
+      </div>
+      <div class="divider" style="margin:16px 0"></div>
+      <div class="dropzone" id="builder-drop" style="height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+        <span style="color:var(--secondary)">${ic("square.and.arrow.down.on.square.fill", 30)}</span>
+        <div class="body" style="font-weight:500;color:var(--text)">Drop Icon Files Here</div>
+        <div class="cap">Drop .svg vector or transparent .png files</div>
+      </div>
+      ${files.length ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,160px));gap:12px;margin-top:16px">
+        ${files.map((f, i) => `<div style="position:relative;text-align:center">
+          <div style="position:relative;background:var(--surface);border-radius:6px;height:72px;display:flex;align-items:center;justify-content:center;padding:8px">
+            <img src="${esc(f.dataUrl)}" style="max-width:100%;max-height:100%;object-fit:contain">
+            <button data-b-rm="${i}" style="position:absolute;top:4px;right:4px;color:var(--error);background:#fff;border-radius:50%;display:flex">${ic("xmark.circle.fill", 16)}</button>
+          </div>
+          <div class="cap" style="margin-top:6px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(f.name.replace(/\.[^.]+$/, ""))}</div>
+        </div>`).join("")}
+      </div>` : ""}
+    </div>
+    <div>
+      ${V.bError ? `<div class="cap" style="color:var(--error);margin-bottom:8px">${esc(V.bError)}</div>` : ""}
+      <button class="btn btn-block" id="b-create" ${valid ? "" : "disabled"} style="background:${valid ? accent : "rgba(128,128,128,.4)"};color:#fff">${V.bCreating ? "Building Pack..." : "✓ Create & Install Pack"}</button>
+    </div>
+  </div>
+  <div style="height:48px"></div>`;
+    };
+    function slugify(name) {
+      return String(name || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "custom-pack";
+    }
+    VIEWS.builderBind = () => {
+      const sync = () => { V.bName = $("#b-name").value; V.bDesc = $("#b-desc").value; };
+      $("#b-name").addEventListener("input", () => { sync(); renderView(true); const n = $("#b-name"); n.focus(); n.setSelectionRange(n.value.length, n.value.length); });
+      $("#b-desc").addEventListener("input", sync);
+      document.querySelectorAll("[data-emoji]").forEach(b => b.addEventListener("click", () => { V.bEmoji = b.dataset.emoji; renderView(true); }));
+      $("#b-accent").addEventListener("input", e => { V.bAccent = e.target.value; renderView(true); });
+      const bd = $("#builder-drop");
+      if (bd) {
+        bd.addEventListener("dragover", e => { e.preventDefault(); bd.classList.add("dragover"); });
+        bd.addEventListener("dragleave", e => { e.preventDefault(); bd.classList.remove("dragover"); });
+        bd.addEventListener("drop", async e => {
+          e.preventDefault();
+          bd.classList.remove("dragover");
+          if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+            const list = [...e.dataTransfer.files];
+            for (const f of list) {
+              const dataUrl = await new Promise(res => { const r = new FileReader(); r.onload = () => res(String(r.result)); r.readAsDataURL(f); });
+              const r = await api("POST", "/api/upload", { name: f.name, data: dataUrl.split(",")[1] });
+              if (r.ok) { (V.bFiles = V.bFiles || []).push({ name: f.name, path: r.path, dataUrl }); }
+            }
+            renderView(true);
+          }
+        });
+      }
+      $("#b-add").addEventListener("click", () => $("#b-file").click());
+      $("#b-file").addEventListener("change", async e => {
+        const list = [...e.target.files];
+        for (const f of list) {
+          const dataUrl = await new Promise(res => { const r = new FileReader(); r.onload = () => res(String(r.result)); r.readAsDataURL(f); });
+          const r = await api("POST", "/api/upload", { name: f.name, data: dataUrl.split(",")[1] });
+          if (r.ok) { (V.bFiles = V.bFiles || []).push({ name: f.name, path: r.path, dataUrl }); }
+        }
+        renderView(true);
+      });
+      document.querySelectorAll("[data-b-rm]").forEach(b => b.addEventListener("click", () => { V.bFiles.splice(+b.dataset.bRm, 1); renderView(true); }));
+      const create = $("#b-create");
+      if (create) create.addEventListener("click", async () => {
+        V.bCreating = true; V.bError = ""; renderView(true);
+        const r = await api("POST", "/api/build-pack", {
+          name: V.bName, description: V.bDesc || "", emoji: V.bEmoji || "📁", accent: V.bAccent || "#6C5CE7",
+          files: (V.bFiles || []).map(f => f.path),
+        });
+        V.bCreating = false;
+        if (r.ok) {
+          V.bFiles = []; V.bName = ""; V.bDesc = "";
+          openModal(`<h2 class="title2">Pack Created!</h2><p class="body" style="color:var(--secondary);margin-top:12px">Your custom icon pack '${esc(V.bName || "")}' was installed to Application Support and is ready to use.</p>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:24px"><button class="btn btn-bordered" id="pc-ok">OK</button><button class="btn btn-primary" id="pc-view">View in Icon Packs</button></div>`, 420);
+          $("#pc-ok").addEventListener("click", async () => { closeModal(); await refresh(); });
+          $("#pc-view").addEventListener("click", async () => { closeModal(); await refresh(); go("packs"); });
+          await refresh();
+        } else { V.bError = "Failed to create pack: " + (r.error || "unknown error"); renderView(true); }
+      });
+    };
+    /* ---- Updates ---- */
+    VIEWS.updates = () => {
+      const rel = S.lastRelease;
+      const st = S.updateStatus || "idle";
+      const avail = st === "available" && rel;
+      const pill = st === "idle" ? `<span class="cap" style="color:var(--secondary)">Ready to check</span>`
+        : st === "checking" ? `<span class="cap" style="color:var(--secondary)">Connecting to GitHub Releases...</span>`
+          : avail ? `<span class="capb" style="color:#00B894;display:flex;align-items:center;gap:4px">${ic("sparkles", 12)} Version ${esc(rel.tagName)} available!</span>`
+            : st === "uptodate" ? `<span class="capb" style="color:var(--success);display:flex;align-items:center;gap:4px">${ic("checkmark.circle.fill", 12)} You're on the latest version</span>`
+              : `<span class="cap" style="color:var(--error);display:flex;align-items:center;gap:4px">${ic("exclamationmark.triangle.fill", 12)} Check failed: ${esc(S.updateError || "")}</span>`;
+      return `
+  <div>
+    <div style="display:flex;align-items:center;gap:8px"><h1 class="title">Software Update</h1>${avail ? `<span class="pill pill-green" style="font-size:10px;padding:3px 8px">NEW</span>` : ""}</div>
+    <div class="body" style="color:var(--secondary);margin-top:8px">Keep MCons updated with latest icon packs, macOS enhancements, and bug fixes.</div>
+  </div>
+  <div class="card" style="margin-top:32px;padding:24px">
+    <div style="display:flex;align-items:center;gap:16px">
+      <img src="/appicon.png" style="width:52px;height:52px;border-radius:12px;filter:drop-shadow(0 2px 5px rgba(0,0,0,.18))">
+      <div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px;font-weight:600">MCons</span><span class="mono" style="font-size:13px;font-weight:600;color:var(--secondary)">${esc(S.fullVersion || "v1.0.0.1")}</span></div>
+      <div style="margin-top:4px">${pill}</div></div>
+      <button class="btn btn-bordered" id="upd-check" style="margin-left:auto" ${st === "checking" ? "disabled" : ""}>${st === "checking" ? "Checking..." : `${ic("arrow.clockwise", 14)} Check for Updates`}</button>
+    </div>
+    ${S.lastChecked ? `<div class="divider" style="margin:16px 0"></div><div style="display:flex"><span class="cap">Last checked: ${esc(S.lastChecked)}</span><span class="cap" style="margin-left:auto;color:var(--tertiary)">Channel: GitHub Releases (Stable)</span></div>` : ""}
+  </div>
+  ${rel ? `<div class="card" style="margin-top:24px;padding:24px;border-color:${avail ? "rgba(108,92,231,.3)" : "var(--border)"}">
+    <div style="display:flex;align-items:flex-start;gap:16px">
+      <div><div style="display:flex;align-items:center;gap:8px"><span class="headline">${esc(rel.name)}</span>${avail ? `<span class="pill" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff">UPDATE</span>` : ""}</div>
+      <div class="cap" style="margin-top:4px">Published on ${esc(rel.publishedAt ? rel.publishedAt.slice(0, 10) : "")} • Tag: ${esc(rel.tagName)}</div></div>
+      ${avail ? `<button class="btn" id="upd-install" style="margin-left:auto;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;padding:8px 16px;border-radius:6px">${ic("sparkles", 14)} Install Update</button>` : ""}
+    </div>
+    <div class="divider" style="margin:16px 0"></div>
+    <div class="capb" style="color:var(--secondary)">Release Notes</div>
+    <pre class="code" style="white-space:pre-wrap;margin-top:8px;background:rgba(0,0,0,.2);border:1px solid var(--border);color:var(--text);font-size:13px;line-height:1.6">${esc(rel.body || "No release notes provided.")}</pre>
+    <div style="display:flex;gap:16px;margin-top:16px">
+      ${rel.htmlURL ? `<a href="${esc(rel.htmlURL)}" target="_blank" rel="noopener" class="cap" style="color:#6C5CE7;display:flex;align-items:center;gap:4px">${ic("arrow.up.right", 12)} View on GitHub</a>` : ""}
+      <button class="cap btn-ghost" id="upd-terminal" style="color:var(--secondary);display:flex;align-items:center;gap:4px">${ic("terminal", 12)} Update via Terminal</button>
+    </div>
+    ${V.updMsg ? `<div class="cap" style="margin-top:12px;color:var(--warning)">${esc(V.updMsg)}</div>` : ""}
+  </div>` : ""}
+  <div class="card" style="margin-top:24px;padding:24px">
+    <div class="section-label">${ic("terminal.fill", 18)} 1-Line Terminal Installer &amp; Updater</div>
+    <div class="callout" style="color:var(--secondary);margin-top:12px">If you prefer installing/updating via Terminal, run the official 1-line script below. It automatically downloads the latest build, bypasses Gatekeeper quarantine, and updates MCons:</div>
+    <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
+      <pre class="code" style="flex:1">curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash</pre>
+      <button class="btn btn-bordered" id="upd-copy" style="font-size:11px">${ic(V.updCopied ? "checkmark" : "doc.on.doc", 12)} ${V.updCopied ? "Copied" : "Copy"}</button>
+    </div>
+  </div>
+  <div style="height:32px"></div>`;
+    };
+    VIEWS.updatesBind = () => {
+      const chk = $("#upd-check");
+      if (chk) chk.addEventListener("click", async () => { await api("GET", "/api/update/check"); await refresh(); });
+      const inst = $("#upd-install");
+      if (inst) inst.addEventListener("click", async () => {
+        const r = await api("POST", "/api/update/install", {});
+        V.updMsg = r.ok ? r.message : (r.message || r.error);
+        await refresh();
+      });
+      const term = $("#upd-terminal");
+      if (term) term.addEventListener("click", async () => {
+        const r = await api("POST", "/api/update/installer-script", {});
+        V.updMsg = r.ok ? `Installer script written to ${r.path} — open it in Terminal to update.` : (r.error || "Could not write installer script");
+        renderView(true);
+      });
+      const cp = $("#upd-copy");
+      if (cp) cp.addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText("curl -fsSL https://raw.githubusercontent.com/neel0210/MCons/main/install.sh | bash"); } catch (e) { }
+        V.updCopied = true; renderView(true); setTimeout(() => { V.updCopied = false; renderView(true); }, 2000);
+      });
+    };
+    /* ---- Settings ---- */
+    VIEWS.settings = () => {
+      const st = S.settings || {};
+      const size = Math.round(st.defaultIconSize || 1024);
+      const section = (title, icon, inner) => `
+    <div style="margin-top:32px"><div class="section-label">${ic(icon, 16)} ${title}</div>
+    <div class="card" style="margin-top:12px;padding:16px">${inner}</div></div>`;
+      return `
+  <div><h1 class="title">Settings</h1><div class="body" style="color:var(--secondary);margin-top:8px">Configure MCons preferences</div></div>
+  ${section("Icons", "photo.fill", `
+    <div style="display:flex;align-items:center"><span class="body">${ic("arrow.up.right", 14)} Default Icon Size</span>
+      <div class="seg" style="margin-left:auto;width:260px">
+        ${[512, 1024, 2048].map(v => `<button data-size="${v}" class="${size === v ? "sel" : ""}" style="flex:1">${v === 2048 ? "4K UHD" : v + "×" + v}</button>`).join("")}
+      </div></div>
+    <div class="divider" style="margin:16px 0"></div>
+    <label style="display:flex;align-items:center;gap:8px;cursor:pointer"><span class="body" style="flex:1">${ic("textformat", 14)} Show icon names in grid</span><span class="switch"><input type="checkbox" id="set-names" ${st.showIconNames ? "checked" : ""}><span class="tr"></span></span></label>`)}
+  ${section("Behavior", "gearshape.fill", `
+    <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer"><span style="flex:1"><span class="body">${ic("arrow.clockwise", 14)} Auto-refresh Finder</span><span class="cap" style="display:block;color:var(--secondary);margin-top:2px">Automatically nudge Finder to show updated icons</span></span><span class="switch"><input type="checkbox" id="set-refresh" ${st.autoRefreshFinder ? "checked" : ""}><span class="tr"></span></span></label>
+    <div class="divider" style="margin:16px 0"></div>
+    <div style="display:flex;align-items:center"><span class="body">${ic("clock", 14)} Recent folders limit</span>
+      <div class="stepper" style="margin-left:auto"><button id="set-limit-down">−</button><span>${st.recentFolderLimit ?? 10}</span><button id="set-limit-up">+</button></div></div>`)}
+  ${section("Data", "externaldrive.fill", `
+    <div style="display:flex;align-items:center"><span><span class="body">${ic("trash", 14)} Clear Recent Folders</span><span class="cap" style="display:block;color:var(--secondary);margin-top:2px">${(S.recents || []).length} folders in history</span></span>
+    <button class="btn btn-bordered" id="set-clear" style="margin-left:auto" ${(S.recents || []).length ? "" : "disabled"}>Clear</button></div>`)}
+  ${section("Updates", "arrow.triangle.2.circlepath", `
+    <div style="display:flex;align-items:center"><span><span class="headline">Software Update</span><span class="cap" style="display:block;color:var(--secondary);margin-top:2px">Current version: ${esc(S.fullVersion || "v1.0.0.1")}</span></span>
+    <button class="btn btn-bordered" style="margin-left:auto" data-go="updates">Manage Updates ${ic("chevron.right", 10)}</button></div>`)}
+  ${section("About", "info.circle.fill", `
+    <div style="display:flex;align-items:center;gap:12px">
+      <img src="/appicon.png" style="width:36px;height:36px;border-radius:8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15))">
+      <span><span class="headline">MCons — Icons for MacOS</span><span class="cap" style="display:block;color:var(--secondary);margin-top:2px">Version ${esc(S.fullVersion || "v1.0.0.1")} • Neel0210</span></span>
+    </div>
+    <div class="divider" style="margin:16px 0"></div>
+    <button class="link-row" data-go="about"><span class="body" style="flex:1">${ic("scalemass.fill", 15)} View About, Fair Use &amp; Licenses</span><span style="color:var(--tertiary)">${ic("chevron.right", 12)}</span></button>`)}
+  <div style="height:32px"></div>`;
+    };
+    VIEWS.settingsBind = () => {
+      document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+      document.querySelectorAll("[data-size]").forEach(b => b.addEventListener("click", async () => {
+        await api("POST", "/api/settings", { defaultIconSize: +b.dataset.size }); await refresh();
+      }));
+      const nm = $("#set-names"); if (nm) nm.addEventListener("change", async () => { await api("POST", "/api/settings", { showIconNames: nm.checked }); await refresh(); });
+      const rf = $("#set-refresh"); if (rf) rf.addEventListener("change", async () => { await api("POST", "/api/settings", { autoRefreshFinder: rf.checked }); await refresh(); });
+      const step = async d => {
+        const cur = S.settings.recentFolderLimit ?? 10;
+        const next = Math.min(25, Math.max(5, cur + d));
+        await api("POST", "/api/settings", { recentFolderLimit: next }); await refresh();
+      };
+      const dn = $("#set-limit-down"); if (dn) dn.addEventListener("click", () => step(-5));
+      const up = $("#set-limit-up"); if (up) up.addEventListener("click", () => step(5));
+      const cl = $("#set-clear"); if (cl) cl.addEventListener("click", async () => { await api("POST", "/api/clear-recents", {}); await refresh(); });
+    };
+
+    /* ---- About ---- */
+    const IP_ROWS = [
+      ["pokemon", "Pikachu", "Pokémon", "© Nintendo / Creatures Inc. / GAME FREAK inc. / The Pokémon Company"],
+      ["attack-on-titan", "Attack Titan", "Attack on Titan (Shingeki no Kyojin)", "© Hajime Isayama / Kodansha / \"ATTACK ON TITAN\" Production Committee / MAPPA / WIT Studio"],
+      ["demon-slayer", "Tanjiro", "Demon Slayer (Kimetsu no Yaiba)", "© Koyoharu Gotouge / SHUEISHA / Aniplex / ufotable"],
+      ["one-piece", "Luffy", "One Piece", "© Eiichiro Oda / SHUEISHA / Toei Animation"],
+      ["naruto", "Naruto Uzumaki", "Naruto (Naruto Shippūden)", "© Masashi Kishimoto / SHUEISHA / TV TOKYO / Pierrot"],
+      ["solo-leveling", "Sung Jinwoo", "Solo Leveling", "Story by Chugong, Art by DUBU (REDICE STUDIO), © D&C Media / KakaoPage / A-1 Pictures"],
+      ["dragon-ball-super", "Mastered Ultra Instinct Goku", "Dragon Ball Super", "© Bird Studio / Shueisha, Toei Animation, Akira Toriyama, Toyotarou"],
+      ["fullmetal-alchemist-brotherhood", "Edward Elric", "Fullmetal Alchemist: Brotherhood", "© Hiromu Arakawa / SQUARE ENIX, Aniplex, BONES, Mainichi Broadcasting System"],
+      ["black-clover", "Asta", "Black Clover", "© Yūki Tabata / SHUEISHA, TV TOKYO, Black Clover Project"],
+      ["dandadan", "Momo Ayase", "Dandadan", "© Yukinobu Tatsu / SHUEISHA, Dandadan Production Committee, Science SARU"],
+      ["kaiju-no-8", "Kaiju No. 8", "Kaiju No. 8", "© Naoya Matsumoto / SHUEISHA, \"Kaiju No. 8\" Production Committee, Production I.G"],
+      ["jujutsu-kaisen", "Satoru Gojo", "Jujutsu Kaisen", "© Gege Akutami / SHUEISHA, JUJUTSU KAISEN Project, MAPPA"],
+      ["my-hero-academia", "Izuku Midoriya", "My Hero Academia (Boku no Hero Academia)", "© Kohei Horikoshi / SHUEISHA, \"My Hero Academia\" Production Committee, BONES"],
+      ["chainsaw-man", "Denji", "Chainsaw Man", "© Tatsuki Fujimoto / SHUEISHA, MAPPA"],
+      ["death-note", "Light Yagami", "Death Note", "© Tsugumi Ohba, Takeshi Obata / SHUEISHA, VAP, MADHOUSE, NTV"],
+      ["dev-tech", "VS Code", "Developer & Tech", "VS Code, Git, Docker, Python, Rust, Swift, Go, React, Node.js and respective marks belong to their respective foundations & owners."],
+      ["google", "Google Chrome", "Google & Alphabet", "© Google LLC / Alphabet Inc. Google, Chrome, Drive, Gmail, Maps, Photos, Files, Keep, Camera, YouTube and related marks are trademarks of Google LLC."],
+      ["cameras", "Nikon D5300", "Cameras", "Nikon is a trademark of Nikon Corporation; Insta360 is a trademark of Arashi Vision Inc."],
+      ["marvel", "Spider-Man (Peter Parker)", "Marvel Universe", "© Marvel Characters, Inc. / Marvel Entertainment, LLC / The Walt Disney Company"],
+    ];
+    const GITHUB_PATH = "M12 1.5c-5.8 0-10.5 4.8-10.5 10.7 0 4.7 3 8.7 7.2 10.1.5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.3-3.5-1.3-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.6 1.1 1.6 1.1 1 1.7 2.6 1.2 3.2.9.1-.7.4-1.2.7-1.5-2.3-.3-4.8-1.2-4.8-5.2 0-1.2.4-2.1 1.1-2.9-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 2.9 1.1a10 10 0 0 1 5.3 0c2-1.4 2.9-1.1 2.9-1.1.6 1.5.2 2.6.1 2.9.7.8 1.1 1.7 1.1 2.9 0 4-2.5 4.9-4.8 5.2.4.4.8 1.1.8 2.1v3.2c0 .3.2.6.7.5 4.2-1.4 7.2-5.4 7.2-10.1C22.5 6.3 17.8 1.5 12 1.5Z";
+    VIEWS.about = () => {
+      const aboutSection = (title, icon, inner) => `
+    <div style="margin-top:32px"><div class="section-label">${ic(icon, 16)} ${title}</div>
+    <div class="card" style="margin-top:12px;padding:16px">${inner}</div></div>`;
+      const ipThumb = (packId, iconName) => {
+        const pack = (S.packs || []).find(p => p.id.toLowerCase().includes(packId));
+        if (!pack) return `<span style="color:var(--secondary);display:flex">${ic("photo.fill", 18)}</span>`;
+        const icon = pack.icons.find(i => i.name.toLowerCase().includes(iconName.toLowerCase())) || pack.icons[0];
+        if (!icon) return `<span style="color:var(--secondary);display:flex">${ic("photo.fill", 18)}</span>`;
+        return `<img src="${thumb(icon.id)}" style="width:36px;height:36px;object-fit:contain">`;
+      };
+      return `
+  <div style="text-align:center;padding:24px 0">
+    <img src="/appicon.png" style="width:80px;height:80px;margin:0 auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2))">
+    <div class="title" style="margin-top:16px">MCons</div>
+    <div style="font-size:18px;font-weight:600;margin-top:8px"><span class="grad-text">Custom Folder Icons</span></div>
+    <div style="display:flex;gap:8px;justify-content:center;align-items:center;margin-top:8px">
+      <span class="cap">Version ${esc(S.fullVersion || "v1.0.0.1")}</span>
+      ${S.updateAvailable ? `<button class="pill" data-go="updates" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:10px;padding:3px 8px">${ic("sparkles", 10)} Update Available</button>` : ""}
+    </div>
+  </div>
+  ${aboutSection("Links", "link", `
+    <a class="link-row" href="https://github.com/neel0210/MCons" target="_blank" rel="noopener">
+      <span style="width:32px;height:32px;display:flex;align-items:center;justify-content:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="${GITHUB_PATH}"/></svg></span>
+      <span><span class="body" style="display:block">GitHub Repository</span><span class="cap" style="display:block">github.com/neel0210/MCons</span></span>
+      <span style="margin-left:auto;color:var(--tertiary)">${ic("arrow.up.right", 12)}</span></a>
+    <div class="divider" style="margin:12px 0"></div>
+    <a class="link-row" href="https://t.me/MConsOfficial" target="_blank" rel="noopener">
+      <span style="width:32px;height:32px;border-radius:50%;background:linear-gradient(180deg,#2AABEE,#229ED9);display:flex;align-items:center;justify-content:center;color:#fff"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 6.6 4.8 11.6c-.7.3-.6 1.3.1 1.5l3.3 1 7.4-4.6c.4-.3.8.2.4.5l-6 5.7-.4 3.4c.1.6.7.7 1.2.4l2-1.9 3.8 2.8c.6.3 1.1.1 1.2-.6l2-11.1c.1-1-.9-1.5-1.9-1.1Z"/></svg></span>
+      <span><span class="body" style="display:block">Telegram Channel</span><span class="cap" style="display:block">@MConsOfficial — Updates &amp; releases</span></span>
+      <span style="margin-left:auto;color:var(--tertiary)">${ic("arrow.up.right", 12)}</span></a>
+    <div class="divider" style="margin:12px 0"></div>
+    <a class="link-row" href="https://t.me/MConsupport" target="_blank" rel="noopener">
+      <span style="width:32px;height:32px;border-radius:50%;background:linear-gradient(180deg,#00B894,#00A381);display:flex;align-items:center;justify-content:center;color:#fff">${ic("bubble.left.and.bubble.right.fill", 13)}</span>
+      <span><span class="body" style="display:block">Telegram Support</span><span class="cap" style="display:block">@MConsupport — Help &amp; feedback</span></span>
+      <span style="margin-left:auto;color:var(--tertiary)">${ic("arrow.up.right", 12)}</span></a>`)}
+  ${aboutSection("Fair Use Notice", "scalemass.fill", `
+    <div style="display:flex;gap:12px;padding:16px;background:rgba(108,92,231,.08);border:1px solid rgba(108,92,231,.2);border-radius:10px">
+      <span style="color:#6C5CE7;display:flex">${ic("info.circle.fill", 20)}</span>
+      <span class="body">MCons is a free, non-profit, open-source personal customization utility provided for personal desktop aesthetics, non-commercial commentary, fan tribute, and organizational use.</span>
+    </div>
+    <div style="margin-top:16px">
+      <div class="capb" style="color:var(--text)">Title 17 U.S.C. Section 107 (Fair Use Doctrine)</div>
+      ${["The software is distributed free of charge with zero monetization, advertising, or commercial intent.",
+          "Icons and vector assets are included for transformative desktop interface customization by individual end-users.",
+          "No copyright or trademark infringement is intended.",
+          "If you are a copyright holder and wish to have specific material removed, please contact the developer or open an issue on GitHub."].map(t => `
+        <div style="display:flex;gap:8px;margin-top:8px"><span class="body" style="color:var(--secondary)">•</span><span class="callout" style="color:var(--secondary)">${t}</span></div>`).join("")}
+    </div>`)}
+  ${aboutSection("Intellectual Property", "shield.lefthalf.filled", `
+    <div class="callout" style="color:var(--secondary)">All character designs, vector artwork, logos, and trademarks remain the intellectual property and copyright of their respective owners:</div>
+    <div class="divider" style="margin:16px 0"></div>
+    ${IP_ROWS.map(([pid, iname, fr, holder]) => `
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:4px 0">
+        <span style="width:36px;height:36px;flex:0 0 36px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center">${ipThumb(pid, iname)}</span>
+        <span><span class="headline" style="display:block">${esc(fr)}</span><span class="cap" style="display:block">${esc(holder)}</span></span>
+      </div>`).join("")}
+    <div style="display:flex;gap:12px;align-items:flex-start;padding:4px 0">
+      <span style="width:36px;height:36px;flex:0 0 36px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--accent)">${ic("apple.logo", 18)}</span>
+      <span><span class="headline" style="display:block">Apple &amp; macOS</span><span class="cap" style="display:block">macOS, SF Symbols, Finder, and Dock are trademarks of Apple Inc.</span></span>
+    </div>`)}
+  ${aboutSection("Developer", "person.fill", `
+    <a class="link-row" href="https://github.com/neel0210" target="_blank" rel="noopener">
+      <img src="https://github.com/neel0210.png" alt="Neel0210" style="width:46px;height:46px;border-radius:50%;border:1.5px solid var(--border);box-shadow:0 2px 4px rgba(0,0,0,.15)" onerror="this.style.display='none'">
+      <span><span class="headline" style="display:flex;align-items:center;gap:4px">Neel0210 ${ic("arrow.up.right", 10)}</span><span class="cap" style="display:block">Creator &amp; Maintainer</span></span>
+    </a>`)}
+  <div style="height:32px"></div>`;
+    };
+    VIEWS.aboutBind = () => {
+      document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+    };
+    /* ---- Quick Apply (MenuBarExtra as a view) ---- */
+    VIEWS.quick = () => {
+      const favs = (S.favoriteIcons || []).slice(0, 8);
+      const recents = (S.recents || []).slice(0, 3);
+      const target = S.targetFolder || null;
+      return `
+  <div style="max-width:420px;margin:0 auto">
+  <div class="card" style="padding:12px;margin-top:8px">
+    <div style="display:flex;align-items:center"><span class="headline">MCons Quick Apply</span>
+      <button class="btn-ghost" data-go="home" title="Open Main Window" style="margin-left:auto;color:var(--secondary);display:flex">${ic("arrow.up.forward.app", 15)}</button></div>
+    <div class="divider" style="margin:12px 0"></div>
+    <div class="dropzone" style="height:52px;display:flex;align-items:center;gap:8px;padding:10px;text-align:left">
+      <span style="color:var(--accent);display:flex">${ic("folder.badge.gearshape", 18)}</span>
+      <span style="min-width:0;flex:1"><span class="body" style="font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(target ? displayName(target) : "Drop Folder Here")}</span><span style="font-size:11px;color:var(--secondary);display:block">${target ? "Folder ready for icon" : "Drag folder from Finder"}</span></span>
+      <button class="btn" id="quick-browse" style="font-size:11px;background:rgba(255,255,255,.08);border-radius:999px;padding:3px 6px">Browse</button>
+    </div>
+    <div style="margin-top:12px"><input id="quick-path" class="input" placeholder="Or paste a folder path" style="padding:8px 10px;font-size:13px"></div>
+    ${favs.length ? `<div style="margin-top:12px">
+      <div style="font-size:10px;font-weight:700;color:var(--secondary)">FAVORITE ICONS (1-CLICK)</div>
+      <div style="display:flex;gap:8px;overflow-x:auto;margin-top:6px">
+        ${favs.map(i => `<button style="flex:0 0 44px;text-align:center;padding:4px;background:rgba(255,255,255,.04);border-radius:6px" data-quick-fav="${esc(i.id)}" title="Apply ${esc(i.name)} to selected folder">
+          <img src="${thumb(i.id)}" style="width:36px;height:36px;margin:0 auto;object-fit:contain">
+          <span style="font-size:9px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(i.name)}</span></button>`).join("")}
+      </div></div>` : ""}
+    ${recents.length ? `<div style="margin-top:12px">
+      <div style="font-size:10px;font-weight:700;color:var(--secondary)">RECENT FOLDERS</div>
+      ${recents.map(f => `<button class="link-row" data-quick-recent="${esc(f)}" style="padding:2px 0"><span style="color:var(--accent)">${ic("folder", 13)}</span><span class="cap" style="color:var(--text)">${esc(displayName(f))}</span></button>`).join("")}
+    </div>` : ""}
+    ${V.quickMsg ? `<div style="font-size:11px;color:var(--success);margin-top:12px">${esc(V.quickMsg)}</div>` : ""}
+    <div class="divider" style="margin:12px 0"></div>
+    <div style="display:flex"><button class="btn-ghost" data-go="home" style="font-size:12px">Open MCons</button>
+      <button class="btn-ghost" id="quick-quit" style="margin-left:auto;font-size:12px;color:var(--secondary)">Quit</button></div>
+  </div></div>`;
+    };
+    VIEWS.quickBind = () => {
+      document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+      $("#quick-browse").addEventListener("click", () => openBrowseModal({
+        title: "Select a folder", onPickOne: async p => {
+          await api("POST", "/api/select-target", { path: p }); V.quickMsg = "Selected: " + displayName(p); await refresh();
+        }
+      }));
+      const qp = $("#quick-path");
+      if (qp) qp.addEventListener("change", async () => {
+        if (!qp.value.trim()) return;
+        const r = await api("POST", "/api/select-target", { path: qp.value.trim() });
+        V.quickMsg = r.ok ? "Selected: " + displayName(qp.value.trim()) : (r.error || "Not a folder");
+        await refresh();
+      });
+      document.querySelectorAll("[data-quick-recent]").forEach(b => b.addEventListener("click", async () => {
+        await api("POST", "/api/select-target", { path: b.dataset.quickRecent });
+        V.quickMsg = "Target: " + displayName(b.dataset.quickRecent); await refresh();
+      }));
+      document.querySelectorAll("[data-quick-fav]").forEach(b => b.addEventListener("click", async () => {
+        const folder = S.targetFolder;
+        if (!folder) { V.quickMsg = "Drop or select a folder first!"; renderView(true); return; }
+        const r = await api("POST", "/api/apply", { icon_id: b.dataset.quickFav, folder, name: displayName(folder), tint: "" });
+        const icon = (S.favoriteIcons || []).find(i => i.id === b.dataset.quickFav);
+        V.quickMsg = r.ok ? `Applied ${icon ? icon.name : "icon"}!` : "Failed to apply";
+        await refresh();
+      }));
+      $("#quick-quit").addEventListener("click", () => {
+        showAlert("Quit MCons", "Close this browser tab to quit. The local server keeps running at http://127.0.0.1:8795/ until you stop it.", "OK");
+      });
+    };
+    /* ================= boot ================= */
+    let lastRoute = "home";
+    window.addEventListener("hashchange", () => {
+      const r = curRoute();
+      if (r.name !== lastRoute) {
+        V = {}; // view-local state resets on navigation, like Swift's fresh @State
+        V.prevRoute = lastRoute;
+        lastRoute = r.name;
+      }
+      renderSidebar();
+      renderView(false);
+    });
+    document.addEventListener("keydown", e => {
+      const mod = e.metaKey || e.ctrlKey;
+      const inField = /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || "");
+      if (mod && !inField) {
+        const map = { "1": "home", "2": "packs", "3": "favorites", "4": "apply", "5": "batch", "6": "builder", ",": "settings", "i": "about" };
+        if (map[e.key]) { e.preventDefault(); go(map[e.key]); }
+        if (e.key.toLowerCase() === "z" && !e.shiftKey) { e.preventDefault(); api("POST", "/api/undo", {}).then(refresh); }
+        if ((e.key.toLowerCase() === "z" && e.shiftKey) || e.key.toLowerCase() === "y") { e.preventDefault(); api("POST", "/api/redo", {}).then(refresh); }
+      }
+    });
+    /* pointer-tracked specular highlight on glass cards (rAF-throttled, scroll-paused) */
+    let shineRaf = 0;
+    let isScrolling = false, scrollTimer = 0;
+    document.addEventListener("pointermove", e => {
+      if (isScrolling) return;
+      const el = e.target.closest && e.target.closest(".card, .pack-card, .icon-cell");
+      if (!el || shineRaf) return;
+      shineRaf = requestAnimationFrame(() => {
+        shineRaf = 0;
+        const r = el.getBoundingClientRect();
+        el.style.setProperty("--mx", Math.round(e.clientX - r.left) + "px");
+        el.style.setProperty("--my", Math.round(e.clientY - r.top) + "px");
+      });
+    }, { passive: true });
+    /* thumbnail fade-in + shimmer stop, once each image actually loads */
+    document.addEventListener("load", e => {
+      if (e.target && e.target.tagName === "IMG") {
+        e.target.classList.add("img-in");
+        const cell = e.target.closest(".icon-cell");
+        if (cell) cell.classList.add("cell-loaded");
+      }
+    }, true);
+    document.addEventListener("error", e => {
+      if (e.target && e.target.tagName === "IMG") e.target.classList.add("img-in");
+    }, true);
+    /* frosted top edge once the detail column scrolls */
+    const detailEl = document.getElementById("detail");
+    detailEl.addEventListener("scroll", () => {
+      isScrolling = true;
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => { isScrolling = false; }, 120);
+      detailEl.classList.toggle("scrolled", detailEl.scrollTop > 8);
+    }, { passive: true });
+    (async () => {
+      await refresh();
+      // Silent update check on launch, like Swift's UpdaterView.onAppear.
+      try { await fetch("/api/update/check"); await refresh(); } catch (e) { }
+    })();
+  </script>
+</body>
+
+</html>
